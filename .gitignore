@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# Brainstorm session state (visual companion attempt)
+.superpowers/
+
+# Claude Code local agent state
+.claude/
+
+# Source spreadsheets (private working data; site reads from published Google Sheet)
+*.xlsx
+
+# Node (not used today, but future-proof)
+node_modules/
+
+# Logs
+*.log

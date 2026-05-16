@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MyTournament.PB — Full page draft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --court-green:#1A6B4A;
+  --deep-court:#0D1F1A;
+  --rally-amber:#F0A500;
+  --mint-wash:#E8F5EF;
+  --off-white:#F5F5F0;
+  --mid-green:#6BAF8C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--off-white)}
+body{
+  font-family:'DM Sans',-apple-system,sans-serif;
+  color:var(--deep-court);
+  line-height:1.4;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:60px;
+}
+button{font:inherit;cursor:pointer}
+
+/* ============ HEADER ============ */
+.header{
+  background:var(--off-white);
+  border-bottom:1px solid rgba(13,31,26,0.06);
+  padding:14px 16px 12px;
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(10px);
+  background:rgba(245,245,240,0.9);
+}
+.header-row{max-width:480px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--deep-court)}
+.logo-mark{
+  width:32px;height:32px;border-radius:8px;
+  overflow:hidden;flex-shrink:0;
+  display:block;
+}
+.logo-mark img{width:100%;height:100%;display:block}
+.logo-text{font-family:'Sora',sans-serif;font-weight:800;font-size:16px;letter-spacing:-0.02em;line-height:1}
+.logo-text small{display:block;font-size:9.5px;font-weight:600;color:var(--mid-green);margin-top:2px;letter-spacing:0.08em;text-transform:uppercase}
+.header-cta{
+  background:transparent;color:var(--deep-court);
+  border:1px solid rgba(13,31,26,0.15);border-radius:999px;
+  padding:6px 12px;font-size:12px;font-weight:600;
+  min-height:36px;
+}
+.header-cta:hover{background:rgba(13,31,26,0.04)}
+
+/* ============ URGENCY STRIP ============ */
+.urgency{
+  background:var(--deep-court);color:#fff;
+  padding:10px 16px;
+  font-size:13px;font-weight:500;
+}
+.urgency-inner{max-width:480px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.urgency-count{
+  display:inline-flex;align-items:center;gap:8px;
+}
+.urgency-num{
+  font-family:'Sora',sans-serif;font-weight:800;font-size:18px;color:var(--rally-amber);line-height:1;
+}
+.urgency-link{color:var(--rally-amber);text-decoration:none;font-weight:700;font-size:12px;letter-spacing:0.02em}
+
+/* ============ FILTER BAR (sticky) ============ */
+.filterbar{
+  background:var(--off-white);
+  border-bottom:1px solid rgba(13,31,26,0.06);
+  padding:10px 0 10px;
+  position:sticky;top:55px;z-index:40;
+}
+.filter-scroll{
+  display:flex;gap:6px;align-items:center;
+  overflow-x:auto;scroll-snap-type:x proximity;
+  padding:0 16px;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.filter-scroll::-webkit-scrollbar{display:none}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;
+  border:1px solid rgba(13,31,26,0.13);background:#fff;
+  border-radius:999px;
+  padding:7px 13px;
+  font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:600;
+  color:var(--deep-court);
+  white-space:nowrap;
+  min-height:36px;
+  transition:transform 120ms ease, background 150ms ease;
+  scroll-snap-align:start;
+}
+.chip:hover{background:rgba(26,107,74,0.04)}
+.chip:active{transform:scale(0.96)}
+.chip.active{background:var(--deep-court);color:#fff;border-color:var(--deep-court)}
+.chip.active .caret{color:#fff}
+.chip .caret{font-size:9px;color:var(--mid-green);margin-left:1px;display:inline-block;transform:translateY(-1px)}
+.chip .count{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--rally-amber);color:#fff;
+  width:16px;height:16px;border-radius:999px;
+  font-size:10px;font-weight:700;margin-left:2px;
+}
+.chip-toggle{padding-left:8px}
+.chip-toggle .dot{width:8px;height:8px;border-radius:50%;background:rgba(13,31,26,0.2);transition:background 150ms}
+.chip-toggle.on .dot{background:var(--court-green)}
+
+/* ============ MAIN ============ */
+main{max-width:480px;margin:0 auto;padding:18px 16px 24px}
+.section-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin:18px 0 10px;
+}
+.section-title{
+  font-family:'Sora',sans-serif;font-weight:800;font-size:17px;
+  color:var(--deep-court);letter-spacing:-0.01em;
+}
+.section-title .accent{color:var(--court-green)}
+.section-count{font-family:'Sora',sans-serif;font-size:12px;font-weight:600;color:var(--mid-green)}
+.section-divider-bar{height:3px;width:36px;background:var(--rally-amber);border-radius:2px;margin-bottom:14px}
+.section-divider-bar.green{background:var(--court-green)}
+.section-divider-bar.muted{background:rgba(13,31,26,0.2)}
+
+/* ===== card styles (locked from v3) ===== */
+.card{
+  background:#fff;
+  border:1px solid rgba(13,31,26,0.08);
+  border-radius:12px;
+  padding:12px 14px 12px;
+  margin-bottom:10px;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:12px;
+  transition:transform 120ms ease, box-shadow 120ms ease;
+}
+.card:active{transform:scale(0.99)}
+.card.closed-reg{opacity:0.78}
+.card .date-block{
+  background:var(--mint-wash);
+  border-radius:9px;
+  padding:8px 10px;
+  text-align:center;
+  min-width:70px;
+  align-self:start;
+}
+.card .date-month{font-family:'Sora',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--court-green);margin-bottom:1px}
+.card .date-day{font-family:'Sora',sans-serif;font-weight:800;font-size:18px;color:var(--deep-court);line-height:1.05;font-variant-numeric:tabular-nums}
+.card .body{min-width:0}
+.card .name{
+  font-family:'Sora',sans-serif;font-weight:700;font-size:15px;line-height:1.22;
+  color:var(--deep-court);margin-bottom:2px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.card .org{font-size:11.5px;color:var(--mid-green);margin-bottom:6px}
+.card .reg{
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;
+  display:inline-block;padding:2px 8px;border-radius:5px;margin-bottom:8px;
+}
+.card .reg.soon{background:var(--rally-amber);color:#fff}
+.card .reg.open{background:rgba(26,107,74,0.10);color:var(--court-green)}
+.card .reg.closed{background:rgba(13,31,26,0.08);color:var(--mid-green)}
+.card .meta-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.card .pairs{display:flex;gap:14px}
+.card .pair .k{font-size:9.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--mid-green);font-weight:600}
+.card .pair .v{font-family:'Sora',sans-serif;font-size:12.5px;font-weight:600;color:var(--deep-court);font-variant-numeric:tabular-nums}
+.events{display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.event{font-size:10px;color:var(--court-green);background:var(--mint-wash);padding:2px 7px;border-radius:4px;font-weight:700;letter-spacing:0.02em}
+.event.all{background:var(--court-green);color:#fff;padding:2px 9px;letter-spacing:0.06em}
+.skill{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:600;color:var(--deep-court);
+  border:1px solid rgba(13,31,26,0.18);background:#fff;
+  padding:2px 8px 2px 6px;border-radius:999px;
+}
+.skill::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--court-green)}
+.skill.intermediate::before{background:#F0A500}
+.skill.advanced::before{background:#D67200}
+.skill.open::before{background:#0D1F1A}
+.skill-stack{display:flex;flex-direction:column;gap:3px;align-items:flex-end}
+.card .actions{display:flex;gap:6px;align-items:center}
+.card .btn{
+  background:var(--court-green);color:#fff;border:none;border-radius:7px;
+  padding:8px 14px;font-size:12px;font-weight:600;flex:1;min-height:36px;
+}
+.card .btn.closed-btn{background:rgba(13,31,26,0.12);color:var(--mid-green);cursor:not-allowed}
+.card .share{
+  background:transparent;color:var(--mid-green);
+  border:1px solid rgba(13,31,26,0.13);border-radius:7px;
+  padding:8px 10px;font-size:12px;font-weight:500;min-height:36px;
+}
+
+/* ============ SUBMIT CTA BLOCK ============ */
+.submit-cta{
+  background:var(--deep-court);color:#fff;
+  border-radius:16px;
+  padding:22px 20px 20px;
+  margin:30px 0 24px;
+  position:relative;overflow:hidden;
+}
+.submit-cta::before{
+  content:"";position:absolute;right:-30px;top:-30px;
+  width:130px;height:130px;border-radius:50%;
+  background:radial-gradient(circle,rgba(240,165,0,0.18) 0%, transparent 70%);
+}
+.submit-eyebrow{
+  font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--rally-amber);margin-bottom:8px;
+}
+.submit-h{
+  font-family:'Sora',sans-serif;font-weight:800;font-size:22px;line-height:1.15;
+  margin-bottom:6px;letter-spacing:-0.015em;
+}
+.submit-p{font-size:13px;color:rgba(255,255,255,0.75);margin-bottom:16px;max-width:30ch}
+.submit-btn{
+  background:var(--rally-amber);color:var(--deep-court);
+  border:none;border-radius:10px;
+  padding:11px 18px;font-weight:700;font-size:13px;letter-spacing:0.01em;
+  min-height:44px;
+  display:inline-flex;align-items:center;gap:6px;
+}
+
+/* ============ FOOTER ============ */
+.footer{
+  border-top:1px solid rgba(13,31,26,0.08);
+  padding:24px 16px 32px;
+}
+.footer-inner{max-width:480px;margin:0 auto}
+.footer-mark{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.footer-mark .logo-mark{width:24px;height:24px;border-radius:6px}
+.footer-mark .logo-text{font-size:14px}
+.footer-links{display:flex;flex-wrap:wrap;gap:14px 18px;margin-bottom:14px}
+.footer-link{color:var(--mid-green);text-decoration:none;font-size:12.5px;font-weight:500}
+.footer-link:hover{color:var(--deep-court)}
+.footer-meta{font-size:11px;color:var(--mid-green);line-height:1.6}
+.footer-meta b{color:var(--deep-court);font-weight:600}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-row">
+    <a class="logo" href="/">
+      <div class="logo-mark"><img src="../assets/logo.svg" alt="MyTournament.PB logo"></div>
+      <div class="logo-text">
+        MyTournament<span style="color:var(--court-green)">.PB</span>
+        <small>Malaysia · Pickleball</small>
+      </div>
+    </a>
+    <button class="header-cta" aria-label="Notify me when new tournaments are added">🔔 Notify me</button>
+  </div>
+</header>
+
+<!-- URGENCY STRIP -->
+<div class="urgency">
+  <div class="urgency-inner">
+    <div class="urgency-count">
+      <span class="urgency-num">3</span>
+      <span>tournaments closing this week</span>
+    </div>
+    <a class="urgency-link" href="#closing-soon">View →</a>
+  </div>
+</div>
+
+<!-- STICKY FILTER BAR -->
+<div class="filterbar" role="region" aria-label="Filter tournaments">
+  <div class="filter-scroll">
+    <button class="chip active" aria-haspopup="dialog">
+      Sort: Reg deadline <span class="caret">▾</span>
+    </button>
+    <button class="chip" aria-haspopup="dialog">
+      State <span class="count">2</span> <span class="caret">▾</span>
+    </button>
+    <button class="chip" aria-haspopup="dialog">
+      Skill <span class="caret">▾</span>
+    </button>
+    <button class="chip" aria-haspopup="dialog">
+      Events <span class="caret">▾</span>
+    </button>
+    <button class="chip chip-toggle on" aria-pressed="true">
+      <span class="dot"></span> Open reg only
+    </button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+
+  <!-- ===== Closing this week ===== -->
+  <div class="section-head" id="closing-soon">
+    <div class="section-title">⚡ Closing <span class="accent">this week</span></div>
+    <div class="section-count">3 events</div>
+  </div>
+  <div class="section-divider-bar"></div>
+
+  <!-- Card: closing tomorrow -->
+  <div class="card">
+    <div class="date-block">
+      <div class="date-month">May</div>
+      <div class="date-day">22–24</div>
+    </div>
+    <div class="body">
+      <div class="name">ICONIC CUP 2026</div>
+      <div class="org">PickleHaus · Pulau Pinang</div>
+      <span class="reg soon">⚡ Closes tomorrow · May 17</span>
+      <div class="meta-row">
+        <div class="pairs">
+          <div class="pair"><div class="k">Entry</div><div class="v">RM190–260</div></div>
+          <div class="pair"><div class="k">Prize</div><div class="v">RM39,600</div></div>
+        </div>
+        <div class="skill-stack">
+          <span class="skill open">Open</span>
+        </div>
+      </div>
+      <div class="events">
+        <span class="event">MD</span><span class="event">XD</span><span class="event">WD</span>
+      </div>
+      <div class="actions">
+        <button class="btn">Register →</button>
+        <button class="share" aria-label="Share">⤴ Share</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card: multi-skill -->
+  <div class="card">
+    <div class="date-block">
+      <div class="date-month">May</div>
+      <div class="date-day">23</div>
+    </div>
+    <div class="body">
+      <div class="name">Pickle Sky Cup</div>
+      <div class="org">PickleSky · Kuantan, Pahang</div>
+      <span class="reg soon">⚡ Closes May 22 · 6 days left</span>
+      <div class="meta-row">
+        <div class="pairs">
+          <div class="pair"><div class="k">Entry</div><div class="v">RM230–250</div></div>
+          <div class="pair"><div class="k">Prize</div><div class="v">RM29,200</div></div>
+        </div>
+        <div class="skill-stack">
+          <span class="skill intermediate">Intermediate &lt;3.5</span>
+          <span class="skill open">Open</span>
+        </div>
+      </div>
+      <div class="events">
+        <span class="event">MD</span><span class="event">XD</span><span class="event">WD</span>
+      </div>
+      <div class="actions">
+        <button class="btn">Register →</button>
+        <button class="share" aria-label="Share">⤴ Share</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Coming up ===== -->
+  <div class="section-head" style="margin-top:32px">
+    <div class="section-title">📅 Coming up</div>
+    <div class="section-count">22 events</div>
+  </div>
+  <div class="section-divider-bar green"></div>
+
+  <div class="card">
+    <div class="date-block">
+      <div class="date-month">Jun</div>
+      <div class="date-day">5–7</div>
+    </div>
+    <div class="body">
+      <div class="name">Alliance Bank Malaysia Open</div>
+      <div class="org">Tomaz Pickleball Club · KL/SGR</div>
+      <span class="reg open">Closes Jun 1 · 16 days left</span>
+      <div class="meta-row">
+        <div class="pairs">
+          <div class="pair"><div class="k">Entry</div><div class="v">RM100–175</div></div>
+          <div class="pair"><div class="k">Prize</div><div class="v">RM129,500</div></div>
+        </div>
+        <div class="skill-stack">
+          <span class="skill open">Open</span>
+        </div>
+      </div>
+      <div class="events">
+        <span class="event all">ALL · MD XD WD Jr Vet Team</span>
+      </div>
+      <div class="actions">
+        <button class="btn">Register →</button>
+        <button class="share" aria-label="Share">⤴ Share</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Reg closed (still on calendar) ===== -->
+  <div class="section-head" style="margin-top:32px">
+    <div class="section-title" style="color:var(--mid-green)">🔒 Reg closed · still happening</div>
+    <div class="section-count">2 events</div>
+  </div>
+  <div class="section-divider-bar muted"></div>
+
+  <div class="card closed-reg">
+    <div class="date-block" style="background:rgba(13,31,26,0.05)">
+      <div class="date-month" style="color:var(--mid-green)">May</div>
+      <div class="date-day" style="color:var(--mid-green)">17–18</div>
+    </div>
+    <div class="body">
+      <div class="name">Bounce &amp; Bloom Pickleball Championship 2026</div>
+      <div class="org">Bounce &amp; Bloom · Muar, Johor</div>
+      <span class="reg closed">Reg closed · Tournament starts in 1 day</span>
+      <div class="meta-row">
+        <div class="pairs">
+          <div class="pair"><div class="k">Entry</div><div class="v">From RM200</div></div>
+          <div class="pair"><div class="k">Prize</div><div class="v">RM17,800</div></div>
+        </div>
+        <div class="skill-stack">
+          <span class="skill open">Open</span>
+        </div>
+      </div>
+      <div class="events">
+        <span class="event">MD</span><span class="event">XD</span><span class="event">WD</span>
+      </div>
+      <div class="actions">
+        <button class="btn closed-btn" disabled>Reg closed</button>
+        <button class="share" aria-label="Share">⤴ Share</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Submit CTA ===== -->
+  <div class="submit-cta">
+    <div class="submit-eyebrow">Organising a tournament?</div>
+    <div class="submit-h">Get listed.<br>It's free.</div>
+    <div class="submit-p">We'll verify the details and your event shows up here within 24 hours.</div>
+    <button class="submit-btn">Submit tournament →</button>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-mark">
+      <div class="logo-mark"><img src="../assets/logo.svg" alt="MyTournament.PB logo"></div>
+      <div class="logo-text">MyTournament<span style="color:var(--court-green)">.PB</span></div>
+    </div>
+    <div class="footer-links">
+      <a class="footer-link" href="#">About</a>
+      <a class="footer-link" href="#">Submit tournament</a>
+      <a class="footer-link" href="https://instagram.com">Instagram</a>
+      <a class="footer-link" href="#">FAQ</a>
+      <a class="footer-link" href="mailto:hello@mytournamentpb.my">Email</a>
+    </div>
+    <div class="footer-meta">
+      <b>Last updated:</b> 2026-05-16 · 28 verified events<br>
+      Independent calendar · Not affiliated with any organizer · © 2026<br>
+      Made with 🏓 in Malaysia
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

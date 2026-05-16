@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MyTournament.PB — Card design comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --court-green:#1A6B4A;
+  --deep-court:#0D1F1A;
+  --rally-amber:#F0A500;
+  --mint-wash:#E8F5EF;
+  --off-white:#F5F5F0;
+  --mid-green:#6BAF8C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'DM Sans',-apple-system,sans-serif;
+  background:var(--off-white);
+  color:var(--deep-court);
+  padding:24px 16px 64px;
+  line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:480px;margin:0 auto}
+h1{font-family:'Sora',sans-serif;font-weight:800;font-size:22px;margin-bottom:4px;letter-spacing:-0.01em}
+.page-sub{color:var(--mid-green);font-size:14px;margin-bottom:28px}
+h2.label{
+  font-family:'Sora',sans-serif;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  color:var(--mid-green);
+  margin:24px 0 12px;
+}
+.divider{height:1px;background:rgba(13,31,26,0.08);margin:40px 0 8px}
+.note{font-size:12px;color:var(--mid-green);margin-top:8px;font-style:italic;line-height:1.5}
+
+/* ============ VARIANT A — DENSE LIST CARD ============ */
+.card-a{
+  background:#fff;
+  border:1px solid rgba(13,31,26,0.08);
+  border-radius:12px;
+  padding:14px 14px 12px;
+  margin-bottom:10px;
+}
+.card-a .row1{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:4px}
+.card-a .name{font-family:'Sora',sans-serif;font-weight:700;font-size:15px;line-height:1.25;color:var(--deep-court);flex:1}
+.card-a .dates{font-family:'Sora',sans-serif;font-weight:600;font-size:12px;color:var(--mid-green);white-space:nowrap;text-align:right;padding-top:2px}
+.card-a .meta{font-size:12.5px;color:var(--mid-green);margin-bottom:8px}
+.card-a .reg-badge{
+  display:inline-block;background:rgba(240,165,0,0.15);color:#a06d00;
+  padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;
+  margin-bottom:8px;
+}
+.card-a .reg-badge.normal{background:rgba(26,107,74,0.10);color:var(--court-green)}
+.card-a .tags{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap}
+.card-a .tag{font-size:10.5px;color:var(--mid-green);background:var(--mint-wash);padding:2px 7px;border-radius:4px;font-weight:500}
+.card-a .row3{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.card-a .stats{display:flex;gap:18px}
+.card-a .stat span{color:var(--mid-green);font-size:10px;display:block;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;font-weight:600}
+.card-a .stat b{font-family:'Sora',sans-serif;font-weight:600;font-size:13px;color:var(--deep-court)}
+.card-a .btn{
+  background:var(--court-green);color:#fff;border:none;border-radius:6px;
+  padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;
+}
+
+/* ============ VARIANT B — AIRY DETAIL CARD ============ */
+.card-b{
+  background:#fff;
+  border:1px solid rgba(13,31,26,0.08);
+  border-radius:14px;
+  padding:18px 18px 16px;
+  margin-bottom:14px;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:16px;
+}
+.card-b .date-block{
+  background:var(--mint-wash);
+  border-radius:10px;
+  padding:12px 12px 10px;
+  text-align:center;
+  min-width:84px;
+  align-self:start;
+}
+.card-b .date-month{font-family:'Sora',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--court-green);margin-bottom:2px}
+.card-b .date-day{font-family:'Sora',sans-serif;font-weight:800;font-size:24px;color:var(--deep-court);line-height:1}
+.card-b .body .name{font-family:'Sora',sans-serif;font-weight:700;font-size:17px;line-height:1.22;color:var(--deep-court);margin-bottom:4px}
+.card-b .body .org{font-size:12.5px;color:var(--mid-green);margin-bottom:10px}
+.card-b .body .reg{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;display:inline-block;padding:4px 10px;border-radius:6px;margin-bottom:12px}
+.card-b .body .reg.soon{background:var(--rally-amber);color:#fff}
+.card-b .body .reg.open{background:rgba(26,107,74,0.10);color:var(--court-green)}
+.card-b .body .pairs{display:flex;gap:20px;margin-bottom:12px}
+.card-b .pair .k{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--mid-green);font-weight:600;margin-bottom:2px}
+.card-b .pair .v{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:var(--deep-court)}
+.card-b .body .tags{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}
+.card-b .body .tag{font-size:11px;color:var(--court-green);background:var(--mint-wash);padding:3px 9px;border-radius:6px;font-weight:600}
+.card-b .body .actions{display:flex;gap:6px}
+.card-b .body .btn{
+  background:var(--court-green);color:#fff;border:none;border-radius:8px;
+  padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;flex:1;
+}
+.card-b .body .share{
+  background:transparent;color:var(--mid-green);border:1px solid rgba(13,31,26,0.15);border-radius:8px;
+  padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;
+}
+
+@media (max-width:380px){
+  .card-b{grid-template-columns:1fr;gap:12px}
+  .card-b .date-block{display:inline-flex;gap:6px;align-items:baseline;min-width:0;padding:6px 12px;width:auto;justify-self:start}
+  .card-b .date-day{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Card design — A vs B</h1>
+<div class="page-sub">Same two tournaments in each style. Pick one.</div>
+
+
+<h2 class="label">Variant A — Dense list card</h2>
+
+<div class="card-a">
+  <div class="row1">
+    <div class="name">ICONIC CUP 2026</div>
+    <div class="dates">May 22–24</div>
+  </div>
+  <div class="meta">PickleHaus · Pulau Pinang</div>
+  <span class="reg-badge">⚡ Reg closes tomorrow · May 17</span>
+  <div class="tags">
+    <span class="tag">MD</span><span class="tag">XD</span><span class="tag">WD</span><span class="tag">Open</span>
+  </div>
+  <div class="row3">
+    <div class="stats">
+      <div class="stat"><span>Entry</span><b>RM190–260</b></div>
+      <div class="stat"><span>Prize pool</span><b>RM39,600</b></div>
+    </div>
+    <button class="btn">Register →</button>
+  </div>
+</div>
+
+<div class="card-a">
+  <div class="row1">
+    <div class="name">Alliance Bank Malaysia Open Pickleball</div>
+    <div class="dates">Jun 5–7</div>
+  </div>
+  <div class="meta">Tomaz Pickleball Club · KL/SGR</div>
+  <span class="reg-badge normal">Reg closes Jun 1 · 16 days left</span>
+  <div class="tags">
+    <span class="tag">MD</span><span class="tag">XD</span><span class="tag">WD</span><span class="tag">Open</span>
+  </div>
+  <div class="row3">
+    <div class="stats">
+      <div class="stat"><span>Entry</span><b>RM100–175</b></div>
+      <div class="stat"><span>Prize pool</span><b>RM129,500</b></div>
+    </div>
+    <button class="btn">Register →</button>
+  </div>
+</div>
+
+<div class="note">≈5–6 cards visible per scroll on mobile. Fast scanning. Best when you have 30+ events on screen.</div>
+
+
+<div class="divider"></div>
+
+<h2 class="label">Variant B — Airy detail card</h2>
+
+<div class="card-b">
+  <div class="date-block">
+    <div class="date-month">May</div>
+    <div class="date-day">22–24</div>
+  </div>
+  <div class="body">
+    <div class="name">ICONIC CUP 2026</div>
+    <div class="org">PickleHaus · Pulau Pinang</div>
+    <span class="reg soon">⚡ Closes tomorrow · May 17</span>
+    <div class="pairs">
+      <div class="pair"><div class="k">Entry</div><div class="v">RM190–260</div></div>
+      <div class="pair"><div class="k">Prize pool</div><div class="v">RM39,600</div></div>
+    </div>
+    <div class="tags">
+      <span class="tag">Men Doubles</span><span class="tag">Mixed</span><span class="tag">Women Doubles</span><span class="tag">Open</span>
+    </div>
+    <div class="actions">
+      <button class="btn">Register →</button>
+      <button class="share">Share</button>
+    </div>
+  </div>
+</div>
+
+<div class="card-b">
+  <div class="date-block">
+    <div class="date-month">Jun</div>
+    <div class="date-day">5–7</div>
+  </div>
+  <div class="body">
+    <div class="name">Alliance Bank Malaysia Open</div>
+    <div class="org">Tomaz Pickleball Club · KL/SGR</div>
+    <span class="reg open">Closes Jun 1 · 16 days left</span>
+    <div class="pairs">
+      <div class="pair"><div class="k">Entry</div><div class="v">RM100–175</div></div>
+      <div class="pair"><div class="k">Prize pool</div><div class="v">RM129,500</div></div>
+    </div>
+    <div class="tags">
+      <span class="tag">Men Doubles</span><span class="tag">Mixed</span><span class="tag">Women Doubles</span><span class="tag">Open</span>
+    </div>
+    <div class="actions">
+      <button class="btn">Register →</button>
+      <button class="share">Share</button>
+    </div>
+  </div>
+</div>
+
+<div class="note">≈2–3 cards per scroll. More premium feel. Date-block reads like a wall-calendar entry. Share button per card.</div>
+
+
+</div>
+</body>
+</html>
