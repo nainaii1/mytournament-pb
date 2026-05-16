@@ -358,6 +358,115 @@ async function fetchTournaments() {
   return filtered.map(t => annotate(t, todayStr));
 }
 
-fetchTournaments()
-  .then(rows => console.log(`Loaded ${rows.length} tournaments`, rows))
-  .catch(err => console.error("fetchTournaments failed:", err));
+// ── State ─────────────────────────────────────────────────────────────────
+let allTournaments = [];
+let sortMode      = "deadline";
+let openRegOnly   = false;
+
+// ── renderAll ─────────────────────────────────────────────────────────────
+function renderAll() {
+  const todayStr = todayUTCString();
+  const sorted   = sortTournaments(allTournaments, sortMode);
+  const { closingSoon, comingUp, regClosed } = bucketTournaments(sorted, todayStr);
+
+  // Urgency strip
+  const urgencyEl = document.getElementById("urgency-strip");
+  if (closingSoon.length > 0) {
+    urgencyEl.hidden = false;
+    document.getElementById("urgency-num").textContent  = closingSoon.length;
+    document.getElementById("urgency-text").textContent =
+      `tournament${closingSoon.length !== 1 ? "s" : ""} closing this week`;
+  } else {
+    urgencyEl.hidden = true;
+  }
+
+  // Closing this week section
+  const closingEl = document.getElementById("section-closing");
+  if (closingSoon.length > 0) {
+    closingEl.hidden = false;
+    closingEl.innerHTML = renderSection(
+      "closing-soon",
+      "⚡ Closing <span class='accent'>this week</span>",
+      "", "", closingSoon, todayStr, false
+    );
+  } else {
+    closingEl.hidden = true;
+  }
+
+  // Coming up section
+  const comingEl = document.getElementById("section-coming");
+  comingEl.innerHTML = renderSection(
+    null, "📅 Coming up", "", "green", comingUp, todayStr,
+    closingSoon.length > 0
+  );
+
+  // Reg-closed section
+  const closedEl = document.getElementById("section-closed");
+  if (!openRegOnly && regClosed.length > 0) {
+    closedEl.hidden = false;
+    closedEl.innerHTML = renderSection(
+      null, "🔒 Reg closed · still happening", "muted", "muted", regClosed, todayStr, true
+    );
+  } else {
+    closedEl.hidden = true;
+  }
+
+  // Footer stats
+  const statsEl = document.getElementById("footer-stats");
+  if (statsEl) {
+    statsEl.textContent = `${todayStr} · ${allTournaments.length} verified event${allTournaments.length !== 1 ? "s" : ""}`;
+  }
+
+  // Wire share buttons (re-wired after every innerHTML update)
+  document.querySelectorAll(".btn-share[data-id]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const t = allTournaments.find(x => (x["ID"] || "") === btn.dataset.id);
+      if (t) handleShare(t);
+    });
+  });
+}
+
+// ── init ──────────────────────────────────────────────────────────────────
+async function init() {
+  try {
+    allTournaments = await fetchTournaments();
+    renderAll();
+
+    // Sort chip interaction
+    document.getElementById("sort-select").addEventListener("change", e => {
+      sortMode = e.target.value;
+      const labels = {
+        deadline: "Sort: Reg deadline",
+        date:     "Sort: Tournament date",
+        prize:    "Sort: Prize pool (high→low)"
+      };
+      document.getElementById("sort-label").textContent = labels[sortMode] || "Sort";
+      renderAll();
+    });
+
+    // Open-reg-only toggle
+    document.getElementById("open-reg-toggle").addEventListener("click", () => {
+      openRegOnly = !openRegOnly;
+      const btn = document.getElementById("open-reg-toggle");
+      btn.classList.toggle("on", openRegOnly);
+      btn.setAttribute("aria-pressed", String(openRegOnly));
+      renderAll();
+    });
+
+    // Deep-link: ?id=MTPB-0005 scrolls to that card
+    const params  = new URLSearchParams(window.location.search);
+    const deepId  = params.get("id");
+    if (deepId) {
+      const target = document.getElementById(deepId);
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  } catch (err) {
+    console.error("init failed:", err);
+    const comingEl = document.getElementById("section-coming");
+    if (comingEl) {
+      comingEl.innerHTML = "<p style='padding:16px;color:var(--mid-green)'>Could not load tournaments. Check your connection and refresh.</p>";
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", init);
