@@ -1,6 +1,108 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><title>MyTournament.PB</title></head>
-<body><p>Open DevTools console (Cmd+Opt+J) to see tournament data.</p>
-<script src="app.js"></script></body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Malaysia's pickleball tournament calendar. Find events, check registration deadlines, and plan your season.">
+  <title>MyTournament.PB — Malaysia Pickleball Calendar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-row">
+    <a class="logo" href="/">
+      <div class="logo-mark">
+        <img src="assets/logo.svg" alt="MyTournament.PB" width="32" height="32">
+      </div>
+      <div class="logo-text">
+        MyTournament<span style="color:var(--court-green)">.PB</span>
+        <small>Malaysia · Pickleball</small>
+      </div>
+    </a>
+    <a class="header-cta"
+       href="https://instagram.com/mytournament.pb"
+       target="_blank" rel="noopener"
+       aria-label="Follow on Instagram for tournament updates">
+      🔔 Notify me
+    </a>
+  </div>
+</header>
+
+<!-- URGENCY STRIP -->
+<div class="urgency" id="urgency-strip" hidden>
+  <div class="urgency-inner">
+    <div class="urgency-count">
+      <span class="urgency-num" id="urgency-num">0</span>
+      <span id="urgency-text">tournaments closing this week</span>
+    </div>
+    <a class="urgency-link" href="#closing-soon">View →</a>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filterbar" role="region" aria-label="Filter and sort tournaments">
+  <div class="filter-scroll">
+    <div class="chip sort-chip active">
+      <span id="sort-label">Sort: Reg deadline</span>
+      <span class="caret">▾</span>
+      <select id="sort-select" class="sort-select" aria-label="Sort tournaments by">
+        <option value="deadline">Sort: Reg deadline</option>
+        <option value="date">Sort: Tournament date</option>
+        <option value="prize">Sort: Prize pool (high→low)</option>
+      </select>
+    </div>
+    <button class="chip chip-toggle"
+            id="open-reg-toggle"
+            aria-pressed="false"
+            aria-label="Show open registration only">
+      <span class="dot"></span> Open reg only
+    </button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+  <div id="section-closing" hidden></div>
+  <div id="section-coming"></div>
+  <div id="section-closed" hidden></div>
+
+  <div class="submit-cta">
+    <div class="submit-eyebrow">Organising a tournament?</div>
+    <div class="submit-h">Get listed.<br>It's free.</div>
+    <div class="submit-p">We'll verify the details and your event shows up here within 24 hours.</div>
+    <a class="submit-btn" href="mailto:hello@mytournamentpb.my">Submit tournament →</a>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-mark">
+      <div class="logo-mark">
+        <img src="assets/logo.svg" alt="MyTournament.PB" width="24" height="24">
+      </div>
+      <div class="logo-text">
+        MyTournament<span style="color:var(--court-green)">.PB</span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a class="footer-link" href="https://instagram.com/mytournament.pb" target="_blank" rel="noopener">Instagram</a>
+      <a class="footer-link" href="mailto:hello@mytournamentpb.my">Submit tournament</a>
+      <a class="footer-link" href="mailto:hello@mytournamentpb.my">Email</a>
+    </div>
+    <div class="footer-meta">
+      <b>Last updated:</b> <span id="footer-stats">loading…</span><br>
+      Independent calendar · Not affiliated with any organizer · © 2026<br>
+      Made with 🏓 in Malaysia
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
 </html>
