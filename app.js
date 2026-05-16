@@ -4,6 +4,58 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
+// ── Skill level parser ────────────────────────────────────────────────────
+const BUCKET_NOVICE = "Novice <3";
+const BUCKET_INTER  = "Intermediate <3.5";
+const BUCKET_ADV    = "Advanced <4.0";
+const BUCKET_OPEN   = "Open";
+const BUCKET_ALL    = "ALL";
+
+function numToBucket(n) {
+  if (n < 3.0) return BUCKET_NOVICE;
+  if (n < 3.5) return BUCKET_INTER;
+  if (n < 4.0) return BUCKET_ADV;
+  return BUCKET_OPEN;
+}
+
+// Returns [{bucket, combinedCap?}] — combinedCap is the original combined number string.
+function parseSkillLevel(raw) {
+  if (!raw || !raw.trim()) return [];
+  const seen = new Set();
+  const result = [];
+  const fragments = raw.split(",").map(f => f.trim()).filter(Boolean);
+  for (const f of fragments) {
+    let bucket, combinedCap;
+    if (/all/i.test(f)) {
+      bucket = BUCKET_ALL;
+    } else if (/open/i.test(f)) {
+      bucket = BUCKET_OPEN;
+    } else if (/intermediate/i.test(f) || /<3\.5/i.test(f)) {
+      bucket = BUCKET_INTER;
+    } else if (/novice/i.test(f) || /<3(?!\.)/i.test(f) || /<3\.0/i.test(f)) {
+      bucket = BUCKET_NOVICE;
+    } else if (/advanced/i.test(f) || /<4(\.0)?/i.test(f)) {
+      bucket = BUCKET_ADV;
+    } else {
+      const numMatch = f.match(/(\d+(?:\.\d+)?)/);
+      if (!numMatch) continue;
+      const numStr = numMatch[1];
+      const n = parseFloat(numStr);
+      if (n > 4.5) {
+        combinedCap = numStr;
+        bucket = numToBucket(n / 2);
+      } else {
+        bucket = numToBucket(n);
+      }
+    }
+    if (!seen.has(bucket)) {
+      seen.add(bucket);
+      result.push(combinedCap !== undefined ? { bucket, combinedCap } : { bucket });
+    }
+  }
+  return result;
+}
+
 function parseCSV(text) {
   const rows = [];
   let row = [];
