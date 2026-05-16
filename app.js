@@ -426,6 +426,40 @@ function renderAll() {
   });
 }
 
+// ── Share & toast ─────────────────────────────────────────────────────────
+function handleShare(t) {
+  const id    = t["ID"] || "";
+  const url   = id
+    ? `${window.location.origin}/?id=${encodeURIComponent(id)}`
+    : window.location.href;
+  const title = t["Tournament Name"] || "MyTournament.PB";
+  const text  = `${title} — Malaysian pickleball tournament`;
+
+  if (navigator.share) {
+    navigator.share({ title, text, url }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(url)
+      .then(() => showToast("Link copied!"))
+      .catch(() => showToast("Copy failed — try again"));
+  }
+}
+
+function showToast(msg) {
+  let toast = document.getElementById("toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "toast";
+    toast.className = "toast";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.add("visible");
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove("visible"), 3000);
+}
+
 // ── init ──────────────────────────────────────────────────────────────────
 async function init() {
   try {
@@ -445,11 +479,11 @@ async function init() {
     });
 
     // Open-reg-only toggle
-    document.getElementById("open-reg-toggle").addEventListener("click", () => {
+    const toggleBtn = document.getElementById("open-reg-toggle");
+    toggleBtn.addEventListener("click", () => {
       openRegOnly = !openRegOnly;
-      const btn = document.getElementById("open-reg-toggle");
-      btn.classList.toggle("on", openRegOnly);
-      btn.setAttribute("aria-pressed", String(openRegOnly));
+      toggleBtn.classList.toggle("on", openRegOnly);
+      toggleBtn.setAttribute("aria-pressed", String(openRegOnly));
       renderAll();
     });
 
