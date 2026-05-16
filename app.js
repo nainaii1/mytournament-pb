@@ -56,6 +56,61 @@ function parseSkillLevel(raw) {
   return result;
 }
 
+// ── Date & badge helpers ──────────────────────────────────────────────────
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+// Returns {month: "MAY", day: "22–24"} for display in the date block.
+function formatDateBlock(startStr, endStr) {
+  if (!startStr || !DATE_RE.test(startStr)) return { month: "", day: "TBD" };
+  const parts = startStr.split("-").map(Number);
+  const sy = parts[0], sm = parts[1], sd = parts[2];
+  const month = MONTHS[sm - 1].toUpperCase();
+  if (!endStr || !DATE_RE.test(endStr) || endStr === startStr) {
+    return { month, day: String(sd) };
+  }
+  const eParts = endStr.split("-").map(Number);
+  const em = eParts[1], ed = eParts[2];
+  if (sm !== em) return { month, day: String(sd) }; // cross-month: show start day only
+  return { month, day: `${sd}–${ed}` };
+}
+
+// Returns "May 17" from "2026-05-17".
+function formatShortDate(s) {
+  if (!s || !DATE_RE.test(s)) return s;
+  const parts = s.split("-").map(Number);
+  return `${MONTHS[parts[1] - 1]} ${parts[2]}`;
+}
+
+// Returns {cls: "soon"|"open"|"closed", text: "..."} for the reg deadline badge.
+function regBadgeInfo(t, todayStr) {
+  const raw = (t["Reg Deadline"] || "").trim();
+  const lower = raw.toLowerCase();
+
+  if (t.isClosed) {
+    if (lower === "once full") return { cls: "closed", text: "Reg closed · Closes once full" };
+    const startDays = daysUntil(t["Start Date"] || "", todayStr);
+    const endDays   = daysUntil(t["End Date"]   || "", todayStr);
+    if (startDays !== null && startDays > 0) {
+      return { cls: "closed", text: `Reg closed · Tournament starts in ${startDays} day${startDays === 1 ? "" : "s"}` };
+    }
+    if (endDays !== null && endDays >= 0) {
+      return { cls: "closed", text: "Reg closed · Happening now" };
+    }
+    return { cls: "closed", text: "Reg closed" };
+  }
+
+  const days = daysUntil(raw, todayStr);
+  if (days !== null && days <= 7) {
+    if (days === 0) return { cls: "soon", text: `⚡ Closes today · ${formatShortDate(raw)}` };
+    if (days === 1) return { cls: "soon", text: `⚡ Closes tomorrow · ${formatShortDate(raw)}` };
+    return { cls: "soon", text: `⚡ Closes ${formatShortDate(raw)} · ${days} days left` };
+  }
+  if (days !== null) {
+    return { cls: "open", text: `Closes ${formatShortDate(raw)} · ${days} days left` };
+  }
+  return { cls: "open", text: raw || "Open" };
+}
+
 function parseCSV(text) {
   const rows = [];
   let row = [];
