@@ -5,6 +5,10 @@
   --mint-wash:   #E8F5EF;
   --off-white:   #F5F5F0;
   --mid-green:   #6BAF8C;
+  --skill-novice:   #8FB876;
+  --skill-advanced: #D67200;
+  --off-white-rgb:  245, 245, 240;
+  --rally-amber-rgb: 240, 165, 0;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,7 +25,7 @@ a { text-decoration: none; }
 
 /* ===== HEADER ===== */
 .header {
-  background: rgba(245, 245, 240, 0.9);
+  background: rgba(var(--off-white-rgb), 0.9);
   border-bottom: 1px solid rgba(13, 31, 26, 0.06);
   padding: 14px 16px 12px;
   position: sticky; top: 0; z-index: 50;
@@ -76,7 +80,7 @@ a { text-decoration: none; }
   background: var(--off-white);
   border-bottom: 1px solid rgba(13, 31, 26, 0.06);
   padding: 10px 0;
-  position: sticky; top: 55px; z-index: 40;
+  position: sticky; top: 58px; z-index: 40;
 }
 .filter-scroll {
   display: flex; gap: 6px; align-items: center;
@@ -94,7 +98,7 @@ a { text-decoration: none; }
   font-family: 'DM Sans', sans-serif; font-size: 12.5px; font-weight: 600;
   color: var(--deep-court);
   white-space: nowrap; min-height: 36px;
-  transition: transform 120ms ease, background 150ms ease;
+  transition: transform 120ms ease;
   scroll-snap-align: start;
 }
 .chip:hover { background: rgba(26, 107, 74, 0.04); }
@@ -113,7 +117,7 @@ a { text-decoration: none; }
 /* Open-reg-only toggle chip */
 .chip-toggle .dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(13, 31, 26, 0.2); transition: background 150ms;
+  background: rgba(13, 31, 26, 0.2); transition: none;
 }
 .chip-toggle.on .dot { background: var(--court-green); }
 .chip-toggle.on { background: var(--mint-wash); border-color: var(--court-green); color: var(--court-green); }
@@ -147,7 +151,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 12px;
-  transition: transform 120ms ease, box-shadow 120ms ease;
+  transition: transform 120ms ease;
 }
 .card:active { transform: scale(0.99); }
 .card.closed-reg { opacity: 0.78; }
@@ -210,11 +214,11 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 }
 .skill::before {
   content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-  background: #8FB876;
+  background: var(--skill-novice);
 }
-.skill.intermediate::before { background: #F0A500; }
-.skill.advanced::before { background: #D67200; }
-.skill.open::before { background: #0D1F1A; }
+.skill.intermediate::before { background: var(--rally-amber); }
+.skill.advanced::before { background: var(--skill-advanced); }
+.skill.open::before { background: var(--deep-court); }
 .skill-combined { font-size: 10px; color: var(--mid-green); margin-top: 2px; }
 
 /* Event type pills */
@@ -232,7 +236,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 .card-actions { display: flex; gap: 6px; align-items: center; }
 .btn-register {
   background: var(--court-green); color: #fff; border: none; border-radius: 7px;
-  padding: 8px 14px; font-size: 12px; font-weight: 600; flex: 1; min-height: 36px;
+  padding: 8px 14px; font-size: 12px; font-weight: 600; flex: 1; min-height: 44px;
   display: inline-flex; align-items: center; justify-content: center;
 }
 .btn-register:hover { background: #155a3f; }
@@ -245,7 +249,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   padding: 8px 10px; font-size: 12px; font-weight: 500; min-height: 36px;
 }
 .btn-share:hover { background: rgba(13, 31, 26, 0.04); }
-.btn-share:focus-visible, .btn-register:focus-visible, .chip:focus-visible, .header-cta:focus-visible {
+.submit-btn:focus-visible, .footer-link:focus-visible, .btn-share:focus-visible, .btn-register:focus-visible, .chip:focus-visible, .header-cta:focus-visible {
   outline: 2px solid var(--court-green); outline-offset: 2px;
 }
 
@@ -258,7 +262,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 .submit-cta::before {
   content: ""; position: absolute; right: -30px; top: -30px;
   width: 130px; height: 130px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(240, 165, 0, 0.18) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(var(--rally-amber-rgb), 0.18) 0%, transparent 70%);
 }
 .submit-eyebrow {
   font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 700;
