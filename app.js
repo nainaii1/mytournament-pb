@@ -111,6 +111,55 @@ function regBadgeInfo(t, todayStr) {
   return { cls: "open", text: raw || "Open" };
 }
 
+// ── Bucketing & sort ──────────────────────────────────────────────────────
+
+function parseMoney(s) {
+  return parseFloat(String(s).replace(/[^0-9.]/g, "")) || 0;
+}
+
+// Returns a new sorted array. mode: "deadline" | "date" | "prize"
+function sortTournaments(tournaments, mode) {
+  const arr = [...tournaments];
+  if (mode === "deadline") {
+    arr.sort((a, b) => {
+      const ad = a["Reg Deadline"] || "", bd = b["Reg Deadline"] || "";
+      const aOk = DATE_RE.test(ad), bOk = DATE_RE.test(bd);
+      if (!aOk && !bOk) return 0;
+      if (!aOk) return 1;
+      if (!bOk) return -1;
+      return ad < bd ? -1 : ad > bd ? 1 : 0;
+    });
+  } else if (mode === "date") {
+    arr.sort((a, b) => {
+      const ad = a["Start Date"] || "", bd = b["Start Date"] || "";
+      if (!ad && !bd) return 0;
+      if (!ad) return 1;
+      if (!bd) return -1;
+      return ad < bd ? -1 : ad > bd ? 1 : 0;
+    });
+  } else if (mode === "prize") {
+    arr.sort((a, b) => parseMoney(b["Prize Pool (RM)"]) - parseMoney(a["Prize Pool (RM)"]));
+  }
+  return arr;
+}
+
+// Splits tournaments into three display sections. Hides past-end-date entries.
+function bucketTournaments(tournaments, todayStr) {
+  const closingSoon = [], comingUp = [], regClosed = [];
+  for (const t of tournaments) {
+    const endDate = t["End Date"] || "";
+    if (endDate && DATE_RE.test(endDate) && isPastDate(endDate, todayStr)) continue;
+    if (t.isClosed) {
+      regClosed.push(t);
+    } else if (t.isClosingSoon) {
+      closingSoon.push(t);
+    } else {
+      comingUp.push(t);
+    }
+  }
+  return { closingSoon, comingUp, regClosed };
+}
+
 function parseCSV(text) {
   const rows = [];
   let row = [];
