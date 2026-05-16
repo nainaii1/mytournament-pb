@@ -160,6 +160,111 @@ function bucketTournaments(tournaments, todayStr) {
   return { closingSoon, comingUp, regClosed };
 }
 
+// ── Render helpers ────────────────────────────────────────────────────────
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function escapeAttr(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+}
+
+function bucketToCls(bucket) {
+  if (bucket === BUCKET_NOVICE) return "novice";
+  if (bucket === BUCKET_INTER)  return "intermediate";
+  if (bucket === BUCKET_ADV)    return "advanced";
+  return "open";
+}
+
+function bucketToLabel(bucket) {
+  return bucket === BUCKET_ALL ? "Open" : bucket;
+}
+
+function renderEventPills(raw) {
+  if (!raw || !raw.trim()) return "";
+  if (/^all/i.test(raw.trim())) {
+    const rest = raw.trim().replace(/^all\s*[·\-,]?\s*/i, "").trim();
+    const label = rest ? `ALL · ${rest.toUpperCase()}` : "ALL";
+    return `<div class="events"><span class="event-pill all">${escapeHtml(label)}</span></div>`;
+  }
+  const types = raw.split(/[,\/]/).map(t => t.trim().toUpperCase()).filter(Boolean);
+  if (!types.length) return "";
+  return `<div class="events">${types.map(t => `<span class="event-pill">${escapeHtml(t)}</span>`).join("")}</div>`;
+}
+
+function renderSkillChips(raw) {
+  const brackets = parseSkillLevel(raw);
+  if (!brackets.length) return "";
+  const chips = brackets.map(s => {
+    const cls   = bucketToCls(s.bucket);
+    const label = bucketToLabel(s.bucket);
+    const sub   = s.combinedCap
+      ? `<div class="skill-combined">(combined ${escapeHtml(s.combinedCap)})</div>`
+      : "";
+    return `<div class="skill-entry"><span class="skill ${cls}">${escapeHtml(label)}</span>${sub}</div>`;
+  }).join("");
+  return `<div class="skill-stack">${chips}</div>`;
+}
+
+function renderCard(t, todayStr) {
+  const { month, day } = formatDateBlock(t["Start Date"], t["End Date"]);
+  const badge    = regBadgeInfo(t, todayStr);
+  const isClosed = t.isClosed;
+  const id       = escapeAttr(t["ID"] || "");
+
+  const orgParts = [t["Organizer"], t["Venue"], t["State"]].filter(Boolean);
+  const orgLine  = orgParts.map(escapeHtml).join(" · ");
+
+  const regURL  = escapeAttr(t["Registration URL"] || "#");
+  const btnHTML = isClosed
+    ? `<button class="btn-register closed" disabled>Reg closed</button>`
+    : `<a class="btn-register" href="${regURL}" target="_blank" rel="noopener">Register →</a>`;
+
+  return `
+<div class="card${isClosed ? " closed-reg" : ""}" id="${id}">
+  <div class="date-block${isClosed ? " grey" : ""}">
+    <div class="date-month${isClosed ? " muted" : ""}">${month}</div>
+    <div class="date-day${isClosed ? " muted" : ""}">${day}</div>
+  </div>
+  <div class="card-body">
+    <div class="card-name">${escapeHtml(t["Tournament Name"] || "")}</div>
+    <div class="card-org">${orgLine}</div>
+    <span class="reg-badge ${badge.cls}">${badge.text}</span>
+    <div class="meta-row">
+      <div class="pairs">
+        <div class="pair"><div class="k">Entry</div><div class="v">${escapeHtml(t["Entry Fee (RM)"] || "—")}</div></div>
+        <div class="pair"><div class="k">Prize</div><div class="v">${escapeHtml(t["Prize Pool (RM)"] || "—")}</div></div>
+      </div>
+      ${renderSkillChips(t["Skill Level"] || "")}
+    </div>
+    ${renderEventPills(t["Event Type"] || "")}
+    <div class="card-actions">
+      ${btnHTML}
+      <button class="btn-share" aria-label="Share ${escapeAttr(t["Tournament Name"] || "")}" data-id="${id}">⤴ Share</button>
+    </div>
+  </div>
+</div>`.trim();
+}
+
+function renderSection(anchorId, titleHTML, titleCls, dividerCls, cards, todayStr, addGap) {
+  const count    = cards.length;
+  const gap      = addGap ? " gap" : "";
+  const anchor   = anchorId ? ` id="${anchorId}"` : "";
+  const cardsHTML = cards.map(t => renderCard(t, todayStr)).join("\n");
+  return `
+<div class="section-head${gap}"${anchor}>
+  <div class="section-title${titleCls ? ` ${titleCls}` : ""}">${titleHTML}</div>
+  <div class="section-count">${count} event${count !== 1 ? "s" : ""}</div>
+</div>
+<div class="section-divider-bar${dividerCls ? ` ${dividerCls}` : ""}"></div>
+${cardsHTML}`.trim();
+}
+
 function parseCSV(text) {
   const rows = [];
   let row = [];
