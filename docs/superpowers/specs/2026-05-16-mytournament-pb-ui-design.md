@@ -41,7 +41,7 @@ A tournament card surfaces:
   - **Closed (before tournament starts)**: grey, "Reg closed · Tournament starts in [N days]".
   - **Closed (tournament currently running)**: grey, "Reg closed · Happening now".
 - **Entry / Prize** pair (key + tabular-number value).
-- **Skill chip(s)**, outlined pill with a colour dot. Supports multi-skill events (stack vertically): `Novice` (green dot), `Intermediate <3.5` (amber), `Advanced <4.0` (orange), `Open` (black).
+- **Skill chip(s)**, outlined pill with a colour dot. Supports multi-skill events (stack vertically): `Novice <3` (green dot), `Intermediate <3.5` (amber), `Advanced <4.0` (orange), `Open` (black). For combined-cap events, a small `(combined 6.099)` subtext appears below the chip so the player sees both the bucket and the organizer's actual cap.
 - **Event-type pills**, filled mint-wash green: `MD` / `WD` / `XD` / `MS` / `WS` / `Team` / `Jr` / `Vet`. For mega tournaments with all brackets (WPC, PPA, APP), one bold green `ALL` pill replaces the list.
 - **Register button** (court green) + **Share button** (outlined).
 - For closed-reg cards: opacity 0.78, grey date block, disabled register button.
@@ -85,7 +85,7 @@ A tournament card surfaces:
 |---|---|---|
 | `Sort` | Single-select sheet | `Reg deadline` (default) / `Tournament date` / `Prize pool (high→low)` / `Entry fee (low→high)` |
 | `State` | Multi-select sheet | KL/SGR, Johor, Perak, Pulau Pinang, Pahang, Melaka, etc. (derived from data) |
-| `Skill` | Multi-select sheet | Novice / Intermediate / Advanced / Open |
+| `Skill` | Multi-select sheet | Novice / Intermediate / Advanced / Open. A tournament matches a selected bucket if **any** of its parsed brackets falls in that bucket (so a multi-bracket event with Novice + Intermediate will appear under both filters). Events tagged `ALL` appear under every skill filter. |
 | `Events` | Multi-select sheet | MD / WD / XD / MS / WS / Team / Jr / Vet |
 | `Open reg only` | Direct toggle | Off by default; when on, hides the closed-reg section |
 
@@ -95,6 +95,54 @@ A tournament card surfaces:
 - Active sort chip uses the dark filled style; idle chips are white with thin border.
 - The bar is horizontally scrollable — adding new filter chips later won't break layout.
 - Per UX rule §2: every chip has min-height 36px and at least 8px gap from its neighbour.
+
+### Skill-level parsing rules (data layer)
+
+The `Skill Level` cell in the sheet is free-text that can contain canonical labels, raw DUPR numbers, "Combined" notation, or comma-separated combinations. The data layer parses each value and maps it to a **canonical bucket** for display and filtering.
+
+**Canonical buckets:** `Novice <3` · `Intermediate <3.5` · `Advanced <4.0` · `Open` · `ALL`
+
+**Parsing rules (in order):**
+
+1. Split the raw string on commas. Trim each fragment. Drop empty fragments (handles trailing commas).
+2. For each fragment, normalize case and match in priority order:
+   - Contains `ALL` (case-insensitive) → `ALL`
+   - Contains `Open` (case-insensitive) → `Open`
+   - Starts with `Novice` or has cap `<3` (and no other number > 3) → `Novice <3`
+   - Starts with `Intermediate` or has cap `<3.5` → `Intermediate <3.5`
+   - Starts with `Advanced` or has cap `<4.0` (or `<4`) → `Advanced <4.0`
+   - Bare numeric like `2.799`, `5.899`, `6.099`:
+     - If number ≤ 4.5 → individual cap → map by `<3` / `<3.5` / `<4.0` / `Open` boundaries
+     - If number > 4.5 → combined cap → divide by 2, then map by the same boundaries; preserve the original number as `combinedCap` metadata for display.
+
+**Bucket boundaries (for both individual and divided-combined values):**
+
+| Value | Bucket |
+|---|---|
+| `< 3.0` | Novice <3 |
+| `3.0 ≤ x < 3.5` | Intermediate <3.5 |
+| `3.5 ≤ x < 4.0` | Advanced <4.0 |
+| `≥ 4.0` | Open |
+
+The parser returns `[{bucket, combinedCap?}, ...]` — duplicates are deduped (e.g. a sheet value `Combined 5.899, 2.799` resolves to a single Novice chip rather than two).
+
+### Skill-rating explainer ("?" affordance)
+
+A small `?` icon sits beside the `Skill` filter chip. Tap → opens a bottom-sheet (or, on desktop, a small popover) with the following content. Same explainer is also linked from the footer FAQ.
+
+> **How skill caps work**
+>
+> Tournaments cap who can register based on DUPR rating:
+> - **Novice** — players rated under 3.0
+> - **Intermediate** — under 3.5
+> - **Advanced** — under 4.0
+> - **Open** — no cap, anyone welcome
+>
+> Some doubles tournaments use a **combined cap** (e.g. `6.099`) — that's the sum of both partners' DUPRs. Divide by 2 to see the average level (here, ~3.0 = Intermediate).
+>
+> Not sure of your DUPR? Check [dupr.com](https://dupr.com).
+
+The sheet should preserve the organizer's original notation (e.g., `5.899`, `Combined <6.099`) so we can display it as subtext under the canonical chip. The data layer does NOT rewrite the sheet — it parses for display only.
 
 ### Branding tokens
 
