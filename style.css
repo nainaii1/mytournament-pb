@@ -139,6 +139,31 @@ a { text-decoration: none; }
 .chip-skill.on[data-skill="advanced"]     { background: #fff3e8; border-color: var(--skill-advanced); color: #8a4200; }
 .chip-skill.on[data-skill="open"]         { background: var(--mint-wash); border-color: var(--court-green); color: var(--court-green); }
 
+/* Month filter row */
+.month-row {
+  display: flex; gap: 0; align-items: center;
+  overflow-x: auto; padding: 8px 16px 0;
+  scrollbar-width: none;
+  border-bottom: 1px solid rgba(13, 31, 26, 0.07);
+}
+.month-row::-webkit-scrollbar { display: none; }
+.month-tab {
+  background: transparent; border: none;
+  border-bottom: 2px solid transparent; border-radius: 0;
+  padding: 6px 14px 8px;
+  font-family: 'Sora', sans-serif; font-size: 11.5px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--mid-green); white-space: nowrap; min-height: 36px;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.month-tab:hover { color: var(--deep-court); }
+.month-tab.on { color: var(--court-green); border-bottom-color: var(--court-green); }
+.month-tab:focus-visible { outline: 2px solid var(--court-green); outline-offset: 2px; }
+
+/* Ensure closing-soon anchor isn't hidden under taller sticky filterbar */
+[id="closing-soon"] { scroll-margin-top: 120px; }
+
 /* ===== MAIN ===== */
 main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 

@@ -403,23 +403,70 @@ async function fetchTournaments() {
 let allTournaments = [];
 let sortMode      = "deadline";
 let openRegOnly   = false;
-let skillFilter   = null; // null | "novice" | "intermediate" | "advanced" | "open"
+let skillFilters  = new Set(); // empty = show all; values: "novice"|"intermediate"|"advanced"|"open"
+let monthFilter   = null;      // null = ALL; "YYYY-MM" string when active
 const sectionCollapsed = { closing: false, coming: false, closed: false };
 
 function matchesSkillFilter(t) {
-  if (!skillFilter) return true;
+  if (skillFilters.size === 0) return true;
   const raw = (t["Skill Level"] || "").trim();
-  if (!raw) return true; // no data = don't hide it
+  if (!raw) return true;
   const brackets = parseSkillLevel(raw);
-  if (!brackets.length) return true;
-  return brackets.some(s => s.bucket === BUCKET_ALL || bucketToCls(s.bucket) === skillFilter);
+  if (!brackets.length) return true; // Veteran etc. — no bucket = always show
+  return brackets.some(s =>
+    s.bucket === BUCKET_ALL || skillFilters.has(bucketToCls(s.bucket))
+  );
+}
+
+function matchesMonthFilter(t) {
+  if (!monthFilter) return true;
+  const start = t["Start Date"] || "";
+  if (!DATE_RE.test(start)) return true;
+  return start.startsWith(monthFilter);
+}
+
+function buildMonthChips(tournaments) {
+  const monthRow = document.getElementById("month-row");
+  if (!monthRow) return;
+
+  const seen = new Set();
+  for (const t of tournaments) {
+    const s = t["Start Date"] || "";
+    if (DATE_RE.test(s)) seen.add(s.slice(0, 7));
+  }
+  const months = [...seen].sort();
+
+  const LABELS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  const label  = ym => LABELS[parseInt(ym.slice(5, 7), 10) - 1] || ym;
+
+  monthRow.innerHTML =
+    `<button class="month-tab on" data-month="ALL" aria-pressed="true">ALL</button>` +
+    months.map(ym =>
+      `<button class="month-tab" data-month="${ym}" aria-pressed="false">${label(ym)}</button>`
+    ).join("");
+
+  monthRow.querySelectorAll(".month-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      monthFilter = btn.dataset.month === "ALL" ? null
+                  : monthFilter === btn.dataset.month ? null
+                  : btn.dataset.month;
+      monthRow.querySelectorAll(".month-tab").forEach(b => {
+        const active = b.dataset.month === "ALL"
+          ? monthFilter === null
+          : b.dataset.month === monthFilter;
+        b.classList.toggle("on", active);
+        b.setAttribute("aria-pressed", String(active));
+      });
+      renderAll();
+    });
+  });
 }
 
 // ── renderAll ─────────────────────────────────────────────────────────────
 function renderAll() {
   const todayStr     = todayUTCString();
-  const skillFiltered = allTournaments.filter(matchesSkillFilter);
-  const sorted       = sortTournaments(skillFiltered, sortMode);
+  const filtered = allTournaments.filter(matchesMonthFilter).filter(matchesSkillFilter);
+  const sorted   = sortTournaments(filtered, sortMode);
   const { closingSoon, comingUp, regClosed } = bucketTournaments(sorted, todayStr);
 
   // Urgency strip
@@ -530,6 +577,7 @@ function showToast(msg) {
 async function init() {
   try {
     allTournaments = await fetchTournaments();
+    buildMonthChips(allTournaments);
     renderAll();
 
     // Sort chip interaction
@@ -553,20 +601,16 @@ async function init() {
       renderAll();
     });
 
-    // Skill level filter chips (single-select; click active chip to clear)
+    // Skill level filter chips (multi-select; each chip toggles independently)
     document.querySelectorAll(".chip-skill[data-skill]").forEach(btn => {
       btn.addEventListener("click", () => {
         const skill = btn.dataset.skill;
-        if (skillFilter === skill) {
-          skillFilter = null;
+        if (skillFilters.has(skill)) {
+          skillFilters.delete(skill);
           btn.classList.remove("on");
           btn.setAttribute("aria-pressed", "false");
         } else {
-          document.querySelectorAll(".chip-skill").forEach(b => {
-            b.classList.remove("on");
-            b.setAttribute("aria-pressed", "false");
-          });
-          skillFilter = skill;
+          skillFilters.add(skill);
           btn.classList.add("on");
           btn.setAttribute("aria-pressed", "true");
         }
