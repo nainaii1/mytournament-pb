@@ -238,10 +238,12 @@ function renderCard(t, todayStr) {
   const orgParts = [t["Organizer"], t["Venue"], t["State"]].filter(Boolean);
   const orgLine  = orgParts.map(escapeHtml).join(" · ");
 
-  const regURL  = escapeAttr(t["Registration URL"] || "#");
+  const regURL    = escapeAttr(t["Registration URL"] || "#");
+  const platform  = (t["Source Platform"] || "").trim();
+  const btnLabel  = platform ? `Register · ${escapeHtml(platform)} →` : `Register →`;
   const btnHTML = isClosed
     ? `<button class="btn-register closed" disabled>Reg closed</button>`
-    : `<a class="btn-register" href="${regURL}" target="_blank" rel="noopener">Register →</a>`;
+    : `<a class="btn-register" href="${regURL}" target="_blank" rel="noopener">${btnLabel}</a>`;
 
   return `
 <div class="card${isClosed ? " closed-reg" : ""}" id="${id}">
@@ -269,18 +271,25 @@ function renderCard(t, todayStr) {
 </div>`.trim();
 }
 
-function renderSection(anchorId, titleHTML, titleCls, dividerCls, cards, todayStr, addGap) {
-  const count    = cards.length;
-  const gap      = addGap ? " gap" : "";
-  const anchor   = anchorId ? ` id="${anchorId}"` : "";
-  const cardsHTML = cards.map(t => renderCard(t, todayStr)).join("\n");
+function renderSection(anchorId, titleHTML, titleCls, dividerCls, cards, todayStr, addGap, sectionKey) {
+  const count       = cards.length;
+  const gap         = addGap ? " gap" : "";
+  const anchor      = anchorId ? ` id="${anchorId}"` : "";
+  const isCollapsed = sectionCollapsed[sectionKey] || false;
+  const chevronCls  = isCollapsed ? " collapsed" : "";
+  const cardsHTML   = cards.map(t => renderCard(t, todayStr)).join("\n");
   return `
 <div class="section-head${gap}"${anchor}>
   <div class="section-title${titleCls ? ` ${titleCls}` : ""}">${titleHTML}</div>
-  <div class="section-count">${count} event${count !== 1 ? "s" : ""}</div>
+  <button class="section-toggle-btn" data-section="${sectionKey}" aria-expanded="${!isCollapsed}">
+    <span class="section-count">${count} event${count !== 1 ? "s" : ""}</span>
+    <span class="section-chevron${chevronCls}">▾</span>
+  </button>
 </div>
 <div class="section-divider-bar${dividerCls ? ` ${dividerCls}` : ""}"></div>
-${cardsHTML}`.trim();
+<div class="cards-wrap" id="cards-wrap-${sectionKey}"${isCollapsed ? " hidden" : ""}>
+${cardsHTML}
+</div>`.trim();
 }
 
 function parseCSV(text) {
@@ -394,11 +403,23 @@ async function fetchTournaments() {
 let allTournaments = [];
 let sortMode      = "deadline";
 let openRegOnly   = false;
+let skillFilter   = null; // null | "novice" | "intermediate" | "advanced" | "open"
+const sectionCollapsed = { closing: false, coming: false, closed: false };
+
+function matchesSkillFilter(t) {
+  if (!skillFilter) return true;
+  const raw = (t["Skill Level"] || "").trim();
+  if (!raw) return true; // no data = don't hide it
+  const brackets = parseSkillLevel(raw);
+  if (!brackets.length) return true;
+  return brackets.some(s => s.bucket === BUCKET_ALL || bucketToCls(s.bucket) === skillFilter);
+}
 
 // ── renderAll ─────────────────────────────────────────────────────────────
 function renderAll() {
-  const todayStr = todayUTCString();
-  const sorted   = sortTournaments(allTournaments, sortMode);
+  const todayStr     = todayUTCString();
+  const skillFiltered = allTournaments.filter(matchesSkillFilter);
+  const sorted       = sortTournaments(skillFiltered, sortMode);
   const { closingSoon, comingUp, regClosed } = bucketTournaments(sorted, todayStr);
 
   // Urgency strip
@@ -419,7 +440,7 @@ function renderAll() {
     closingEl.innerHTML = renderSection(
       "closing-soon",
       "⚡ Closing <span class='accent'>this week</span>",
-      "", "", closingSoon, todayStr, false
+      "", "", closingSoon, todayStr, false, "closing"
     );
   } else {
     closingEl.hidden = true;
@@ -429,7 +450,7 @@ function renderAll() {
   const comingEl = document.getElementById("section-coming");
   comingEl.innerHTML = renderSection(
     null, "📅 Coming up", "", "green", comingUp, todayStr,
-    closingSoon.length > 0
+    closingSoon.length > 0, "coming"
   );
 
   // Reg-closed section
@@ -437,7 +458,7 @@ function renderAll() {
   if (!openRegOnly && regClosed.length > 0) {
     closedEl.hidden = false;
     closedEl.innerHTML = renderSection(
-      null, "🔒 Reg closed · still happening", "muted", "muted", regClosed, todayStr, true
+      null, "🔒 Reg closed · still happening", "muted", "muted", regClosed, todayStr, true, "closed"
     );
   } else {
     closedEl.hidden = true;
@@ -454,6 +475,19 @@ function renderAll() {
     btn.addEventListener("click", () => {
       const t = allTournaments.find(x => (x["ID"] || "") === btn.dataset.id);
       if (t) handleShare(t);
+    });
+  });
+
+  // Wire section collapse toggles
+  document.querySelectorAll(".section-toggle-btn[data-section]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.section;
+      sectionCollapsed[key] = !sectionCollapsed[key];
+      const wrap    = document.getElementById(`cards-wrap-${key}`);
+      const chevron = btn.querySelector(".section-chevron");
+      if (wrap)    wrap.hidden = sectionCollapsed[key];
+      if (chevron) chevron.classList.toggle("collapsed", sectionCollapsed[key]);
+      btn.setAttribute("aria-expanded", String(!sectionCollapsed[key]));
     });
   });
 }
@@ -517,6 +551,27 @@ async function init() {
       toggleBtn.classList.toggle("on", openRegOnly);
       toggleBtn.setAttribute("aria-pressed", String(openRegOnly));
       renderAll();
+    });
+
+    // Skill level filter chips (single-select; click active chip to clear)
+    document.querySelectorAll(".chip-skill[data-skill]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const skill = btn.dataset.skill;
+        if (skillFilter === skill) {
+          skillFilter = null;
+          btn.classList.remove("on");
+          btn.setAttribute("aria-pressed", "false");
+        } else {
+          document.querySelectorAll(".chip-skill").forEach(b => {
+            b.classList.remove("on");
+            b.setAttribute("aria-pressed", "false");
+          });
+          skillFilter = skill;
+          btn.classList.add("on");
+          btn.setAttribute("aria-pressed", "true");
+        }
+        renderAll();
+      });
     });
 
     // Deep-link: ?id=MTPB-0005 scrolls to that card
