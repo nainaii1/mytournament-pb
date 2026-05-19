@@ -4,6 +4,24 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
+// Normalises "23-May-2026" or "2-May-2026" → "2026-05-23". Passes through
+// already-correct YYYY-MM-DD strings unchanged.
+const MONTH_MAP = {
+  jan:"01",feb:"02",mar:"03",apr:"04",may:"05",jun:"06",
+  jul:"07",aug:"08",sep:"09",oct:"10",nov:"11",dec:"12"
+};
+function normalizeDate(s) {
+  if (!s) return s;
+  s = s.trim();
+  if (DATE_RE.test(s)) return s;
+  const m = s.match(/^(\d{1,2})-([A-Za-z]{3,})-(\d{4})$/);
+  if (m) {
+    const mon = MONTH_MAP[m[2].slice(0,3).toLowerCase()];
+    if (mon) return `${m[3]}-${mon}-${m[1].padStart(2,"0")}`;
+  }
+  return s; // unknown format — return as-is so text values ("Closed") pass through
+}
+
 // ── Skill level parser ────────────────────────────────────────────────────
 const BUCKET_NOVICE = "Novice <3";
 const BUCKET_INTER  = "Intermediate <3.5";
@@ -291,9 +309,21 @@ function parseCSV(text) {
   return rows;
 }
 
+const DATE_FIELDS = new Set(["Start Date", "End Date", "Reg Deadline"]);
+
+// Maps actual sheet header names → canonical names used throughout the app.
+// Add entries here whenever the sheet renames a column.
+const HEADER_ALIASES = {
+  "Entry Fee (RM) per team": "Entry Fee (RM)",
+  "Merch Value (RM)":        "Merch (RM)",
+};
+
 function rowsToObjects(rows) {
   if (rows.length < 2) return [];
-  const headers = rows[0].map(h => h.trim());
+  const headers = rows[0].map(h => {
+    const trimmed = h.trim();
+    return HEADER_ALIASES[trimmed] ?? trimmed;
+  });
   // Sheet row 0 has the title text concatenated into the first cell, ending in "Status".
   if (headers[0] && headers[0] !== "Status" && headers[0].endsWith("Status")) {
     headers[0] = "Status";
@@ -301,7 +331,9 @@ function rowsToObjects(rows) {
   return rows.slice(1).map(r => {
     const obj = {};
     for (let i = 0; i < headers.length; i++) {
-      obj[headers[i]] = (r[i] ?? "").trim();
+      const key = headers[i];
+      const val = (r[i] ?? "").trim();
+      obj[key] = DATE_FIELDS.has(key) ? normalizeDate(val) : val;
     }
     return obj;
   });
