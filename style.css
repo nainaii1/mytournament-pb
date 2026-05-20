@@ -138,6 +138,8 @@ a { text-decoration: none; }
 .chip-skill.on[data-skill="intermediate"] { background: rgba(240,165,0,0.10); border-color: var(--rally-amber); color: #8a5e00; }
 .chip-skill.on[data-skill="advanced"]     { background: #fff3e8; border-color: var(--skill-advanced); color: #8a4200; }
 .chip-skill.on[data-skill="open"]         { background: var(--mint-wash); border-color: var(--court-green); color: var(--court-green); }
+.chip-label { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2; }
+.chip-hint  { font-size: 9.5px; font-weight: 500; opacity: 0.65; letter-spacing: 0.01em; }
 
 /* Month filter row */
 .month-row {
