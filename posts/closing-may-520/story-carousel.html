@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>520 Closing Soon — IG Story Carousel · MyTournament.PB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+
+    /* ── Print setup ── */
+    @page {
+      size: 1080px 1920px;
+      margin: 0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      background: #111;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* ── Slide base ── */
+    section {
+      width: 1080px;
+      height: 1920px;
+      position: relative;
+      overflow: hidden;
+      background: #1A6B4A;
+      page-break-after: always;
+    }
+
+    /* ════════════════════════════════════
+       SLIDE 1 — 520 Hook
+    ════════════════════════════════════ */
+
+    .slide-1 {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 80px;
+    }
+
+    /* Logo bar — top-left */
+    .logo-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-bar img {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+    }
+
+    .logo-bar-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: white;
+      letter-spacing: 0.01em;
+    }
+
+    /* Centre content block */
+    .s1-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+    }
+
+    .s1-flower {
+      font-size: 96px;
+      line-height: 1;
+      margin-bottom: 36px;
+    }
+
+    .s1-busy {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 10px;
+    }
+
+    .s1-on520 {
+      font-family: 'Sora', sans-serif;
+      font-size: 72px;
+      font-weight: 800;
+      color: white;
+      line-height: 1.0;
+      margin-bottom: 44px;
+    }
+
+    .s1-divider {
+      width: 120px;
+      height: 2px;
+      background: #F0A500;
+      margin-bottom: 32px;
+    }
+
+    .s1-admin {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 26px;
+      font-weight: 600;
+      color: #6BAF8C;
+      margin-bottom: 52px;
+    }
+
+    .s1-pill {
+      display: inline-block;
+      background: #F0A500;
+      color: #0D1F1A;
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 12px 26px;
+      border-radius: 999px;
+    }
+
+    /* Footer */
+    .s1-footer {
+      text-align: center;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    /* ════════════════════════════════════
+       SLIDE 2 — Closing This Week
+    ════════════════════════════════════ */
+
+    .slide-2 {
+      display: flex;
+      flex-direction: column;
+      padding: 80px;
+    }
+
+    .s2-label {
+      font-family: 'Sora', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #F0A500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .s2-headline {
+      font-family: 'Sora', sans-serif;
+      font-size: 56px;
+      font-weight: 800;
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 56px;
+    }
+
+    /* ── Tournament list ── */
+    .t-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .t-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .t-row:first-child {
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .t-date {
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #F0A500;
+      min-width: 68px;
+      letter-spacing: 0.03em;
+      flex-shrink: 0;
+    }
+
+    .t-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: white;
+      flex: 1;
+    }
+
+    .t-prize {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #6BAF8C;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* Highlighted row — Empire NextGen — full amber */
+    .t-row.amber .t-date,
+    .t-row.amber .t-name,
+    .t-row.amber .t-prize {
+      color: #F0A500;
+    }
+
+    /* ── Footer ── */
+    .s2-footer-block {
+      margin-top: auto;
+    }
+
+    .s2-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.12);
+      margin-bottom: 28px;
+      margin-top: 40px;
+    }
+
+    .s2-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     SLIDE 1 — 520 Hook
+════════════════════════════════════ -->
+<section class="slide-1">
+
+  <div class="logo-bar">
+    <img src="../../brand/assets/court_mark_500.svg" alt="MyTournament.PB logo">
+    <span class="logo-bar-name">MyTournament.PB</span>
+  </div>
+
+  <div class="s1-center">
+    <div class="s1-flower">🌸</div>
+    <div class="s1-busy">i know you're busy</div>
+    <div class="s1-on520">on 520.</div>
+    <div class="s1-divider"></div>
+    <div class="s1-admin">admin got you covered.</div>
+    <div class="s1-pill">8 CLOSING THIS WEEK &rarr;</div>
+  </div>
+
+  <div class="s1-footer">@mytournament.pb</div>
+
+</section>
+
+
+<!-- ════════════════════════════════════
+     SLIDE 2 — Closing This Week
+════════════════════════════════════ -->
+<section class="slide-2">
+
+  <div class="s2-label">🚨&nbsp;&nbsp;Closing This Week</div>
+
+  <div class="s2-headline">register before<br>it's too late.</div>
+
+  <div class="t-list">
+
+    <div class="t-row">
+      <span class="t-date">MAY 22</span>
+      <span class="t-name">EMPTA Tournament</span>
+      <span class="t-prize">RM10,800</span>
+    </div>
+
+    <div class="t-row">
+      <span class="t-date">MAY 24</span>
+      <span class="t-name">Madness Tournament MD</span>
+      <span class="t-prize">RM1,564</span>
+    </div>
+
+    <div class="t-row amber">
+      <span class="t-date">MAY 25</span>
+      <span class="t-name">Empire NextGen Series 2026 ⭐</span>
+      <span class="t-prize">RM39,470</span>
+    </div>
+
+    <div class="t-row">
+      <span class="t-date">MAY 25</span>
+      <span class="t-name">AURA Challenge 2.0</span>
+      <span class="t-prize">RM12,450</span>
+    </div>
+
+    <div class="t-row">
+      <span class="t-date">MAY 25</span>
+      <span class="t-name">6.6.6 Team Challenge Cup</span>
+      <span class="t-prize">RM6,000</span>
+    </div>
+
+    <div class="t-row">
+      <span class="t-date">MAY 26</span>
+      <span class="t-name">OneVo Pickleboltz</span>
+      <span class="t-prize">RM2,570</span>
+    </div>
+
+    <div class="t-row">
+      <span class="t-date">MAY 26</span>
+      <span class="t-name">Hub Hub Ladies Fun Cup</span>
+      <span class="t-prize">RM1,264</span>
+    </div>
+
+    <div class="t-row">
+      <span class="t-date">MAY 27</span>
+      <span class="t-name">STP Cup 1.0</span>
+      <span class="t-prize">RM6,926</span>
+    </div>
+
+  </div>
+
+  <div class="s2-footer-block">
+    <div class="s2-divider"></div>
+    <div class="s2-footer">
+      <span>mytournamentpb.my</span>
+      <span>@mytournament.pb</span>
+    </div>
+  </div>
+
+</section>
+
+</body>
+</html>

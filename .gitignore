@@ -14,6 +14,9 @@
 # Source spreadsheets (private working data; site reads from published Google Sheet)
 *.xlsx
 
+# Cowork plugin packages (binary deliverables, not website files)
+*.plugin
+
 # Node (not used today, but future-proof)
 node_modules/
 
