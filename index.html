@@ -20,15 +20,21 @@
 <!-- HEADER -->
 <header class="header">
   <div class="header-row">
-    <a class="logo" href="/">
-      <div class="logo-mark">
-        <img src="assets/logo.svg" alt="MyTournament.PB" width="32" height="32">
-      </div>
-      <div class="logo-text">
-        MyTournament<span style="color:var(--court-green)">.PB</span>
-        <small>Malaysia · Pickleball</small>
-      </div>
-    </a>
+    <div class="header-left">
+      <a class="logo" href="/">
+        <div class="logo-mark">
+          <img src="assets/logo.svg" alt="MyTournament.PB" width="32" height="32">
+        </div>
+        <div class="logo-text">
+          MyTournament<span style="color:var(--court-green)">.PB</span>
+          <small>Malaysia · Pickleball</small>
+        </div>
+      </a>
+      <nav class="header-nav" aria-label="View">
+        <a class="header-nav-link on" id="nav-home" href="#" role="button">Home</a>
+        <a class="header-nav-link" id="nav-calendar" href="#" role="button">Calendar</a>
+      </nav>
+    </div>
     <a class="header-cta"
        href="https://instagram.com/mytournament.pb"
        target="_blank" rel="noopener"
@@ -80,6 +86,7 @@
 
 <!-- MAIN -->
 <main>
+  <div id="section-live" hidden></div>
   <div id="section-closing" hidden></div>
   <div id="section-coming">
     <div class="skeleton-wrap">

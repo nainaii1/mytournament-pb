@@ -59,6 +59,20 @@ a { text-decoration: none; }
 }
 .header-cta:hover { background: rgba(13, 31, 26, 0.04); }
 
+/* Header nav — Home | Calendar */
+.header-left { display: flex; align-items: center; gap: 14px; }
+.header-left .logo-text small { display: none; } /* hide subtitle to save space */
+.header-nav { display: flex; align-items: center; gap: 2px; }
+.header-nav-link {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  color: rgba(13,31,26,0.45); text-decoration: none;
+  padding: 5px 10px; border-radius: 7px;
+  transition: color 120ms, background 120ms;
+  white-space: nowrap;
+}
+.header-nav-link:hover { color: var(--deep-court); }
+.header-nav-link.on { color: var(--court-green); font-weight: 600; background: rgba(26,107,74,0.08); }
+
 /* ===== URGENCY STRIP ===== */
 .urgency {
   background: var(--deep-court); color: #fff;
@@ -214,6 +228,12 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 }
 .card:active { transform: scale(0.99); }
 .card.closed-reg { opacity: 0.78; }
+
+/* Live this weekend — green left border + green date block */
+.card.live-now { border-left: 3px solid var(--court-green); }
+.card.live-now .date-block { background: var(--court-green); }
+.card.live-now .date-month,
+.card.live-now .date-day   { color: white; }
 
 /* THE PICK amber top-border */
 .card.pick { border-top: 2px solid var(--rally-amber); }
@@ -416,113 +436,78 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 }
 
 /* ===== CALENDAR / GANTT VIEW ===== */
-#calendar-view {
-  overflow-x: auto;
+
+/* Single scroll box — sticky rows/cols work relative to this container */
+.cal-wrap {
+  overflow: auto;
+  max-height: calc(100svh - 160px);
   -webkit-overflow-scrolling: touch;
-  margin: 0 -16px;    /* bleed to screen edges so sticky label sits flush */
-  padding-bottom: 24px;
+  margin: -18px -16px 0; /* bleed to edges; cancel main's top padding */
 }
 
-/* Row structure: sticky label col + scrollable timeline */
 .cal-head-row,
-.cal-row {
-  display: flex;
-  align-items: stretch;
-  min-width: max-content;
-}
+.cal-row { display: flex; align-items: stretch; }
 
-.cal-label-col {
-  width: 148px;
-  min-width: 148px;
-  padding: 6px 10px 6px 16px;
-  position: sticky;
-  left: 0;
+/* Frozen date header — sticks to top of .cal-wrap */
+.cal-head-row {
+  position: sticky; top: 0; z-index: 3;
   background: var(--off-white);
-  z-index: 2;
-  border-right: 1px solid rgba(13,31,26,0.07);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  border-bottom: 2px solid rgba(13,31,26,0.1);
 }
 
-/* Header */
-.cal-head-label { height: 56px; border-bottom: 1px solid rgba(13,31,26,0.08); }
-.cal-head-days  { display: flex; border-bottom: 1px solid rgba(13,31,26,0.08); }
+/* Frozen label column */
+.cal-label-col {
+  width: 140px; min-width: 140px;
+  padding: 6px 8px 6px 16px;
+  position: sticky; left: 0;
+  background: var(--off-white);
+  border-right: 1px solid rgba(13,31,26,0.08);
+  display: flex; flex-direction: column; justify-content: center;
+}
+/* Top-left intersection cell gets highest z-index */
+.cal-head-row .cal-label-col { z-index: 4; height: 52px; justify-content: flex-end; padding-bottom: 8px; }
+.cal-row      .cal-label-col { z-index: 2; }
 
+.cal-head-days { display: flex; }
+
+/* Day columns */
 .cal-day-col {
-  flex-shrink: 0;
-  text-align: center;
+  flex-shrink: 0; text-align: center;
   padding: 4px 0 6px;
   border-right: 1px solid rgba(13,31,26,0.04);
 }
-.cal-day-col.cal-weekend   { background: rgba(240,165,0,0.07); }
-.cal-day-col.cal-today     { background: rgba(26,107,74,0.12); }
+.cal-day-col.cal-weekend    { background: rgba(240,165,0,0.07); }
+.cal-day-col.cal-today      { background: rgba(26,107,74,0.12); }
 .cal-day-col.cal-week-start { border-left: 1px solid rgba(13,31,26,0.12); }
 
 .cal-week-label {
-  height: 14px;
-  font-size: 8px;
-  font-weight: 700;
-  color: var(--mid-green);
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  overflow: visible;
-  line-height: 14px;
+  height: 14px; font-size: 8px; font-weight: 700;
+  color: var(--mid-green); letter-spacing: 0.04em;
+  white-space: nowrap; overflow: visible; line-height: 14px;
 }
 .cal-day-num {
-  font-family: 'Sora', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--deep-court);
-  line-height: 1.3;
+  font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--deep-court); line-height: 1.3;
 }
 .cal-day-col.cal-today .cal-day-num { color: var(--court-green); }
-.cal-day-name {
-  font-size: 9px;
-  color: rgba(13,31,26,0.4);
-  line-height: 1;
-}
+.cal-day-name { font-size: 9px; color: rgba(13,31,26,0.4); line-height: 1; }
 
 /* Tournament rows */
 .cal-row { border-bottom: 1px solid rgba(13,31,26,0.05); min-height: 44px; }
 .cal-row:hover { background: rgba(13,31,26,0.015); }
 
 .cal-t-name {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--deep-court);
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.cal-t-prize {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--mid-green);
-  margin-top: 2px;
+  font-size: 11px; font-weight: 500; color: var(--deep-court); line-height: 1.3;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 
-/* Timeline area */
-.cal-timeline {
-  position: relative;
-  flex: 1;
-  min-height: 44px;
-}
+/* Timeline */
+.cal-timeline { position: relative; flex: 1; min-height: 44px; }
 
-/* Gantt bar */
+/* Gantt bar — no label text */
 .cal-bar {
-  position: absolute;
-  top: 8px;
-  height: 28px;
-  border-radius: 6px;
-  background: var(--court-green);
-  display: flex;
-  align-items: center;
-  padding: 0 8px;
-  overflow: hidden;
-  min-width: 4px;
+  position: absolute; top: 8px; height: 28px; border-radius: 6px;
+  background: var(--court-green); min-width: 6px;
   transition: opacity 120ms;
 }
 .cal-bar[data-platform="sportssync"]     { background: #1A3A8A; }
@@ -530,57 +515,19 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 .cal-bar[data-platform="sports-we-play"] { background: #8A4A00; }
 .cal-bar[data-platform="ppa-tour-asia"]  { background: var(--rally-amber); }
 
-.cal-bar-label {
-  font-size: 9px;
-  font-weight: 600;
-  color: white;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  letter-spacing: 0.01em;
-  pointer-events: none;
-}
-
-.cal-closed .cal-bar   { opacity: 0.32; }
-.cal-pick .cal-bar     { box-shadow: 0 0 0 1.5px var(--rally-amber), 0 0 0 3.5px rgba(240,165,0,0.18); }
-
-/* Reg deadline vertical marker */
-.cal-dl-mark {
-  position: absolute;
-  top: 3px;
-  bottom: 3px;
-  width: 2px;
-  background: var(--rally-amber);
-  border-radius: 1px;
-  transform: translateX(-50%);
-  z-index: 1;
-  opacity: 0.85;
-}
+.cal-closed .cal-bar { opacity: 0.28; }
+.cal-pick   .cal-bar { box-shadow: 0 0 0 1.5px var(--rally-amber), 0 0 0 3.5px rgba(240,165,0,0.18); }
 
 /* Legend */
 .cal-legend {
-  position: sticky;
-  left: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-  padding: 14px 16px;
-  font-size: 11px;
-  color: rgba(13,31,26,0.55);
+  position: sticky; left: 0;
+  display: flex; flex-wrap: wrap; gap: 8px 20px;
+  padding: 14px 16px; font-size: 11px; color: rgba(13,31,26,0.55);
   border-top: 1px solid rgba(13,31,26,0.07);
-  margin-top: 4px;
 }
-.cal-legend-item   { display: flex; align-items: center; gap: 6px; }
-.cal-legend-dot    { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
-.cal-legend-line   { width: 14px; height: 2px; background: var(--rally-amber); border-radius: 1px; }
+.cal-legend-item { display: flex; align-items: center; gap: 6px; }
+.cal-legend-dot  { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
 .cal-empty { padding: 48px 16px; text-align: center; color: rgba(13,31,26,0.35); font-size: 14px; }
-
-/* Calendar tab button style */
-.month-tab.cal-tab {
-  margin-left: 6px;
-  border-left: 1px solid rgba(13,31,26,0.1);
-  padding-left: 14px;
-}
 
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {

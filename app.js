@@ -161,19 +161,17 @@ function sortTournaments(tournaments, mode) {
   return arr;
 }
 
-// Splits tournaments into three display sections. Hides past-end-date entries.
+// Splits tournaments into display sections. Hides past-end-date entries.
 function bucketTournaments(tournaments, todayStr) {
-  const closingSoon = [], comingUp = [];
+  const live = [], closingSoon = [], comingUp = [];
   for (const t of tournaments) {
     const endDate = t["End Date"] || "";
     if (endDate && DATE_RE.test(endDate) && isPastDate(endDate, todayStr)) continue;
-    if (t.isClosingSoon) {
-      closingSoon.push(t);
-    } else {
-      comingUp.push(t); // includes both open and closed-reg future tournaments
-    }
+    if (t.isLive)        { live.push(t);       continue; }
+    if (t.isClosingSoon) { closingSoon.push(t); continue; }
+    comingUp.push(t); // includes both open and closed-reg future tournaments
   }
-  return { closingSoon, comingUp };
+  return { live, closingSoon, comingUp };
 }
 
 // ── Render helpers ────────────────────────────────────────────────────────
@@ -248,7 +246,11 @@ function renderCard(t, todayStr) {
     ? `<button class="btn-register closed" disabled>Reg closed</button>`
     : `<a class="btn-register" href="${regURL}" target="_blank" rel="noopener">${dotHTML}${btnLabel}</a>`;
 
-  const cardClasses = ["card", isClosed ? "closed-reg" : "", isPick ? "pick" : ""].filter(Boolean).join(" ");
+  const cardClasses = ["card",
+    isClosed    ? "closed-reg" : "",
+    t.isLive    ? "live-now"   : "",
+    isPick      ? "pick"       : ""
+  ].filter(Boolean).join(" ");
 
   return `
 <div class="${cardClasses}" id="${id}" data-platform="${escapeAttr(platformKey)}">
@@ -382,7 +384,11 @@ function annotate(t, todayStr) {
   const isClosed = isClosedString || isPastDate(raw, todayStr);
   const days = daysUntil(raw, todayStr);
   const isClosingSoon = !isClosed && days !== null && days >= 0 && days <= 7;
-  return { ...t, isClosed, isClosingSoon };
+  const sStr = (t["Start Date"] || "").trim();
+  const eStr = (t["End Date"]   || "").trim();
+  const isLive = DATE_RE.test(sStr) && DATE_RE.test(eStr)
+    && todayStr >= sStr && todayStr <= eStr;
+  return { ...t, isClosed, isClosingSoon, isLive };
 }
 
 async function fetchTournaments() {
@@ -509,7 +515,21 @@ function renderAll() {
   document.getElementById("calendar-view").hidden = true;
   const filtered = allTournaments.filter(matchesMonthFilter).filter(matchesSkillFilter);
   const sorted   = sortTournaments(filtered, sortMode);
-  const { closingSoon, comingUp } = bucketTournaments(sorted, todayStr);
+  const { live, closingSoon, comingUp } = bucketTournaments(sorted, todayStr);
+
+  // Live this weekend section
+  const liveEl = document.getElementById("section-live");
+  if (liveEl) {
+    if (live.length > 0) {
+      liveEl.hidden = false;
+      liveEl.innerHTML = renderSection(
+        null, "🏓 Live <span class='accent'>this weekend</span>",
+        "", "green", live, todayStr, false, "live"
+      );
+    } else {
+      liveEl.hidden = true;
+    }
+  }
 
   // Urgency strip
   const urgencyEl = document.getElementById("urgency-strip");
