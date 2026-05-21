@@ -229,12 +229,6 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 .card:active { transform: scale(0.99); }
 .card.closed-reg { opacity: 0.78; }
 
-/* Live this weekend — green left border + green date block */
-.card.live-now { border-left: 3px solid var(--court-green); }
-.card.live-now .date-block { background: var(--court-green); }
-.card.live-now .date-month,
-.card.live-now .date-day   { color: white; }
-
 /* THE PICK amber top-border */
 .card.pick { border-top: 2px solid var(--rally-amber); }
 
@@ -516,7 +510,6 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 .cal-bar[data-platform="ppa-tour-asia"]  { background: var(--rally-amber); }
 
 .cal-closed .cal-bar { opacity: 0.28; }
-.cal-pick   .cal-bar { box-shadow: 0 0 0 1.5px var(--rally-amber), 0 0 0 3.5px rgba(240,165,0,0.18); }
 
 /* Legend */
 .cal-legend {

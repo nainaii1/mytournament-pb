@@ -163,15 +163,14 @@ function sortTournaments(tournaments, mode) {
 
 // Splits tournaments into display sections. Hides past-end-date entries.
 function bucketTournaments(tournaments, todayStr) {
-  const live = [], closingSoon = [], comingUp = [];
+  const closingSoon = [], comingUp = [];
   for (const t of tournaments) {
     const endDate = t["End Date"] || "";
     if (endDate && DATE_RE.test(endDate) && isPastDate(endDate, todayStr)) continue;
-    if (t.isLive)        { live.push(t);       continue; }
     if (t.isClosingSoon) { closingSoon.push(t); continue; }
-    comingUp.push(t); // includes both open and closed-reg future tournaments
+    comingUp.push(t); // includes open-reg, closed-reg, and live tournaments
   }
-  return { live, closingSoon, comingUp };
+  return { closingSoon, comingUp };
 }
 
 // ── Render helpers ────────────────────────────────────────────────────────
@@ -247,9 +246,8 @@ function renderCard(t, todayStr) {
     : `<a class="btn-register" href="${regURL}" target="_blank" rel="noopener">${dotHTML}${btnLabel}</a>`;
 
   const cardClasses = ["card",
-    isClosed    ? "closed-reg" : "",
-    t.isLive    ? "live-now"   : "",
-    isPick      ? "pick"       : ""
+    isClosed ? "closed-reg" : "",
+    isPick   ? "pick"       : ""
   ].filter(Boolean).join(" ");
 
   return `
@@ -381,11 +379,13 @@ function annotate(t, todayStr) {
   const raw = (t["Reg Deadline"] || "").trim();
   const lower = raw.toLowerCase();
   const isClosedString = lower === "closed" || lower === "once full";
-  const isClosed = isClosedString || isPastDate(raw, todayStr);
-  const days = daysUntil(raw, todayStr);
-  const isClosingSoon = !isClosed && days !== null && days >= 0 && days <= 7;
   const sStr = (t["Start Date"] || "").trim();
   const eStr = (t["End Date"]   || "").trim();
+  // Auto-infer closed: once a tournament has started, registration is always closed
+  const tournamentStarted = DATE_RE.test(sStr) && todayStr >= sStr;
+  const isClosed = isClosedString || isPastDate(raw, todayStr) || tournamentStarted;
+  const days = daysUntil(raw, todayStr);
+  const isClosingSoon = !isClosed && days !== null && days >= 0 && days <= 7;
   const isLive = DATE_RE.test(sStr) && DATE_RE.test(eStr)
     && todayStr >= sStr && todayStr <= eStr;
   return { ...t, isClosed, isClosingSoon, isLive };
@@ -515,21 +515,7 @@ function renderAll() {
   document.getElementById("calendar-view").hidden = true;
   const filtered = allTournaments.filter(matchesMonthFilter).filter(matchesSkillFilter);
   const sorted   = sortTournaments(filtered, sortMode);
-  const { live, closingSoon, comingUp } = bucketTournaments(sorted, todayStr);
-
-  // Live this weekend section
-  const liveEl = document.getElementById("section-live");
-  if (liveEl) {
-    if (live.length > 0) {
-      liveEl.hidden = false;
-      liveEl.innerHTML = renderSection(
-        null, "🏓 Live <span class='accent'>this weekend</span>",
-        "", "green", live, todayStr, false, "live"
-      );
-    } else {
-      liveEl.hidden = true;
-    }
-  }
+  const { closingSoon, comingUp } = bucketTournaments(sorted, todayStr);
 
   // Urgency strip
   const urgencyEl = document.getElementById("urgency-strip");
@@ -631,7 +617,7 @@ function showToast(msg) {
 
 // ── Calendar / Gantt ─────────────────────────────────────────────────────
 const CAL_DAY_W = 28;  // px per day column
-const CAL_DAYS  = 42;  // 6 weeks displayed
+const CAL_DAYS  = 70;  // 10 weeks displayed
 
 function calStartDate(todayStr) {
   return new Date(todayStr + "T00:00:00"); // start from today, not Monday
@@ -728,7 +714,6 @@ function renderCalendar(tournaments, todayStr) {
     <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#1A3A8A"></span>Sportssync</span>
     <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--court-green)"></span>Baseline</span>
     <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#8A4A00"></span>Sports We Play</span>
-    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--rally-amber)"></span>PPA Tour Asia</span>
   </div>
 </div>`;
 }
