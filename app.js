@@ -449,38 +449,14 @@ function buildMonthChips(tournaments) {
     `<button class="month-tab on" data-month="ALL" aria-pressed="true">ALL</button>` +
     months.map(ym =>
       `<button class="month-tab" data-month="${ym}" aria-pressed="false">${label(ym)}</button>`
-    ).join("") +
-    `<button class="month-tab cal-tab" data-view="calendar" aria-pressed="false">Calendar</button>`;
+    ).join("");
 
-  monthRow.querySelectorAll("button").forEach(btn => {
+  monthRow.querySelectorAll("button[data-month]").forEach(btn => {
     btn.addEventListener("click", () => {
-
-      // ── Calendar tab ──────────────────────────────────────────────
-      if (btn.dataset.view === "calendar") {
-        calendarMode = !calendarMode;
-        if (calendarMode) {
-          // Reset month filter so calendar always shows full 6-week window
-          monthFilter = null;
-        }
-        // Sync all tab active states
-        monthRow.querySelectorAll("[data-month]").forEach(b => {
-          const active = !calendarMode && (
-            b.dataset.month === "ALL" ? monthFilter === null : b.dataset.month === monthFilter
-          );
-          b.classList.toggle("on", active);
-          b.setAttribute("aria-pressed", String(active));
-        });
-        btn.classList.toggle("on", calendarMode);
-        btn.setAttribute("aria-pressed", String(calendarMode));
-        renderAll();
-        return;
-      }
-
-      // ── Month tab ─────────────────────────────────────────────────
+      // Switching to list mode if currently in calendar
       if (calendarMode) {
         calendarMode = false;
-        monthRow.querySelector("[data-view='calendar']")?.classList.remove("on");
-        monthRow.querySelector("[data-view='calendar']")?.setAttribute("aria-pressed", "false");
+        syncNavState();
       }
 
       monthFilter = btn.dataset.month === "ALL" ? null
@@ -499,9 +475,19 @@ function buildMonthChips(tournaments) {
   });
 }
 
+// ── Nav state sync ────────────────────────────────────────────────────────
+function syncNavState() {
+  const navHome = document.getElementById("nav-home");
+  const navCal  = document.getElementById("nav-calendar");
+  if (navHome) navHome.classList.toggle("on", !calendarMode);
+  if (navCal)  navCal.classList.toggle("on",  calendarMode);
+}
+
 // ── renderAll ─────────────────────────────────────────────────────────────
 function renderAll() {
   const todayStr = todayUTCString();
+
+  syncNavState();
 
   // ── Calendar mode ───────────────────────────────────────────────────────
   if (calendarMode) {
@@ -628,10 +614,7 @@ const CAL_DAY_W = 28;  // px per day column
 const CAL_DAYS  = 42;  // 6 weeks displayed
 
 function calStartDate(todayStr) {
-  const d   = new Date(todayStr + "T00:00:00");
-  const dow = d.getDay(); // 0=Sun
-  d.setDate(d.getDate() + (dow === 0 ? -6 : 1 - dow)); // roll back to Monday
-  return d;
+  return new Date(todayStr + "T00:00:00"); // start from today, not Monday
 }
 
 function dateObjToStr(d) {
@@ -699,30 +682,15 @@ function renderCalendar(tournaments, todayStr) {
 
     const platKey = (t["Source Platform"] || "").toLowerCase().replace(/\s+/g, "-");
     const isPick  = (t["Pick Priority"] || "").startsWith("1");
-    const prize   = t["Prize Pool (RM)"] || "";
-
-    // Reg deadline amber line
-    let dlHTML = "";
-    const dl = t["Reg Deadline"] || "";
-    if (DATE_RE.test(dl) && !t.isClosed) {
-      const dlOff = dayDiff(calStart, new Date(dl + "T00:00:00"));
-      if (dlOff >= 0 && dlOff < CAL_DAYS) {
-        dlHTML = `<div class="cal-dl-mark" style="left:${dlOff * CAL_DAY_W + CAL_DAY_W / 2}px" title="Reg closes ${formatShortDate(dl)}"></div>`;
-      }
-    }
 
     const rowCls = ["cal-row", t.isClosed ? "cal-closed" : "", isPick ? "cal-pick" : ""].filter(Boolean).join(" ");
     rowsHTML += `
 <div class="${rowCls}">
   <div class="cal-label-col">
     <div class="cal-t-name">${escapeHtml(t["Tournament Name"] || "")}</div>
-    ${prize ? `<div class="cal-t-prize">RM${escapeHtml(prize)}</div>` : ""}
   </div>
   <div class="cal-timeline" style="width:${CAL_DAYS * CAL_DAY_W}px">
-    ${dlHTML}
-    <div class="cal-bar" data-platform="${escapeAttr(platKey)}" style="left:${barLeft}px;width:${barWidth}px">
-      <span class="cal-bar-label">${escapeHtml(t["Tournament Name"] || "")}</span>
-    </div>
+    <div class="cal-bar" data-platform="${escapeAttr(platKey)}" style="left:${barLeft}px;width:${barWidth}px"></div>
   </div>
 </div>`;
   }
@@ -730,17 +698,18 @@ function renderCalendar(tournaments, todayStr) {
   if (!rowsHTML) rowsHTML = `<div class="cal-empty">No tournaments in this window.</div>`;
 
   return `
-<div class="cal-head-row">
-  <div class="cal-label-col cal-head-label"></div>
-  <div class="cal-head-days">${dayCells}</div>
-</div>
-<div class="cal-rows">${rowsHTML}</div>
-<div class="cal-legend">
-  <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#1A3A8A"></span>Sportssync</span>
-  <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--court-green)"></span>Baseline</span>
-  <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#8A4A00"></span>Sports We Play</span>
-  <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--rally-amber)"></span>PPA Tour Asia</span>
-  <span class="cal-legend-item"><span class="cal-legend-line"></span>Reg deadline</span>
+<div class="cal-wrap">
+  <div class="cal-head-row">
+    <div class="cal-label-col cal-head-label"></div>
+    <div class="cal-head-days">${dayCells}</div>
+  </div>
+  <div class="cal-rows">${rowsHTML}</div>
+  <div class="cal-legend">
+    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#1A3A8A"></span>Sportssync</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--court-green)"></span>Baseline</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#8A4A00"></span>Sports We Play</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--rally-amber)"></span>PPA Tour Asia</span>
+  </div>
 </div>`;
 }
 
@@ -788,6 +757,30 @@ async function init() {
         }
         renderAll();
       });
+    });
+
+    // Header nav — Home / Calendar
+    document.getElementById("nav-home")?.addEventListener("click", e => {
+      e.preventDefault();
+      if (calendarMode) {
+        calendarMode = false;
+        renderAll();
+      }
+    });
+    document.getElementById("nav-calendar")?.addEventListener("click", e => {
+      e.preventDefault();
+      if (!calendarMode) {
+        calendarMode = true;
+        monthFilter  = null; // calendar always shows full window
+        // Reset month chips to ALL
+        const monthRow = document.getElementById("month-row");
+        monthRow?.querySelectorAll("[data-month]").forEach(b => {
+          const active = b.dataset.month === "ALL";
+          b.classList.toggle("on", active);
+          b.setAttribute("aria-pressed", String(active));
+        });
+        renderAll();
+      }
     });
 
     // Deep-link: ?id=MTPB-0005 scrolls to that card
