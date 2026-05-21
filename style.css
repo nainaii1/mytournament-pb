@@ -109,7 +109,7 @@ a { text-decoration: none; }
 
 /* Sort chip — native select overlay */
 .sort-chip { position: relative; overflow: visible; }
-.sort-chip.sort-active { background: var(--mint-wash); border-color: var(--court-green); }
+.sort-chip.sort-active { background: var(--court-green); color: white; border-color: var(--court-green); }
 .sort-select {
   position: absolute; inset: 0; opacity: 0; cursor: pointer;
   width: 100%; height: 100%; font-size: 16px;
@@ -215,14 +215,23 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 .card:active { transform: scale(0.99); }
 .card.closed-reg { opacity: 0.78; }
 
-/* Platform left-border — visual scan aid */
-.card[data-platform="sportssync"]     { border-left: 3px solid #1A3A8A; }
-.card[data-platform="baseline"]       { border-left: 3px solid var(--court-green); }
-.card[data-platform="sports-we-play"] { border-left: 3px solid #8A4A00; }
-.card[data-platform="ppa-tour-asia"]  { border-left: 3px solid var(--rally-amber); }
-
 /* THE PICK amber top-border */
 .card.pick { border-top: 2px solid var(--rally-amber); }
+
+/* Platform dot — sits inside the register button, directly before the platform name */
+.platform-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  position: relative; top: -0.5px;
+  flex-shrink: 0;
+}
+.platform-dot[data-platform="sportssync"]     { background: #1A3A8A; }
+.platform-dot[data-platform="baseline"]       { background: var(--court-green); }
+.platform-dot[data-platform="sports-we-play"] { background: #8A4A00; }
+.platform-dot[data-platform="ppa-tour-asia"]  { background: var(--rally-amber); }
 
 .date-block {
   background: var(--mint-wash); border-radius: 9px;
@@ -404,6 +413,173 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 @keyframes shimmer {
   0%   { background-position: 100% 0; }
   100% { background-position: -100% 0; }
+}
+
+/* ===== CALENDAR / GANTT VIEW ===== */
+#calendar-view {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -16px;    /* bleed to screen edges so sticky label sits flush */
+  padding-bottom: 24px;
+}
+
+/* Row structure: sticky label col + scrollable timeline */
+.cal-head-row,
+.cal-row {
+  display: flex;
+  align-items: stretch;
+  min-width: max-content;
+}
+
+.cal-label-col {
+  width: 148px;
+  min-width: 148px;
+  padding: 6px 10px 6px 16px;
+  position: sticky;
+  left: 0;
+  background: var(--off-white);
+  z-index: 2;
+  border-right: 1px solid rgba(13,31,26,0.07);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Header */
+.cal-head-label { height: 56px; border-bottom: 1px solid rgba(13,31,26,0.08); }
+.cal-head-days  { display: flex; border-bottom: 1px solid rgba(13,31,26,0.08); }
+
+.cal-day-col {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 4px 0 6px;
+  border-right: 1px solid rgba(13,31,26,0.04);
+}
+.cal-day-col.cal-weekend   { background: rgba(240,165,0,0.07); }
+.cal-day-col.cal-today     { background: rgba(26,107,74,0.12); }
+.cal-day-col.cal-week-start { border-left: 1px solid rgba(13,31,26,0.12); }
+
+.cal-week-label {
+  height: 14px;
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--mid-green);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: visible;
+  line-height: 14px;
+}
+.cal-day-num {
+  font-family: 'Sora', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--deep-court);
+  line-height: 1.3;
+}
+.cal-day-col.cal-today .cal-day-num { color: var(--court-green); }
+.cal-day-name {
+  font-size: 9px;
+  color: rgba(13,31,26,0.4);
+  line-height: 1;
+}
+
+/* Tournament rows */
+.cal-row { border-bottom: 1px solid rgba(13,31,26,0.05); min-height: 44px; }
+.cal-row:hover { background: rgba(13,31,26,0.015); }
+
+.cal-t-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--deep-court);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.cal-t-prize {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--mid-green);
+  margin-top: 2px;
+}
+
+/* Timeline area */
+.cal-timeline {
+  position: relative;
+  flex: 1;
+  min-height: 44px;
+}
+
+/* Gantt bar */
+.cal-bar {
+  position: absolute;
+  top: 8px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--court-green);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  overflow: hidden;
+  min-width: 4px;
+  transition: opacity 120ms;
+}
+.cal-bar[data-platform="sportssync"]     { background: #1A3A8A; }
+.cal-bar[data-platform="baseline"]       { background: var(--court-green); }
+.cal-bar[data-platform="sports-we-play"] { background: #8A4A00; }
+.cal-bar[data-platform="ppa-tour-asia"]  { background: var(--rally-amber); }
+
+.cal-bar-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+}
+
+.cal-closed .cal-bar   { opacity: 0.32; }
+.cal-pick .cal-bar     { box-shadow: 0 0 0 1.5px var(--rally-amber), 0 0 0 3.5px rgba(240,165,0,0.18); }
+
+/* Reg deadline vertical marker */
+.cal-dl-mark {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  width: 2px;
+  background: var(--rally-amber);
+  border-radius: 1px;
+  transform: translateX(-50%);
+  z-index: 1;
+  opacity: 0.85;
+}
+
+/* Legend */
+.cal-legend {
+  position: sticky;
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: 14px 16px;
+  font-size: 11px;
+  color: rgba(13,31,26,0.55);
+  border-top: 1px solid rgba(13,31,26,0.07);
+  margin-top: 4px;
+}
+.cal-legend-item   { display: flex; align-items: center; gap: 6px; }
+.cal-legend-dot    { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.cal-legend-line   { width: 14px; height: 2px; background: var(--rally-amber); border-radius: 1px; }
+.cal-empty { padding: 48px 16px; text-align: center; color: rgba(13,31,26,0.35); font-size: 14px; }
+
+/* Calendar tab button style */
+.month-tab.cal-tab {
+  margin-left: 6px;
+  border-left: 1px solid rgba(13,31,26,0.1);
+  padding-left: 14px;
 }
 
 /* ===== REDUCED MOTION ===== */

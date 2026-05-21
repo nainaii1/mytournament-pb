@@ -241,9 +241,12 @@ function renderCard(t, todayStr) {
   const platformKey = platform.toLowerCase().replace(/\s+/g, "-");
   const isPick      = (t["Pick Priority"] || "").startsWith("1");
   const btnLabel    = platform ? `Register · ${escapeHtml(platform)} →` : `Register →`;
+  const dotHTML = platformKey
+    ? `<span class="platform-dot" data-platform="${escapeAttr(platformKey)}"></span>`
+    : "";
   const btnHTML = isClosed
     ? `<button class="btn-register closed" disabled>Reg closed</button>`
-    : `<a class="btn-register" href="${regURL}" target="_blank" rel="noopener">${btnLabel}</a>`;
+    : `<a class="btn-register" href="${regURL}" target="_blank" rel="noopener">${dotHTML}${btnLabel}</a>`;
 
   const cardClasses = ["card", isClosed ? "closed-reg" : "", isPick ? "pick" : ""].filter(Boolean).join(" ");
 
@@ -408,6 +411,7 @@ let openRegOnly   = false;
 let skillFilters  = new Set(); // empty = show all; values: "novice"|"intermediate"|"advanced"|"open"
 let monthFilter   = null;      // null = ALL; "YYYY-MM" string when active
 const sectionCollapsed = { closing: false, coming: false, closed: false };
+let calendarMode = false;
 
 function matchesSkillFilter(t) {
   if (skillFilters.size === 0) return true;
@@ -445,14 +449,45 @@ function buildMonthChips(tournaments) {
     `<button class="month-tab on" data-month="ALL" aria-pressed="true">ALL</button>` +
     months.map(ym =>
       `<button class="month-tab" data-month="${ym}" aria-pressed="false">${label(ym)}</button>`
-    ).join("");
+    ).join("") +
+    `<button class="month-tab cal-tab" data-view="calendar" aria-pressed="false">Calendar</button>`;
 
-  monthRow.querySelectorAll(".month-tab").forEach(btn => {
+  monthRow.querySelectorAll("button").forEach(btn => {
     btn.addEventListener("click", () => {
+
+      // ── Calendar tab ──────────────────────────────────────────────
+      if (btn.dataset.view === "calendar") {
+        calendarMode = !calendarMode;
+        if (calendarMode) {
+          // Reset month filter so calendar always shows full 6-week window
+          monthFilter = null;
+        }
+        // Sync all tab active states
+        monthRow.querySelectorAll("[data-month]").forEach(b => {
+          const active = !calendarMode && (
+            b.dataset.month === "ALL" ? monthFilter === null : b.dataset.month === monthFilter
+          );
+          b.classList.toggle("on", active);
+          b.setAttribute("aria-pressed", String(active));
+        });
+        btn.classList.toggle("on", calendarMode);
+        btn.setAttribute("aria-pressed", String(calendarMode));
+        renderAll();
+        return;
+      }
+
+      // ── Month tab ─────────────────────────────────────────────────
+      if (calendarMode) {
+        calendarMode = false;
+        monthRow.querySelector("[data-view='calendar']")?.classList.remove("on");
+        monthRow.querySelector("[data-view='calendar']")?.setAttribute("aria-pressed", "false");
+      }
+
       monthFilter = btn.dataset.month === "ALL" ? null
                   : monthFilter === btn.dataset.month ? null
                   : btn.dataset.month;
-      monthRow.querySelectorAll(".month-tab").forEach(b => {
+
+      monthRow.querySelectorAll("[data-month]").forEach(b => {
         const active = b.dataset.month === "ALL"
           ? monthFilter === null
           : b.dataset.month === monthFilter;
@@ -466,7 +501,26 @@ function buildMonthChips(tournaments) {
 
 // ── renderAll ─────────────────────────────────────────────────────────────
 function renderAll() {
-  const todayStr     = todayUTCString();
+  const todayStr = todayUTCString();
+
+  // ── Calendar mode ───────────────────────────────────────────────────────
+  if (calendarMode) {
+    document.getElementById("urgency-strip").hidden    = true;
+    document.getElementById("section-closing").hidden  = true;
+    document.getElementById("section-coming").hidden   = true;
+    document.getElementById("section-closed").hidden   = true;
+    const calEl = document.getElementById("calendar-view");
+    calEl.hidden = false;
+    // Calendar always shows all upcoming events; skill filter still applies
+    const calTournaments = sortTournaments(
+      allTournaments.filter(matchesSkillFilter), "date"
+    );
+    calEl.innerHTML = renderCalendar(calTournaments, todayStr);
+    return;
+  }
+
+  // ── List mode ───────────────────────────────────────────────────────────
+  document.getElementById("calendar-view").hidden = true;
   const filtered = allTournaments.filter(matchesMonthFilter).filter(matchesSkillFilter);
   const sorted   = sortTournaments(filtered, sortMode);
   const { closingSoon, comingUp } = bucketTournaments(sorted, todayStr);
@@ -567,6 +621,127 @@ function showToast(msg) {
   toast.classList.add("visible");
   clearTimeout(toast._timer);
   toast._timer = setTimeout(() => toast.classList.remove("visible"), 3000);
+}
+
+// ── Calendar / Gantt ─────────────────────────────────────────────────────
+const CAL_DAY_W = 28;  // px per day column
+const CAL_DAYS  = 42;  // 6 weeks displayed
+
+function calStartDate(todayStr) {
+  const d   = new Date(todayStr + "T00:00:00");
+  const dow = d.getDay(); // 0=Sun
+  d.setDate(d.getDate() + (dow === 0 ? -6 : 1 - dow)); // roll back to Monday
+  return d;
+}
+
+function dateObjToStr(d) {
+  const y  = d.getFullYear();
+  const mo = String(d.getMonth() + 1).padStart(2, "0");
+  const dy = String(d.getDate()).padStart(2, "0");
+  return `${y}-${mo}-${dy}`;
+}
+
+function dayDiff(a, b) { // days from Date a to Date b
+  return Math.round((b - a) / 86400000);
+}
+
+function renderCalendar(tournaments, todayStr) {
+  const calStart  = calStartDate(todayStr);
+  const calEndD   = new Date(calStart);
+  calEndD.setDate(calStart.getDate() + CAL_DAYS - 1);
+  const DAY_NAMES = ["Su","Mo","Tu","We","Th","Fr","Sa"];
+
+  // ── Header cells ────────────────────────────────────────────────────
+  let dayCells = "";
+  for (let i = 0; i < CAL_DAYS; i++) {
+    const d   = new Date(calStart);
+    d.setDate(calStart.getDate() + i);
+    const dow       = d.getDay();
+    const isWeekend = dow === 0 || dow === 6;
+    const isToday   = dateObjToStr(d) === todayStr;
+    const isMon     = dow === 1;
+    const cls = ["cal-day-col",
+      isWeekend   ? "cal-weekend"    : "",
+      isToday     ? "cal-today"      : "",
+      isMon && i  ? "cal-week-start" : ""
+    ].filter(Boolean).join(" ");
+    const weekLbl = isMon ? formatShortDate(dateObjToStr(d)) : "";
+    dayCells += `<div class="${cls}" style="width:${CAL_DAY_W}px">
+      <div class="cal-week-label">${weekLbl}</div>
+      <div class="cal-day-num">${d.getDate()}</div>
+      <div class="cal-day-name">${DAY_NAMES[dow]}</div>
+    </div>`;
+  }
+
+  // ── Tournament rows ──────────────────────────────────────────────────
+  const visible = tournaments.filter(t => {
+    const sStr = t["Start Date"] || "";
+    const eStr = (t["End Date"] && DATE_RE.test(t["End Date"])) ? t["End Date"] : sStr;
+    if (!DATE_RE.test(sStr)) return false;
+    const tEnd   = new Date(eStr + "T00:00:00");
+    const tStart = new Date(sStr + "T00:00:00");
+    return tEnd >= calStart && tStart <= calEndD;
+  });
+
+  let rowsHTML = "";
+  for (const t of visible) {
+    const sStr   = t["Start Date"] || "";
+    const eStr   = (t["End Date"] && DATE_RE.test(t["End Date"])) ? t["End Date"] : sStr;
+    const tStart = new Date(sStr + "T00:00:00");
+    const tEnd   = new Date(eStr + "T00:00:00");
+
+    const s0 = Math.max(0, dayDiff(calStart, tStart));
+    const e0 = Math.min(CAL_DAYS - 1, dayDiff(calStart, tEnd));
+    if (e0 < s0) continue;
+
+    const barLeft  = s0 * CAL_DAY_W;
+    const barWidth = (e0 - s0 + 1) * CAL_DAY_W;
+
+    const platKey = (t["Source Platform"] || "").toLowerCase().replace(/\s+/g, "-");
+    const isPick  = (t["Pick Priority"] || "").startsWith("1");
+    const prize   = t["Prize Pool (RM)"] || "";
+
+    // Reg deadline amber line
+    let dlHTML = "";
+    const dl = t["Reg Deadline"] || "";
+    if (DATE_RE.test(dl) && !t.isClosed) {
+      const dlOff = dayDiff(calStart, new Date(dl + "T00:00:00"));
+      if (dlOff >= 0 && dlOff < CAL_DAYS) {
+        dlHTML = `<div class="cal-dl-mark" style="left:${dlOff * CAL_DAY_W + CAL_DAY_W / 2}px" title="Reg closes ${formatShortDate(dl)}"></div>`;
+      }
+    }
+
+    const rowCls = ["cal-row", t.isClosed ? "cal-closed" : "", isPick ? "cal-pick" : ""].filter(Boolean).join(" ");
+    rowsHTML += `
+<div class="${rowCls}">
+  <div class="cal-label-col">
+    <div class="cal-t-name">${escapeHtml(t["Tournament Name"] || "")}</div>
+    ${prize ? `<div class="cal-t-prize">RM${escapeHtml(prize)}</div>` : ""}
+  </div>
+  <div class="cal-timeline" style="width:${CAL_DAYS * CAL_DAY_W}px">
+    ${dlHTML}
+    <div class="cal-bar" data-platform="${escapeAttr(platKey)}" style="left:${barLeft}px;width:${barWidth}px">
+      <span class="cal-bar-label">${escapeHtml(t["Tournament Name"] || "")}</span>
+    </div>
+  </div>
+</div>`;
+  }
+
+  if (!rowsHTML) rowsHTML = `<div class="cal-empty">No tournaments in this window.</div>`;
+
+  return `
+<div class="cal-head-row">
+  <div class="cal-label-col cal-head-label"></div>
+  <div class="cal-head-days">${dayCells}</div>
+</div>
+<div class="cal-rows">${rowsHTML}</div>
+<div class="cal-legend">
+  <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#1A3A8A"></span>Sportssync</span>
+  <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--court-green)"></span>Baseline</span>
+  <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#8A4A00"></span>Sports We Play</span>
+  <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--rally-amber)"></span>PPA Tour Asia</span>
+  <span class="cal-legend-item"><span class="cal-legend-line"></span>Reg deadline</span>
+</div>`;
 }
 
 // ── init ──────────────────────────────────────────────────────────────────
