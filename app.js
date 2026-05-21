@@ -669,7 +669,7 @@ function renderCalendar(tournaments, todayStr) {
     const d = new Date(calStart);
     d.setDate(calStart.getDate() + i);
     const isWknd = d.getDay() === 0 || d.getDay() === 6;
-    const col = isWknd ? "rgba(240,165,0,0.07)" : "rgba(0,0,0,0)";
+    const col = isWknd ? "rgba(107,175,140,0.12)" : "rgba(0,0,0,0)";
     gradStops.push(`${col} ${i * CAL_DAY_W}px`, `${col} ${(i + 1) * CAL_DAY_W}px`);
   }
   const weekendBg = `linear-gradient(90deg,${gradStops.join(",")})`;
@@ -725,9 +725,9 @@ function renderCalendar(tournaments, todayStr) {
   </div>
   <div class="cal-rows">${rowsHTML}</div>
   <div class="cal-legend">
-    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#1A3A8A"></span>Sportssync</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#2B5873"></span>Sportssync</span>
     <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--court-green)"></span>Baseline</span>
-    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#8A4A00"></span>Sports We Play</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--rally-amber)"></span>Sports We Play</span>
   </div>
 </div>`;
 }

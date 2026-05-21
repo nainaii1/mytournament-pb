@@ -240,9 +240,9 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   flex-shrink: 0;
   margin-right: 6px;
 }
-.platform-dot[data-platform="sportssync"]     { background: #1A3A8A; }
+.platform-dot[data-platform="sportssync"]     { background: #2B5873; }
 .platform-dot[data-platform="baseline"]       { background: var(--court-green); }
-.platform-dot[data-platform="sports-we-play"] { background: #8A4A00; }
+.platform-dot[data-platform="sports-we-play"] { background: var(--rally-amber); }
 .platform-dot[data-platform="ppa-tour-asia"]  { background: var(--rally-amber); }
 
 .date-block {
@@ -333,11 +333,16 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   background: rgba(13, 31, 26, 0.12); color: var(--mid-green); cursor: not-allowed;
 }
 .btn-register.closed-link {
-  background: rgba(13, 31, 26, 0.10); color: rgba(13,31,26,0.5);
+  background: var(--court-green);
+  color: rgba(255, 255, 255, 0.6);
+  opacity: 0.62;
   text-decoration: none;
+  cursor: default;
 }
 .btn-register.closed-link:hover {
-  background: rgba(13, 31, 26, 0.16); color: rgba(13,31,26,0.7);
+  background: var(--court-green);
+  opacity: 0.72;
+  color: rgba(255, 255, 255, 0.7);
 }
 .btn-share {
   background: transparent; color: var(--mid-green);
@@ -510,9 +515,9 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   background: var(--court-green); min-width: 6px;
   transition: opacity 120ms;
 }
-.cal-bar[data-platform="sportssync"]     { background: #1A3A8A; }
+.cal-bar[data-platform="sportssync"]     { background: #2B5873; }
 .cal-bar[data-platform="baseline"]       { background: var(--court-green); }
-.cal-bar[data-platform="sports-we-play"] { background: #8A4A00; }
+.cal-bar[data-platform="sports-we-play"] { background: var(--rally-amber); }
 .cal-bar[data-platform="ppa-tour-asia"]  { background: var(--rally-amber); }
 
 .cal-closed .cal-bar { opacity: 0.28; }
