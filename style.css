@@ -251,17 +251,17 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   background: var(--mint-wash); border-radius: 9px;
   padding: 8px 10px; text-align: center; min-width: 70px; align-self: start;
 }
-.date-block.grey { background: rgba(13, 31, 26, 0.05); }
+.date-block.grey { background: rgba(13, 31, 26, 0.07); }
 .date-month {
   font-family: 'Sora', sans-serif; font-weight: 700; font-size: 10px;
   text-transform: uppercase; letter-spacing: 0.1em; color: var(--court-green); margin-bottom: 1px;
 }
-.date-month.muted { color: var(--mid-green); }
+.date-month.muted { color: rgba(13,31,26,0.35); }
 .date-day {
   font-family: 'Sora', sans-serif; font-weight: 800; font-size: 18px;
   color: var(--deep-court); line-height: 1.05; font-variant-numeric: tabular-nums;
 }
-.date-day.muted { color: var(--mid-green); }
+.date-day.muted { color: rgba(13,31,26,0.35); }
 
 .card-body { min-width: 0; }
 .card-name {
@@ -277,7 +277,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 }
 .reg-badge.soon { background: var(--rally-amber); color: #fff; }
 .reg-badge.open { background: rgba(26, 107, 74, 0.10); color: var(--court-green); }
-.reg-badge.closed { background: rgba(13, 31, 26, 0.08); color: var(--mid-green); }
+.reg-badge.closed { background: rgba(13, 31, 26, 0.08); color: rgba(13,31,26,0.45); }
 
 .meta-row {
   display: flex; align-items: flex-start; justify-content: space-between;
@@ -333,6 +333,13 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 .btn-register:hover { background: #155a3f; }
 .btn-register.closed {
   background: rgba(13, 31, 26, 0.12); color: var(--mid-green); cursor: not-allowed;
+}
+.btn-register.closed-link {
+  background: rgba(13, 31, 26, 0.10); color: rgba(13,31,26,0.5);
+  text-decoration: none;
+}
+.btn-register.closed-link:hover {
+  background: rgba(13, 31, 26, 0.16); color: rgba(13,31,26,0.7);
 }
 .btn-share {
   background: transparent; color: var(--mid-green);
@@ -488,7 +495,8 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 
 /* Tournament rows */
 .cal-row { border-bottom: 1px solid rgba(13,31,26,0.05); min-height: 44px; }
-.cal-row:hover { background: rgba(13,31,26,0.015); }
+.cal-rows .cal-row:nth-child(even) { background: rgba(13,31,26,0.018); }
+.cal-row:hover { background: rgba(13,31,26,0.035); }
 
 .cal-t-name {
   font-size: 11px; font-weight: 500; color: var(--deep-court); line-height: 1.3;

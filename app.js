@@ -241,8 +241,11 @@ function renderCard(t, todayStr) {
   const dotHTML = platformKey
     ? `<span class="platform-dot" data-platform="${escapeAttr(platformKey)}"></span>`
     : "";
+  const hasURL  = regURL && regURL !== "#" && regURL !== "undefined";
   const btnHTML = isClosed
-    ? `<button class="btn-register closed" disabled>Reg closed</button>`
+    ? (hasURL
+        ? `<a class="btn-register closed-link" href="${regURL}" target="_blank" rel="noopener">${dotHTML}Reg closed · ${escapeHtml(platform || "View")} →</a>`
+        : `<button class="btn-register closed" disabled>Reg closed</button>`)
     : `<a class="btn-register" href="${regURL}" target="_blank" rel="noopener">${dotHTML}${btnLabel}</a>`;
 
   const cardClasses = ["card",
@@ -662,6 +665,17 @@ function renderCalendar(tournaments, todayStr) {
     </div>`;
   }
 
+  // ── Weekend background gradient (applied to every timeline row) ─────
+  const gradStops = [];
+  for (let i = 0; i < CAL_DAYS; i++) {
+    const d = new Date(calStart);
+    d.setDate(calStart.getDate() + i);
+    const isWknd = d.getDay() === 0 || d.getDay() === 6;
+    const col = isWknd ? "rgba(240,165,0,0.07)" : "rgba(0,0,0,0)";
+    gradStops.push(`${col} ${i * CAL_DAY_W}px`, `${col} ${(i + 1) * CAL_DAY_W}px`);
+  }
+  const weekendBg = `linear-gradient(90deg,${gradStops.join(",")})`;
+
   // ── Tournament rows ──────────────────────────────────────────────────
   const visible = tournaments.filter(t => {
     const sStr = t["Start Date"] || "";
@@ -695,8 +709,10 @@ function renderCalendar(tournaments, todayStr) {
   <div class="cal-label-col">
     <div class="cal-t-name">${escapeHtml(t["Tournament Name"] || "")}</div>
   </div>
-  <div class="cal-timeline" style="width:${CAL_DAYS * CAL_DAY_W}px">
-    <div class="cal-bar" data-platform="${escapeAttr(platKey)}" style="left:${barLeft}px;width:${barWidth}px"></div>
+  <div class="cal-timeline" style="width:${CAL_DAYS * CAL_DAY_W}px;background:${weekendBg}">
+    <div class="cal-bar" data-platform="${escapeAttr(platKey)}"
+         style="left:${barLeft}px;width:${barWidth}px"
+         title="${escapeAttr(t["Tournament Name"] || "")} · ${escapeAttr(sStr)} – ${escapeAttr(eStr)}"></div>
   </div>
 </div>`;
   }
