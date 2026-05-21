@@ -109,6 +109,7 @@ a { text-decoration: none; }
 
 /* Sort chip — native select overlay */
 .sort-chip { position: relative; overflow: visible; }
+.sort-chip.sort-active { background: var(--mint-wash); border-color: var(--court-green); }
 .sort-select {
   position: absolute; inset: 0; opacity: 0; cursor: pointer;
   width: 100%; height: 100%; font-size: 16px;
@@ -213,6 +214,15 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 }
 .card:active { transform: scale(0.99); }
 .card.closed-reg { opacity: 0.78; }
+
+/* Platform left-border — visual scan aid */
+.card[data-platform="sportssync"]     { border-left: 3px solid #1A3A8A; }
+.card[data-platform="baseline"]       { border-left: 3px solid var(--court-green); }
+.card[data-platform="sports-we-play"] { border-left: 3px solid #8A4A00; }
+.card[data-platform="ppa-tour-asia"]  { border-left: 3px solid var(--rally-amber); }
+
+/* THE PICK amber top-border */
+.card.pick { border-top: 2px solid var(--rally-amber); }
 
 .date-block {
   background: var(--mint-wash); border-radius: 9px;
@@ -402,4 +412,36 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
+}
+
+/* ===== DESKTOP LAYOUT (≥1024px) ===== */
+@media (min-width: 1024px) {
+  /* Widen all centred containers from 480px → 1200px */
+  .header-row,
+  .urgency-inner,
+  main,
+  .footer-inner { max-width: 1200px; }
+
+  /* Constrain filterbar rows to match content width */
+  .month-row,
+  .filter-scroll {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* 3-column card grid */
+  .cards-wrap {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  /* Grid gap handles spacing — remove per-card bottom margin */
+  .cards-wrap .card { margin-bottom: 0; }
+
+  /* Equal-height cards: push register button to bottom of each card */
+  .cards-wrap .card-body { display: flex; flex-direction: column; }
+  .cards-wrap .card-actions { margin-top: auto; }
 }

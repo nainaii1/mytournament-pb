@@ -163,19 +163,17 @@ function sortTournaments(tournaments, mode) {
 
 // Splits tournaments into three display sections. Hides past-end-date entries.
 function bucketTournaments(tournaments, todayStr) {
-  const closingSoon = [], comingUp = [], regClosed = [];
+  const closingSoon = [], comingUp = [];
   for (const t of tournaments) {
     const endDate = t["End Date"] || "";
     if (endDate && DATE_RE.test(endDate) && isPastDate(endDate, todayStr)) continue;
-    if (t.isClosed) {
-      regClosed.push(t);
-    } else if (t.isClosingSoon) {
+    if (t.isClosingSoon) {
       closingSoon.push(t);
     } else {
-      comingUp.push(t);
+      comingUp.push(t); // includes both open and closed-reg future tournaments
     }
   }
-  return { closingSoon, comingUp, regClosed };
+  return { closingSoon, comingUp };
 }
 
 // ── Render helpers ────────────────────────────────────────────────────────
@@ -238,15 +236,19 @@ function renderCard(t, todayStr) {
   const orgParts = [t["Organizer"], t["Venue"], t["State"]].filter(Boolean);
   const orgLine  = orgParts.map(escapeHtml).join(" · ");
 
-  const regURL    = escapeAttr(t["Registration URL"] || "#");
-  const platform  = (t["Source Platform"] || "").trim();
-  const btnLabel  = platform ? `Register · ${escapeHtml(platform)} →` : `Register →`;
+  const regURL      = escapeAttr(t["Registration URL"] || "#");
+  const platform    = (t["Source Platform"] || "").trim();
+  const platformKey = platform.toLowerCase().replace(/\s+/g, "-");
+  const isPick      = (t["Pick Priority"] || "").startsWith("1");
+  const btnLabel    = platform ? `Register · ${escapeHtml(platform)} →` : `Register →`;
   const btnHTML = isClosed
     ? `<button class="btn-register closed" disabled>Reg closed</button>`
     : `<a class="btn-register" href="${regURL}" target="_blank" rel="noopener">${btnLabel}</a>`;
 
+  const cardClasses = ["card", isClosed ? "closed-reg" : "", isPick ? "pick" : ""].filter(Boolean).join(" ");
+
   return `
-<div class="card${isClosed ? " closed-reg" : ""}" id="${id}">
+<div class="${cardClasses}" id="${id}" data-platform="${escapeAttr(platformKey)}">
   <div class="date-block${isClosed ? " grey" : ""}">
     <div class="date-month${isClosed ? " muted" : ""}">${month}</div>
     <div class="date-day${isClosed ? " muted" : ""}">${day}</div>
@@ -467,7 +469,7 @@ function renderAll() {
   const todayStr     = todayUTCString();
   const filtered = allTournaments.filter(matchesMonthFilter).filter(matchesSkillFilter);
   const sorted   = sortTournaments(filtered, sortMode);
-  const { closingSoon, comingUp, regClosed } = bucketTournaments(sorted, todayStr);
+  const { closingSoon, comingUp } = bucketTournaments(sorted, todayStr);
 
   // Urgency strip
   const urgencyEl = document.getElementById("urgency-strip");
@@ -493,23 +495,17 @@ function renderAll() {
     closingEl.hidden = true;
   }
 
-  // Coming up section
+  // Coming up section — includes closed-reg future tournaments
+  // "Open reg only" toggle filters out closed-reg cards here instead of a separate section
+  const visibleComingUp = openRegOnly ? comingUp.filter(t => !t.isClosed) : comingUp;
   const comingEl = document.getElementById("section-coming");
   comingEl.innerHTML = renderSection(
-    null, "📅 Coming up", "", "green", comingUp, todayStr,
+    null, "📅 Coming up", "", "green", visibleComingUp, todayStr,
     closingSoon.length > 0, "coming"
   );
 
-  // Reg-closed section
-  const closedEl = document.getElementById("section-closed");
-  if (!openRegOnly && regClosed.length > 0) {
-    closedEl.hidden = false;
-    closedEl.innerHTML = renderSection(
-      null, "🔒 Reg closed · still happening", "muted", "muted", regClosed, todayStr, true, "closed"
-    );
-  } else {
-    closedEl.hidden = true;
-  }
+  // Reg-closed section no longer needed — merged into Coming Up
+  document.getElementById("section-closed").hidden = true;
 
   // Footer stats
   const statsEl = document.getElementById("footer-stats");
@@ -589,6 +585,7 @@ async function init() {
         prize:    "Sort: Prize pool (high→low)"
       };
       document.getElementById("sort-label").textContent = labels[sortMode] || "Sort";
+      document.querySelector(".sort-chip").classList.toggle("sort-active", sortMode !== "deadline");
       renderAll();
     });
 
