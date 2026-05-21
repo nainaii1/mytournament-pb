@@ -234,13 +234,11 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 
 /* Platform dot — sits inside the register button, directly before the platform name */
 .platform-dot {
-  display: inline-block;
-  width: 7px; height: 7px;
+  display: block;
+  width: 8px; height: 8px;
   border-radius: 50%;
-  margin-right: 6px;
-  vertical-align: middle;
-  position: relative; top: -0.5px;
   flex-shrink: 0;
+  margin-right: 6px;
 }
 .platform-dot[data-platform="sportssync"]     { background: #1A3A8A; }
 .platform-dot[data-platform="baseline"]       { background: var(--court-green); }

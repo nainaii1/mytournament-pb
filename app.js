@@ -357,11 +357,9 @@ function rowsToObjects(rows) {
 }
 
 function todayUTCString() {
-  const d = new Date();
-  const y = d.getUTCFullYear();
-  const m = String(d.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(d.getUTCDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
+  // Use MYT (UTC+8) — all tournaments are in Malaysia
+  const myt = new Date(Date.now() + 8 * 3600 * 1000);
+  return myt.toISOString().slice(0, 10);
 }
 
 function isPastDate(s, todayStr) {
