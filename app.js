@@ -417,6 +417,7 @@ let sortMode      = "deadline";
 let openRegOnly   = false;
 let skillFilters  = new Set(); // empty = show all; values: "novice"|"intermediate"|"advanced"|"open"
 let monthFilter   = null;      // null = ALL; "YYYY-MM" string when active
+let stateFilter   = null;      // null = ALL; state string (e.g. "KL/SGR") when active
 const sectionCollapsed = { closing: false, coming: false, closed: false };
 let calendarMode = false;
 
@@ -436,6 +437,11 @@ function matchesMonthFilter(t) {
   const start = t["Start Date"] || "";
   if (!DATE_RE.test(start)) return true;
   return start.startsWith(monthFilter);
+}
+
+function matchesStateFilter(t) {
+  if (!stateFilter) return true;
+  return (t["State"] || "").trim() === stateFilter;
 }
 
 function buildMonthChips(tournaments) {
@@ -482,6 +488,43 @@ function buildMonthChips(tournaments) {
   });
 }
 
+function buildStateChips(tournaments) {
+  const stateRow = document.getElementById("state-row");
+  if (!stateRow) return;
+
+  const seen = new Set();
+  for (const t of tournaments) {
+    const s = (t["State"] || "").trim();
+    if (s) seen.add(s);
+  }
+  const states = [...seen].sort();
+
+  if (states.length <= 1) { stateRow.hidden = true; return; }
+
+  stateRow.hidden = false;
+  stateRow.innerHTML =
+    `<button class="month-tab on" data-state="ALL" aria-pressed="true">All</button>` +
+    states.map(s =>
+      `<button class="month-tab" data-state="${escapeAttr(s)}" aria-pressed="false">${escapeHtml(s)}</button>`
+    ).join("");
+
+  stateRow.querySelectorAll("button[data-state]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      stateFilter = btn.dataset.state === "ALL" ? null
+                  : stateFilter === btn.dataset.state ? null
+                  : btn.dataset.state;
+      stateRow.querySelectorAll("[data-state]").forEach(b => {
+        const active = b.dataset.state === "ALL"
+          ? stateFilter === null
+          : b.dataset.state === stateFilter;
+        b.classList.toggle("on", active);
+        b.setAttribute("aria-pressed", String(active));
+      });
+      renderAll();
+    });
+  });
+}
+
 // ── Nav state sync ────────────────────────────────────────────────────────
 function syncNavState() {
   const navHome = document.getElementById("nav-home");
@@ -514,7 +557,7 @@ function renderAll() {
 
   // ── List mode ───────────────────────────────────────────────────────────
   document.getElementById("calendar-view").hidden = true;
-  const filtered = allTournaments.filter(matchesMonthFilter).filter(matchesSkillFilter);
+  const filtered = allTournaments.filter(matchesMonthFilter).filter(matchesStateFilter).filter(matchesSkillFilter);
   const sorted   = sortTournaments(filtered, sortMode);
   const { closingSoon, comingUp } = bucketTournaments(sorted, todayStr);
 
@@ -558,6 +601,23 @@ function renderAll() {
   const statsEl = document.getElementById("footer-stats");
   if (statsEl) {
     statsEl.textContent = `${todayStr} · ${allTournaments.length} verified event${allTournaments.length !== 1 ? "s" : ""}`;
+  }
+
+  // Stats strip (top of main) — shows full dataset totals, not filtered
+  const stripEl = document.getElementById("stats-strip");
+  if (stripEl) {
+    let prizeSum = 0;
+    for (const t of allTournaments) {
+      const p = parseFloat((t["Prize Pool (RM)"] || "").toString().replace(/[,\s]/g, ""));
+      if (!isNaN(p) && p > 0) prizeSum += p;
+    }
+    const prizeStr = prizeSum >= 1000000
+      ? `RM ${(prizeSum / 1000000).toFixed(1)}M`
+      : prizeSum >= 1000
+      ? `RM ${(prizeSum / 1000).toFixed(0)}K`
+      : `RM ${prizeSum.toLocaleString()}`;
+    stripEl.hidden = false;
+    stripEl.innerHTML = `<span class="stats-num">${allTournaments.length}</span> tournaments · <span class="stats-num">${prizeStr}</span> total prize pool`;
   }
 
   // Wire share buttons (re-wired after every innerHTML update)
@@ -737,6 +797,7 @@ async function init() {
   try {
     allTournaments = await fetchTournaments();
     buildMonthChips(allTournaments);
+    buildStateChips(allTournaments);
     renderAll();
 
     // Sort chip interaction
@@ -791,6 +852,7 @@ async function init() {
       if (!calendarMode) {
         calendarMode = true;
         monthFilter  = null; // calendar always shows full window
+        stateFilter  = null;
         // Reset month chips to ALL
         const monthRow = document.getElementById("month-row");
         monthRow?.querySelectorAll("[data-month]").forEach(b => {
