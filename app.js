@@ -603,23 +603,6 @@ function renderAll() {
     statsEl.textContent = `${todayStr} · ${allTournaments.length} verified event${allTournaments.length !== 1 ? "s" : ""}`;
   }
 
-  // Stats strip (top of main) — shows full dataset totals, not filtered
-  const stripEl = document.getElementById("stats-strip");
-  if (stripEl) {
-    let prizeSum = 0;
-    for (const t of allTournaments) {
-      const p = parseFloat((t["Prize Pool (RM)"] || "").toString().replace(/[,\s]/g, ""));
-      if (!isNaN(p) && p > 0) prizeSum += p;
-    }
-    const prizeStr = prizeSum >= 1000000
-      ? `RM ${(prizeSum / 1000000).toFixed(1)}M`
-      : prizeSum >= 1000
-      ? `RM ${(prizeSum / 1000).toFixed(0)}K`
-      : `RM ${prizeSum.toLocaleString()}`;
-    stripEl.hidden = false;
-    stripEl.innerHTML = `<span class="stats-num">${allTournaments.length}</span> tournaments · <span class="stats-num">${prizeStr}</span> total prize pool`;
-  }
-
   // Wire share buttons (re-wired after every innerHTML update)
   document.querySelectorAll(".btn-share[data-id]").forEach(btn => {
     btn.addEventListener("click", () => {

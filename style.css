@@ -408,20 +408,6 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 }
 .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* ===== STATS STRIP ===== */
-.stats-strip {
-  text-align: center;
-  font-size: 12px;
-  color: var(--mid-green);
-  padding: 8px 16px 10px;
-  border-bottom: 1px solid rgba(13,31,26,0.06);
-  letter-spacing: 0.01em;
-}
-.stats-num {
-  color: var(--court-green);
-  font-weight: 700;
-}
-
 /* ===== SKELETON LOADER ===== */
 .skeleton-wrap {
   padding: 0 16px 24px;
