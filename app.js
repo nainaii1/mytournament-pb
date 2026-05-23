@@ -414,7 +414,6 @@ async function fetchTournaments() {
 // ── State ─────────────────────────────────────────────────────────────────
 let allTournaments = [];
 let sortMode      = "deadline";
-let openRegOnly   = false;
 let skillFilters  = new Set(); // empty = show all; values: "novice"|"intermediate"|"advanced"|"open"
 let monthFilter   = null;      // null = ALL; "YYYY-MM" string when active
 let stateFilter   = null;      // null = ALL; state string (e.g. "KL/SGR") when active
@@ -497,16 +496,23 @@ function buildStateChips(tournaments) {
     const s = (t["State"] || "").trim();
     if (s) seen.add(s);
   }
-  const states = [...seen].sort();
+  const PRIORITY_STATES = ['KL/SGR', 'Penang', 'Johor'];
+  const LABEL_MAP = { 'KL/SGR': 'Klang Valley' };
+  const all = [...seen];
+  const states = [
+    ...PRIORITY_STATES.filter(s => all.includes(s)),
+    ...all.filter(s => !PRIORITY_STATES.includes(s)).sort()
+  ];
 
   if (states.length <= 1) { stateRow.hidden = true; return; }
 
   stateRow.hidden = false;
   stateRow.innerHTML =
     `<button class="month-tab on" data-state="ALL" aria-pressed="true">All</button>` +
-    states.map(s =>
-      `<button class="month-tab" data-state="${escapeAttr(s)}" aria-pressed="false">${escapeHtml(s)}</button>`
-    ).join("");
+    states.map(s => {
+      const label = LABEL_MAP[s] || s;
+      return `<button class="month-tab" data-state="${escapeAttr(s)}" aria-pressed="false">${escapeHtml(label)}</button>`;
+    }).join("");
 
   stateRow.querySelectorAll("button[data-state]").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -587,7 +593,7 @@ function renderAll() {
 
   // Coming up section — includes closed-reg future tournaments
   // "Open reg only" toggle filters out closed-reg cards here instead of a separate section
-  const visibleComingUp = openRegOnly ? comingUp.filter(t => !t.isClosed) : comingUp;
+  const visibleComingUp = comingUp;
   const comingEl = document.getElementById("section-coming");
   comingEl.innerHTML = renderSection(
     null, "📅 Coming up", "", "green", visibleComingUp, todayStr,
@@ -766,12 +772,12 @@ function renderCalendar(tournaments, todayStr) {
     <div class="cal-label-col cal-head-label"></div>
     <div class="cal-head-days">${dayCells}</div>
   </div>
-  <div class="cal-rows">${rowsHTML}</div>
   <div class="cal-legend">
     <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#2B5873"></span>Sportssync</span>
     <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--court-green)"></span>Baseline</span>
     <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--rally-amber)"></span>Sports We Play</span>
   </div>
+  <div class="cal-rows">${rowsHTML}</div>
 </div>`;
 }
 
@@ -793,15 +799,6 @@ async function init() {
       };
       document.getElementById("sort-label").textContent = labels[sortMode] || "Sort";
       document.querySelector(".sort-chip").classList.toggle("sort-active", sortMode !== "deadline");
-      renderAll();
-    });
-
-    // Open-reg-only toggle
-    const toggleBtn = document.getElementById("open-reg-toggle");
-    toggleBtn.addEventListener("click", () => {
-      openRegOnly = !openRegOnly;
-      toggleBtn.classList.toggle("on", openRegOnly);
-      toggleBtn.setAttribute("aria-pressed", String(openRegOnly));
       renderAll();
     });
 

@@ -96,14 +96,26 @@ a { text-decoration: none; }
   padding: 10px 0;
   position: sticky; top: 58px; z-index: 40;
 }
+.filterbar-chips-row {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
 .filter-scroll {
+  flex: 1;
+  min-width: 0;
   display: flex; gap: 6px; align-items: center;
   overflow-x: auto; scroll-snap-type: x proximity;
-  padding: 0 16px;
+  padding: 8px 0 8px 16px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
 .filter-scroll::-webkit-scrollbar { display: none; }
+.sort-wrap {
+  flex-shrink: 0;
+  padding: 8px 16px 8px 8px;
+  border-left: 1px solid rgba(13,31,26,0.08);
+}
 .chip {
   display: inline-flex; align-items: center; gap: 5px;
   border: 1px solid rgba(13, 31, 26, 0.13); background: #fff;
@@ -177,6 +189,8 @@ a { text-decoration: none; }
 .month-tab:hover { color: var(--deep-court); }
 .month-tab.on { color: var(--court-green); border-bottom-color: var(--court-green); }
 .month-tab:focus-visible { outline: 2px solid var(--court-green); outline-offset: 2px; }
+
+.state-row { padding-bottom: 6px; }
 
 /* Ensure closing-soon anchor isn't hidden under taller sticky filterbar */
 [id="closing-soon"] { scroll-margin-top: 120px; }
