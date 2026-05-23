@@ -210,6 +210,13 @@ function renderEventPills(raw) {
   return `<div class="events">${types.map(t => `<span class="event-pill">${escapeHtml(t)}</span>`).join("")}</div>`;
 }
 
+function renderAgePills(raw) {
+  if (!raw || !raw.trim()) return "";
+  const groups = raw.split(",").map(s => s.trim()).filter(Boolean);
+  if (!groups.length) return "";
+  return `<div class="age-groups">${groups.map(g => `<span class="age-pill">${escapeHtml(g)}</span>`).join("")}</div>`;
+}
+
 function renderSkillChips(raw) {
   const brackets = parseSkillLevel(raw);
   if (!brackets.length) return "";
@@ -271,6 +278,7 @@ function renderCard(t, todayStr) {
       ${renderSkillChips(t["Skill Level"] || "")}
     </div>
     ${renderEventPills(t["Event Type"] || "")}
+    ${renderAgePills(t["Age Group"] || "")}
     <div class="card-actions">
       ${btnHTML}
       <button class="btn-share" aria-label="Share ${escapeAttr(t["Tournament Name"] || "")}" data-id="${id}">⤴ Share</button>

@@ -334,6 +334,13 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   background: var(--court-green); color: #fff;
   padding: 2px 9px; letter-spacing: 0.06em;
 }
+.events + .age-groups { margin-top: -4px; }
+.age-groups { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
+.age-pill {
+  font-size: 10px; color: var(--mid-green);
+  background: rgba(107,175,140,0.14);
+  padding: 2px 7px; border-radius: 4px; font-weight: 700; letter-spacing: 0.02em;
+}
 
 /* Card actions */
 .card-actions { display: flex; gap: 6px; align-items: center; }
