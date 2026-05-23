@@ -269,7 +269,6 @@ function renderCard(t, todayStr) {
   <div class="card-body">
     <div class="card-name">${escapeHtml(t["Tournament Name"] || "")}</div>
     <div class="card-org">${orgLine}</div>
-    <span class="reg-badge ${badge.cls}">${badge.text}</span>
     <div class="meta-row">
       <div class="pairs">
         <div class="pair"><div class="k">Entry</div><div class="v">${escapeHtml(t["Entry Fee (RM)"] || "—")}</div></div>
@@ -279,6 +278,7 @@ function renderCard(t, todayStr) {
     </div>
     ${renderEventPills(t["Event Type"] || "")}
     ${renderAgePills(t["Age Group"] || "")}
+    <span class="reg-badge ${badge.cls}">${badge.text}</span>
     <div class="card-actions">
       ${btnHTML}
       <button class="btn-share" aria-label="Share ${escapeAttr(t["Tournament Name"] || "")}" data-id="${id}">⤴ Share</button>
@@ -421,7 +421,7 @@ async function fetchTournaments() {
 
 // ── State ─────────────────────────────────────────────────────────────────
 let allTournaments = [];
-let sortMode      = "deadline";
+let sortMode      = "date";
 let skillFilters  = new Set(); // empty = show all; values: "novice"|"intermediate"|"advanced"|"open"
 let monthFilter   = null;      // null = ALL; "YYYY-MM" string when active
 let stateFilter   = null;      // null = ALL; state string (e.g. "KL/SGR") when active
@@ -806,7 +806,7 @@ async function init() {
         prize:    "Sort: Prize pool (high→low)"
       };
       document.getElementById("sort-label").textContent = labels[sortMode] || "Sort";
-      document.querySelector(".sort-chip").classList.toggle("sort-active", sortMode !== "deadline");
+      document.querySelector(".sort-chip").classList.toggle("sort-active", sortMode !== "date");
       renderAll();
     });
 
