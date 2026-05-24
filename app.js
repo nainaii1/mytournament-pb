@@ -424,7 +424,7 @@ let allTournaments = [];
 let sortMode      = "date";
 let skillFilters  = new Set(); // empty = show all; values: "novice"|"intermediate"|"advanced"|"open"
 let monthFilter   = null;      // null = ALL; "YYYY-MM" string when active
-let stateFilter   = null;      // null = ALL; state string (e.g. "KL/SGR") when active
+let stateFilter   = null;      // null = ALL; state string (e.g. "Klang Valley") when active
 const sectionCollapsed = { closing: false, coming: false, closed: false };
 let calendarMode = false;
 
@@ -504,8 +504,8 @@ function buildStateChips(tournaments) {
     const s = (t["State"] || "").trim();
     if (s) seen.add(s);
   }
-  const PRIORITY_STATES = ['KL/SGR', 'Penang', 'Johor'];
-  const LABEL_MAP = { 'KL/SGR': 'Klang Valley' };
+  const PRIORITY_STATES = ['Klang Valley', 'Penang', 'Johor'];
+  const LABEL_MAP = {};
   const all = [...seen];
   const states = [
     ...PRIORITY_STATES.filter(s => all.includes(s)),
