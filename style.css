@@ -529,6 +529,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 
 /* Timeline */
 .cal-timeline { position: relative; flex: 1; min-height: 44px; }
+.cal-wknd-col  { position: absolute; top: 0; bottom: 0; background: rgba(107,175,140,0.12); pointer-events: none; }
 
 /* Gantt bar — no label text */
 .cal-bar {

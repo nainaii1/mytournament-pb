@@ -720,16 +720,16 @@ function renderCalendar(tournaments, todayStr) {
     </div>`;
   }
 
-  // ── Weekend background gradient (applied to every timeline row) ─────
-  const gradStops = [];
+  // ── Weekend overlay divs (one per weekend day — avoids long inline-style gradients
+  //    that mobile Safari silently truncates, causing July+ weekends to go blank) ──
+  let weekendOverlays = "";
   for (let i = 0; i < CAL_DAYS; i++) {
     const d = new Date(calStart);
     d.setDate(calStart.getDate() + i);
-    const isWknd = d.getDay() === 0 || d.getDay() === 6;
-    const col = isWknd ? "rgba(107,175,140,0.12)" : "rgba(0,0,0,0)";
-    gradStops.push(`${col} ${i * CAL_DAY_W}px`, `${col} ${(i + 1) * CAL_DAY_W}px`);
+    if (d.getDay() === 0 || d.getDay() === 6) {
+      weekendOverlays += `<div class="cal-wknd-col" style="left:${i * CAL_DAY_W}px;width:${CAL_DAY_W}px"></div>`;
+    }
   }
-  const weekendBg = `linear-gradient(90deg,${gradStops.join(",")})`;
 
   // ── Tournament rows ──────────────────────────────────────────────────
   const visible = tournaments.filter(t => {
@@ -764,8 +764,8 @@ function renderCalendar(tournaments, todayStr) {
   <div class="cal-label-col">
     <div class="cal-t-name">${escapeHtml(t["Tournament Name"] || "")}</div>
   </div>
-  <div class="cal-timeline" style="width:${CAL_DAYS * CAL_DAY_W}px;background:${weekendBg}">
-    <div class="cal-bar" data-platform="${escapeAttr(platKey)}"
+  <div class="cal-timeline" style="width:${CAL_DAYS * CAL_DAY_W}px">
+    ${weekendOverlays}<div class="cal-bar" data-platform="${escapeAttr(platKey)}"
          style="left:${barLeft}px;width:${barWidth}px"
          title="${escapeAttr(t["Tournament Name"] || "")} · ${escapeAttr(sStr)} – ${escapeAttr(eStr)}"></div>
   </div>
