@@ -720,25 +720,27 @@ function renderCalendar(tournaments, todayStr) {
     </div>`;
   }
 
-  // ── Weekend background — injected via <style> tag to bypass Safari's inline-style
-  //    length limit (~4–6 kB), which silently truncates the gradient mid-July ──────
-  const gradStops = [];
+  // ── Weekend background gradient ──────────────────────────────────────
+  // Safari's CSS gradient parser silently drops stops beyond ~80, which
+  // caused July+ weekends to go blank with the original 140-stop gradient.
+  // Fix: emit stops ONLY at colour transitions (weekday↔weekend boundaries)
+  // → ~42 stops instead of 140, safe on every browser's CSS parser. ────
+  const WKND_COL = "rgba(107,175,140,0.12)";
+  const wkndStops = [];
+  let prevWknd = null;
   for (let i = 0; i < CAL_DAYS; i++) {
     const d = new Date(calStart);
     d.setDate(calStart.getDate() + i);
-    const col = (d.getDay() === 0 || d.getDay() === 6)
-      ? "rgba(107,175,140,0.12)" : "transparent";
-    gradStops.push(`${col} ${i * CAL_DAY_W}px`, `${col} ${(i + 1) * CAL_DAY_W}px`);
+    const isWknd = d.getDay() === 0 || d.getDay() === 6;
+    if (isWknd !== prevWknd) {
+      const px = i * CAL_DAY_W;
+      if (prevWknd !== null) wkndStops.push(`${prevWknd ? WKND_COL : "transparent"} ${px}px`);
+      wkndStops.push(`${isWknd ? WKND_COL : "transparent"} ${px}px`);
+      prevWknd = isWknd;
+    }
   }
-  const weekendGrad = `linear-gradient(90deg,${gradStops.join(",")})`;
-  // Reuse or create one dedicated <style> element (avoids inline-style length limits)
-  let wkndStyle = document.getElementById("cal-wknd-style");
-  if (!wkndStyle) {
-    wkndStyle = document.createElement("style");
-    wkndStyle.id = "cal-wknd-style";
-    document.head.appendChild(wkndStyle);
-  }
-  wkndStyle.textContent = `.cal-timeline{background:${weekendGrad}}`;
+  wkndStops.push(`${prevWknd ? WKND_COL : "transparent"} ${CAL_DAYS * CAL_DAY_W}px`);
+  const weekendGrad = `linear-gradient(90deg,${wkndStops.join(",")})`;
 
   // ── Tournament rows ──────────────────────────────────────────────────
   const visible = tournaments.filter(t => {
@@ -773,7 +775,7 @@ function renderCalendar(tournaments, todayStr) {
   <div class="cal-label-col">
     <div class="cal-t-name">${escapeHtml(t["Tournament Name"] || "")}</div>
   </div>
-  <div class="cal-timeline" style="width:${CAL_DAYS * CAL_DAY_W}px">
+  <div class="cal-timeline" style="width:${CAL_DAYS * CAL_DAY_W}px;background:${weekendGrad}">
     <div class="cal-bar" data-platform="${escapeAttr(platKey)}"
          style="left:${barLeft}px;width:${barWidth}px"
          title="${escapeAttr(t["Tournament Name"] || "")} · ${escapeAttr(sStr)} – ${escapeAttr(eStr)}"></div>
