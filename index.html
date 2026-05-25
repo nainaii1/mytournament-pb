@@ -60,6 +60,18 @@
 
 <!-- FILTER BAR -->
 <div class="filterbar" role="region" aria-label="Filter and sort tournaments">
+  <div class="search-row">
+    <div class="search-wrap">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="search-input" class="search-input"
+             placeholder="Search tournaments, venues, skill levels…"
+             autocomplete="off" autocorrect="off" spellcheck="false"
+             aria-label="Search tournaments">
+      <button id="search-clear" class="search-clear" hidden aria-label="Clear search">✕</button>
+    </div>
+  </div>
   <div id="month-row" class="month-row" role="group" aria-label="Filter by month">
     <!-- populated by buildMonthChips() after data loads -->
   </div>

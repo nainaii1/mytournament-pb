@@ -425,6 +425,7 @@ let sortMode      = "date";
 let skillFilters  = new Set(); // empty = show all; values: "novice"|"intermediate"|"advanced"|"open"
 let monthFilter   = null;      // null = ALL; "YYYY-MM" string when active
 let stateFilter   = null;      // null = ALL; state string (e.g. "Klang Valley") when active
+let searchQuery   = "";        // empty = show all; lowercase string when active
 const sectionCollapsed = { closing: false, coming: false, closed: false };
 let calendarMode = false;
 
@@ -449,6 +450,18 @@ function matchesMonthFilter(t) {
 function matchesStateFilter(t) {
   if (!stateFilter) return true;
   return (t["State"] || "").trim() === stateFilter;
+}
+
+function matchesSearchFilter(t) {
+  if (!searchQuery) return true;
+  const q = searchQuery.toLowerCase();
+  return [
+    t["Tournament Name"] || "",
+    t["Venue"]           || "",
+    t["State"]           || "",
+    t["Skill Level"]     || "",
+    t["Organizer"]       || "",
+  ].some(f => f.toLowerCase().includes(q));
 }
 
 function buildMonthChips(tournaments) {
@@ -561,9 +574,9 @@ function renderAll() {
     document.getElementById("section-closed").hidden   = true;
     const calEl = document.getElementById("calendar-view");
     calEl.hidden = false;
-    // Calendar always shows all upcoming events; skill filter still applies
+    // Calendar always shows all upcoming events; skill + search filters apply
     const calTournaments = sortTournaments(
-      allTournaments.filter(matchesSkillFilter), "date"
+      allTournaments.filter(matchesSkillFilter).filter(matchesSearchFilter), "date"
     );
     calEl.innerHTML = renderCalendar(calTournaments, todayStr);
     return;
@@ -571,7 +584,11 @@ function renderAll() {
 
   // ── List mode ───────────────────────────────────────────────────────────
   document.getElementById("calendar-view").hidden = true;
-  const filtered = allTournaments.filter(matchesMonthFilter).filter(matchesStateFilter).filter(matchesSkillFilter);
+  const filtered = allTournaments
+    .filter(matchesMonthFilter)
+    .filter(matchesStateFilter)
+    .filter(matchesSkillFilter)
+    .filter(matchesSearchFilter);
   const sorted   = sortTournaments(filtered, sortMode);
   const { closingSoon, comingUp } = bucketTournaments(sorted, todayStr);
 
@@ -600,13 +617,21 @@ function renderAll() {
   }
 
   // Coming up section — includes closed-reg future tournaments
-  // "Open reg only" toggle filters out closed-reg cards here instead of a separate section
   const visibleComingUp = comingUp;
   const comingEl = document.getElementById("section-coming");
-  comingEl.innerHTML = renderSection(
-    null, "📅 Coming up", "", "green", visibleComingUp, todayStr,
-    closingSoon.length > 0, "coming"
-  );
+  if (searchQuery && closingSoon.length === 0 && visibleComingUp.length === 0) {
+    comingEl.innerHTML = `
+<div class="empty-state">
+  <div class="empty-icon">🔍</div>
+  <div class="empty-title">No tournaments found</div>
+  <div class="empty-sub">Try different keywords or clear the search</div>
+</div>`;
+  } else {
+    comingEl.innerHTML = renderSection(
+      null, "📅 Coming up", "", "green", visibleComingUp, todayStr,
+      closingSoon.length > 0, "coming"
+    );
+  }
 
   // Reg-closed section no longer needed — merged into Coming Up
   document.getElementById("section-closed").hidden = true;
@@ -807,6 +832,31 @@ async function init() {
     buildMonthChips(allTournaments);
     buildStateChips(allTournaments);
     renderAll();
+
+    // Search input
+    const searchInput = document.getElementById("search-input");
+    const searchClear = document.getElementById("search-clear");
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        searchQuery = searchInput.value.trim().toLowerCase();
+        if (searchClear) searchClear.hidden = !searchQuery;
+        renderAll();
+      });
+      searchInput.addEventListener("search", () => {
+        // Fires when native clear (×) is tapped on mobile
+        searchQuery = "";
+        if (searchClear) searchClear.hidden = true;
+        renderAll();
+      });
+    }
+    if (searchClear) {
+      searchClear.addEventListener("click", () => {
+        if (searchInput) { searchInput.value = ""; searchInput.focus(); }
+        searchQuery = "";
+        searchClear.hidden = true;
+        renderAll();
+      });
+    }
 
     // Sort chip interaction
     document.getElementById("sort-select").addEventListener("change", e => {
