@@ -237,7 +237,7 @@ function renderCard(t, todayStr) {
   const isClosed = t.isClosed;
   const id       = escapeAttr(t["ID"] || "");
 
-  const orgParts = [t["Organizer"], t["Venue"], t["State"]].filter(Boolean);
+  const orgParts = [t["Venue"], t["State"]].filter(Boolean);
   const orgLine  = orgParts.map(escapeHtml).join(" · ");
 
   const regURL      = escapeAttr(t["Registration URL"] || "#");
