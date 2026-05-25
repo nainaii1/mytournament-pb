@@ -275,17 +275,21 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 }
 .date-day.muted { color: rgba(13,31,26,0.35); }
 
-.card-body { min-width: 0; }
+.card-body { min-width: 0; display: flex; flex-direction: column; }
 .card-name {
   font-family: 'Sora', sans-serif; font-weight: 700; font-size: 15px;
   line-height: 1.22; color: var(--deep-court); margin-bottom: 2px;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.card-org { font-size: 11.5px; color: var(--mid-green); margin-bottom: 6px; }
+.card-org {
+  font-size: 11.5px; color: var(--mid-green); margin-bottom: 3px;
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+}
 
 .reg-badge {
   font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
-  display: inline-block; padding: 2px 8px; border-radius: 5px; margin-bottom: 8px; margin-top: 2px;
+  display: inline-block; padding: 2px 8px; border-radius: 5px; margin-bottom: 8px;
+  align-self: flex-start;
 }
 .reg-badge.soon { background: var(--rally-amber); color: #fff; }
 .reg-badge.open { background: rgba(26, 107, 74, 0.10); color: var(--court-green); }
@@ -343,7 +347,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 }
 
 /* Card actions */
-.card-actions { display: flex; gap: 6px; align-items: center; }
+.card-actions { display: flex; gap: 6px; align-items: center; margin-top: auto; }
 .btn-register {
   background: var(--court-green); color: #fff; border: none; border-radius: 7px;
   padding: 8px 14px; font-size: 12px; font-weight: 600; flex: 1; min-height: 44px;
@@ -591,7 +595,5 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   /* Grid gap handles spacing — remove per-card bottom margin */
   .cards-wrap .card { margin-bottom: 0; }
 
-  /* Equal-height cards: push register button to bottom of each card */
-  .cards-wrap .card-body { display: flex; flex-direction: column; }
-  .cards-wrap .card-actions { margin-top: auto; }
+  /* Equal-height cards: card-body flex + card-actions margin-top:auto handled globally */
 }

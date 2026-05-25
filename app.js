@@ -269,6 +269,7 @@ function renderCard(t, todayStr) {
   <div class="card-body">
     <div class="card-name">${escapeHtml(t["Tournament Name"] || "")}</div>
     <div class="card-org">${orgLine}</div>
+    <span class="reg-badge ${badge.cls}">${badge.text}</span>
     <div class="meta-row">
       <div class="pairs">
         <div class="pair"><div class="k">Entry</div><div class="v">${escapeHtml(t["Entry Fee (RM)"] || "—")}</div></div>
@@ -278,7 +279,6 @@ function renderCard(t, todayStr) {
     </div>
     ${renderEventPills(t["Event Type"] || "")}
     ${renderAgePills(t["Age Group"] || "")}
-    <span class="reg-badge ${badge.cls}">${badge.text}</span>
     <div class="card-actions">
       ${btnHTML}
       <button class="btn-share" aria-label="Share ${escapeAttr(t["Tournament Name"] || "")}" data-id="${id}">⤴ Share</button>
