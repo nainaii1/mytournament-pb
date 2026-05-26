@@ -9,18 +9,21 @@
 
 Say it naturally, don't read it. Practice once in the mirror.
 
-> "I'm actually from a trading background — I've been doing that for a few years, but I'm taking a break right now while I figure out what's next. During that time, I got into pickleball properly and got frustrated that there was no single place to find tournaments in Malaysia. You'd have to check Sportssync, then Baseline, then Sports We Play — every week, manually. Nobody was aggregating it.
+> "My background is actually in corporate — I was in procurement at SLB for about three years, managing international suppliers across APAC and Europe. Before that I did financial consulting at OCBC. So I know the business side pretty well.
 >
-> So I decided to just build it myself. I have zero dev background, but I've been learning to code with AI tools — vibe coding, basically. I describe what I want, the AI builds it, and I iterate from there. It took a few weeks but mytournamentpb.com is live now. The whole thing is just me and Claude.
+> In 2024 I left corporate to go full-time into Web3 — research, trading, on-chain stuff. I've been doing that for about a year, but I'm at a point now where I'm exploring what's next. And in between, I got seriously into pickleball.
 >
-> I go by Admin PB. The brand is faceless — like an invisible group-chat admin who checks every platform so players don't have to."
+> I got frustrated that there was nowhere to find all Malaysian tournaments in one place — you'd have to manually check Sportssync, Baseline, Sports We Play every week. Nobody was aggregating it. So I just built it myself. I have no dev background, but I've been learning with AI tools — vibe coding basically. Describe what you want, AI builds it, you iterate. mytournamentpb.com has been live for a few weeks now. Just me and Claude.
+>
+> The brand is Admin PB — faceless, like an invisible group-chat admin who checks every platform so players don't have to."
 
 **Why this works:**
-- Trading background signals you're analytical and self-sufficient, not random
-- "Taking a break / figuring out what's next" is honest without sounding desperate
+- SLB + OCBC = credibility, not a random guy — signals BD/commercial instincts
+- Web3 pivot shows you're self-directed and take bets
+- "Exploring what's next" is honest without sounding desperate
 - Vibe coding angle is genuinely interesting — they'll ask about it
 - "Just me and Claude" is funny and disarming
-- Admin PB persona explains the brand immediately
+- Admin PB persona explains the brand in one sentence
 
 ---
 
