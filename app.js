@@ -614,6 +614,7 @@ function renderAll() {
   const todayStr = todayUTCString();
 
   syncNavState();
+  document.body.classList.toggle("calendar-mode", calendarMode);
 
   // ── Calendar mode ───────────────────────────────────────────────────────
   if (calendarMode) {

@@ -816,6 +816,10 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 }
 body.filter-open { overflow: hidden; }
 
+/* ===== CALENDAR MODE — hide filter panel ===== */
+body.calendar-mode #filter-panel       { display: none !important; }
+body.calendar-mode .filter-trigger-row { display: none; }
+
 /* ===== DESKTOP LAYOUT (≥1024px) ===== */
 @media (min-width: 1024px) {
 
