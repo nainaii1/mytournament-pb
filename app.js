@@ -428,6 +428,7 @@ let stateFilter   = null;      // null = ALL; state string (e.g. "Klang Valley")
 let searchQuery   = "";        // empty = show all; lowercase string when active
 const sectionCollapsed = { closing: false, coming: false, closed: false };
 let calendarMode = false;
+let aboutMode    = false;
 
 function matchesSkillFilter(t) {
   if (skillFilters.size === 0) return true;
@@ -559,10 +560,12 @@ function buildStateChips(tournaments) {
 
 // ── Nav state sync ────────────────────────────────────────────────────────
 function syncNavState() {
-  const navHome = document.getElementById("nav-home");
-  const navCal  = document.getElementById("nav-calendar");
-  if (navHome) navHome.classList.toggle("on", !calendarMode);
-  if (navCal)  navCal.classList.toggle("on",  calendarMode);
+  const navHome  = document.getElementById("nav-home");
+  const navCal   = document.getElementById("nav-calendar");
+  const navAbout = document.getElementById("nav-about");
+  if (navHome)  navHome.classList.toggle("on",  !calendarMode && !aboutMode);
+  if (navCal)   navCal.classList.toggle("on",   calendarMode);
+  if (navAbout) navAbout.classList.toggle("on",  aboutMode);
 }
 
 // ── Filter panel (drawer on mobile, sidebar on desktop) ───────────────────
@@ -615,6 +618,19 @@ function renderAll() {
 
   syncNavState();
   document.body.classList.toggle("calendar-mode", calendarMode);
+  document.body.classList.toggle("about-mode",    aboutMode);
+
+  // ── About mode ──────────────────────────────────────────────────────────
+  if (aboutMode) {
+    document.getElementById("urgency-strip").hidden   = true;
+    document.getElementById("section-closing").hidden = true;
+    document.getElementById("section-coming").hidden  = true;
+    document.getElementById("section-closed").hidden  = true;
+    document.getElementById("calendar-view").hidden   = true;
+    document.getElementById("section-about").hidden   = false;
+    return;
+  }
+  document.getElementById("section-about").hidden = true;
 
   // ── Calendar mode ───────────────────────────────────────────────────────
   if (calendarMode) {
@@ -622,6 +638,7 @@ function renderAll() {
     document.getElementById("section-closing").hidden  = true;
     document.getElementById("section-coming").hidden   = true;
     document.getElementById("section-closed").hidden   = true;
+    document.getElementById("section-about").hidden    = true;
     const calEl = document.getElementById("calendar-view");
     calEl.hidden = false;
     // Calendar always shows all upcoming events; skill + search filters apply
@@ -950,8 +967,9 @@ async function init() {
     // Header nav — Home / Calendar
     document.getElementById("nav-home")?.addEventListener("click", e => {
       e.preventDefault();
-      if (calendarMode) {
+      if (calendarMode || aboutMode) {
         calendarMode = false;
+        aboutMode    = false;
         renderAll();
       }
     });
@@ -960,6 +978,7 @@ async function init() {
       closeFilterPanel(); // close drawer if open on mobile
       if (!calendarMode) {
         calendarMode = true;
+        aboutMode    = false;
         monthFilter  = null; // calendar always shows full window
         stateFilter  = null;
         // Reset month chips to ALL
@@ -969,6 +988,15 @@ async function init() {
           b.classList.toggle("on", active);
           b.setAttribute("aria-pressed", String(active));
         });
+        renderAll();
+      }
+    });
+    document.getElementById("nav-about")?.addEventListener("click", e => {
+      e.preventDefault();
+      closeFilterPanel(); // close drawer if open on mobile
+      if (!aboutMode) {
+        aboutMode    = true;
+        calendarMode = false;
         renderAll();
       }
     });
