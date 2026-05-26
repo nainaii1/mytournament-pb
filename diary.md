@@ -5,6 +5,84 @@ Format: newest entry at the top.
 
 ---
 
+## May 26, 2026 (Mon) — Day 26
+
+**What happened:**
+- Followers hit **112** on Instagram 🎯 — up from ~12 on May 19. Significant jump, likely from Post 7 (Worth the Bag?) and Post 8 (Empire Nextgen).
+- Major website upgrade shipped to mytournamentpb.com:
+  - **Filter drawer** (mobile): bottom sheet slides up from "Filters" button. Month, Location, Skill Level, Sort — all in one panel. Badge shows active filter count.
+  - **Sticky sidebar** (desktop ≥1024px): 240px persistent left sidebar, always visible. Filters apply instantly.
+  - **Calendar + About views**: sidebar/drawer auto-hides — clean full-width layout.
+  - **About tab**: third nav tab with Who We Are, How It Works, and Find Us sections.
+- Updated `brand/claude.md` to v1.2 — follower count, post count, website features, content calendar.
+- ThePickleBase meeting prep done — created `docs/picklebase-meeting-prep.md` with full script.
+
+**Key numbers to know for May 28 meeting:**
+- Followers: 112
+- Posts: 8 published
+- Tournaments tracked: ~45+ in sheet
+- Website: live at mytournamentpb.com with search, filter, calendar, about
+
+**Next actions:**
+- [ ] Post 9: Website Launch post (May 27 or after ThePickleBase meeting May 28)
+- [ ] ThePickleBase meeting Thu May 28, 10am — read `docs/picklebase-meeting-prep.md`
+- [ ] PB Wrapped — Sun Jun 1 (May recap + June pipeline)
+- [ ] Post 10: Alliance Bank Malaysia Open — Fri Jun 6
+
+---
+
+## May 23, 2026 (Sat) — Day 23
+
+**What happened:**
+- Added favicon to website — SVG Court Mark (32×32, Court Green bg, white lines, amber ball) in `favicon.svg`. Linked in `index.html` with apple-touch-icon fallback. Shows in browser tab on Chrome/Safari/Firefox.
+- Added state filter chips to website — auto-builds from live sheet data. Chips appear below month row (All · KL/SGR · Penang · Johor etc). Wired into `init()` and resets on calendar mode switch. Reuses `month-tab` CSS.
+- Removed stats strip (stats bar below header) — founder decision: players looking for tournaments don't care about aggregate numbers.
+- Removed OG/Twitter meta tags — premature for current audience size.
+- All changes committed and pushed to GitHub. Auto-deployed to mytournamentpb.com via Cloudflare Pages.
+- Designed Post 7 — "Worth the Bag? Team ROI Edition". 8-slide IG carousel covering 3 team events (Iconic Cup 2026, Putrajaya Team Event 2026, The Dink MiLP @ Wing Hin Sports). ROI analysis: entry fee vs prize payout per player, cross-bracket breakdown for MiLP.
+- MiLP key insight: DUPR 16 (7 teams, 80% payout) and 50+ (8 teams, 70% payout) brackets are hidden gems — small field, high payout ratio. Not +1,471% ROI but statistically closest to podium.
+- Written MD brief `posts/post7-worth-the-bag.md` for Claude Design. Full 8-slide spec with chart specs, typography, colours, admin notes.
+- Post 7 reviewed from Claude Design PDF output — all 8 slides approved. Posting tomorrow afternoon.
+- Wrote full social media package: IG caption, Threads, Facebook, 3 Stories plan, song guide (Lagu Raya vibes / hype tracks), marketer checklist.
+- Brainstormed website launch timing. Recommendation: Admin Notes stories as soft seed Sun May 25 → proper website launch post Fri May 30 (day after ThePickleBase meeting May 28) → keeps Alliance Bank (Jun 6) as its own Tournament Drop.
+- Updated `brand/claude.md` v1.1 — domain, website live status, content calendar, new franchise, ThePickleBase section.
+- Created `docs/roadmap.md`.
+
+**Key decisions:**
+- "Worth the Bag?" confirmed as a permanent franchise (9th type, not one-off)
+- Website launch post = Fri May 30, not post 8 = Jun 6 (separate events)
+- PB Wrapped pushed to Sun May 31 or removed — low priority now that site is live
+
+**Next actions:**
+- [ ] Post 7 tomorrow afternoon (phone upload, IG first, Threads + FB same day)
+- [ ] Stories: tease with Story 1 (poll "masuk or skip?") 1-2 hrs before post
+- [ ] Add song to Reel if using music
+- [ ] Admin Notes story Sun May 25 — soft-seed website (don't announce, just show it)
+- [ ] ThePickleBase meeting prep: numbers, pitch, ask (Thu May 28)
+- [ ] Website launch post Fri May 30
+- [ ] Update Linktree to include mytournamentpb.com
+
+---
+
+## May 22, 2026 (Fri) — Day 22
+
+**What happened:**
+- Post 6 published — Tournament Drop "May + June Panoramic" ✅ Streak 2/3.
+- Fixed platform dot colours in website to match actual brand logos: Sportssync = `#2B5873` (teal/slate from logo), Baseline = court-green, SWP = rally-amber.
+- Fixed weekend column shading in calendar view — changed from amber tint to neutral deep-court tint `rgba(13,31,26,0.04)`. Amber-on-amber was washing out SWP bars.
+- Fixed "Reg closed" button visual — changed from near-transparent grey to court-green at 62% opacity, matching the open "Register" button. Same component, two states.
+- Updated calendar legend dots to match new bar colours.
+- All fixes committed and pushed to GitHub. Auto-deployed to mytournamentpb.com.
+
+**Key decisions:**
+- Domain bought as `mytournamentpb.com` (not `.my`) via Cloudflare. DNS auto-configured. SSL live within minutes.
+- Website at mytournamentpb.com fully working with live sheet data.
+
+**Next actions:**
+- [ ] Post 7 "Worth the Bag?" — design brief and carousel
+
+---
+
 ## May 20, 2026 (Tue) — Day 20
 
 **What happened:**
