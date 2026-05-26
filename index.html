@@ -47,80 +47,159 @@
   </div>
 </header>
 
-<!-- URGENCY STRIP -->
-<div class="urgency" id="urgency-strip" hidden>
-  <div class="urgency-inner">
-    <div class="urgency-count">
-      <span class="urgency-num" id="urgency-num">0</span>
-      <span id="urgency-text">tournaments closing this week</span>
-    </div>
-    <a class="urgency-link" href="#closing-soon">View →</a>
-  </div>
-</div>
+<!-- PAGE WRAP: sidebar + content -->
+<div class="page-wrap">
 
-<!-- FILTER BAR -->
-<div class="filterbar" role="region" aria-label="Filter and sort tournaments">
-  <div class="search-row">
-    <div class="search-wrap">
-      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-           aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="search" id="search-input" class="search-input"
-             placeholder="Search tournaments, venues, skill levels…"
-             autocomplete="off" autocorrect="off" spellcheck="false"
-             aria-label="Search tournaments">
-      <button id="search-clear" class="search-clear" hidden aria-label="Clear search">✕</button>
+  <!-- FILTER PANEL — bottom drawer on mobile, sticky sidebar on desktop -->
+  <aside id="filter-panel" class="filter-panel" hidden aria-label="Filters">
+
+    <div class="fp-header">
+      <span class="fp-handle"></span>
+      <span class="fp-title">Filters</span>
+      <button id="filter-close" class="fp-close" aria-label="Close filters">✕</button>
     </div>
-  </div>
-  <div id="month-row" class="month-row" role="group" aria-label="Filter by month">
-    <!-- populated by buildMonthChips() after data loads -->
-  </div>
-  <div id="state-row" class="month-row state-row" role="group" aria-label="Filter by state" hidden>
-    <!-- populated by buildStateChips() after data loads -->
-  </div>
-  <div class="filterbar-chips-row">
-    <div class="filter-scroll">
-      <button class="chip chip-skill" data-skill="novice"       aria-pressed="false" aria-label="Filter Novice level — singles DUPR below 3.0"><span class="skill-dot"></span><span class="chip-label">Novice<span class="chip-hint">&lt;3.0</span></span></button>
-      <button class="chip chip-skill" data-skill="intermediate" aria-pressed="false" aria-label="Filter Intermediate level — singles DUPR below 3.5"><span class="skill-dot"></span><span class="chip-label">Inter<span class="chip-hint">&lt;3.5</span></span></button>
-      <button class="chip chip-skill" data-skill="advanced"     aria-pressed="false" aria-label="Filter Advanced level — singles DUPR below 4.0"><span class="skill-dot"></span><span class="chip-label">Adv<span class="chip-hint">&lt;4.0</span></span></button>
-      <button class="chip chip-skill" data-skill="open"         aria-pressed="false" aria-label="Filter Open level — no DUPR cap"><span class="skill-dot"></span><span class="chip-label">Open<span class="chip-hint">no cap</span></span></button>
+
+    <!-- Month -->
+    <div class="fp-section">
+      <div class="fp-label">Month</div>
+      <div id="month-row" class="fp-month-chips" role="group" aria-label="Filter by month">
+        <!-- populated by buildMonthChips() -->
+      </div>
     </div>
-    <div class="sort-wrap">
-      <div class="chip sort-chip active">
-        <span id="sort-label">Sort: Tournament date</span>
+
+    <!-- Location (hidden when ≤1 state in data) -->
+    <div class="fp-section" id="location-section" hidden>
+      <div class="fp-label">Location</div>
+      <div id="state-row" class="fp-state-list" role="group" aria-label="Filter by state">
+        <!-- populated by buildStateChips() -->
+      </div>
+    </div>
+
+    <!-- Skill Level -->
+    <div class="fp-section">
+      <div class="fp-label">Skill Level</div>
+      <div class="fp-skill-list">
+        <button class="fp-skill-item chip-skill" data-skill="novice"
+                aria-pressed="false" aria-label="Novice — singles DUPR below 3.0">
+          <span class="skill-dot"></span>
+          <span class="fp-skill-name">Novice</span>
+          <span class="fp-skill-cap">&lt;3.0</span>
+        </button>
+        <button class="fp-skill-item chip-skill" data-skill="intermediate"
+                aria-pressed="false" aria-label="Inter — singles DUPR below 3.5">
+          <span class="skill-dot"></span>
+          <span class="fp-skill-name">Inter</span>
+          <span class="fp-skill-cap">&lt;3.5</span>
+        </button>
+        <button class="fp-skill-item chip-skill" data-skill="advanced"
+                aria-pressed="false" aria-label="Adv — singles DUPR below 4.0">
+          <span class="skill-dot"></span>
+          <span class="fp-skill-name">Adv</span>
+          <span class="fp-skill-cap">&lt;4.0</span>
+        </button>
+        <button class="fp-skill-item chip-skill" data-skill="open"
+                aria-pressed="false" aria-label="Open — no DUPR cap">
+          <span class="skill-dot"></span>
+          <span class="fp-skill-name">Open</span>
+          <span class="fp-skill-cap">no cap</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sort -->
+    <div class="fp-section fp-sort-section">
+      <div class="fp-label">Sort by</div>
+      <div class="fp-sort-chip">
+        <span id="sort-label">Tournament date</span>
         <span class="caret">▾</span>
         <select id="sort-select" class="sort-select" aria-label="Sort tournaments by">
-          <option value="deadline">Sort: Reg deadline</option>
-          <option value="date" selected>Sort: Tournament date</option>
-          <option value="prize">Sort: Prize pool (high→low)</option>
+          <option value="deadline">Reg deadline</option>
+          <option value="date" selected>Tournament date</option>
+          <option value="prize">Prize pool (high→low)</option>
         </select>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- MAIN -->
-<main>
-  <div id="section-closing" hidden></div>
-  <div id="section-coming">
-    <div class="skeleton-wrap">
-      <div class="skeleton-heading"></div>
-      <div class="skeleton-card"></div>
-      <div class="skeleton-card"></div>
-      <div class="skeleton-card"></div>
-      <div class="skeleton-card"></div>
+    <!-- Footer CTA (mobile drawer only) -->
+    <div class="fp-footer">
+      <button id="filter-apply-btn" class="fp-apply-btn">Show results</button>
     </div>
-  </div>
-  <div id="section-closed" hidden></div>
-  <div id="calendar-view" hidden></div>
 
-  <div class="submit-cta">
-    <div class="submit-eyebrow">Organising a tournament?</div>
-    <div class="submit-h">Get listed.<br>It's free.</div>
-    <div class="submit-p">We'll verify the details and your event shows up here within 24 hours.</div>
-    <a class="submit-btn" href="mailto:mytournamentpb@gmail.com">Submit tournament →</a>
-  </div>
-</main>
+  </aside>
+
+  <!-- PAGE CONTENT -->
+  <div class="page-content">
+
+    <!-- URGENCY STRIP -->
+    <div class="urgency" id="urgency-strip" hidden>
+      <div class="urgency-inner">
+        <div class="urgency-count">
+          <span class="urgency-num" id="urgency-num">0</span>
+          <span id="urgency-text">tournaments closing this week</span>
+        </div>
+        <a class="urgency-link" href="#closing-soon">View →</a>
+      </div>
+    </div>
+
+    <!-- FILTER BAR (slim: search + mobile trigger) -->
+    <div class="filterbar" role="region" aria-label="Filter and sort tournaments">
+      <div class="search-row">
+        <div class="search-wrap">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="search" id="search-input" class="search-input"
+                 placeholder="Search tournaments, venues, skill levels…"
+                 autocomplete="off" autocorrect="off" spellcheck="false"
+                 aria-label="Search tournaments">
+          <button id="search-clear" class="search-clear" hidden aria-label="Clear search">✕</button>
+        </div>
+      </div>
+      <div class="filter-trigger-row">
+        <button id="filter-btn" class="filter-btn"
+                aria-expanded="false" aria-controls="filter-panel">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+               aria-hidden="true">
+            <line x1="4" y1="6" x2="20" y2="6"/>
+            <line x1="4" y1="12" x2="14" y2="12"/>
+            <line x1="4" y1="18" x2="10" y2="18"/>
+          </svg>
+          Filters
+          <span id="filter-badge" class="filter-badge" hidden>0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <main>
+      <div id="section-closing" hidden></div>
+      <div id="section-coming">
+        <div class="skeleton-wrap">
+          <div class="skeleton-heading"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+      </div>
+      <div id="section-closed" hidden></div>
+      <div id="calendar-view" hidden></div>
+
+      <div class="submit-cta">
+        <div class="submit-eyebrow">Organising a tournament?</div>
+        <div class="submit-h">Get listed.<br>It's free.</div>
+        <div class="submit-p">We'll verify the details and your event shows up here within 24 hours.</div>
+        <a class="submit-btn" href="mailto:mytournamentpb@gmail.com">Submit tournament →</a>
+      </div>
+    </main>
+
+  </div><!-- /page-content -->
+
+</div><!-- /page-wrap -->
+
+<!-- FILTER OVERLAY (mobile backdrop) -->
+<div id="filter-overlay" class="filter-overlay"></div>
 
 <!-- FOOTER -->
 <footer class="footer">

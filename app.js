@@ -525,9 +525,14 @@ function buildStateChips(tournaments) {
     ...all.filter(s => !PRIORITY_STATES.includes(s)).sort()
   ];
 
-  if (states.length <= 1) { stateRow.hidden = true; return; }
-
+  const locationSection = document.getElementById("location-section");
+  if (states.length <= 1) {
+    stateRow.hidden = true;
+    if (locationSection) locationSection.hidden = true;
+    return;
+  }
   stateRow.hidden = false;
+  if (locationSection) locationSection.hidden = false;
   stateRow.innerHTML =
     `<button class="month-tab on" data-state="ALL" aria-pressed="true">All</button>` +
     states.map(s => {
@@ -558,6 +563,50 @@ function syncNavState() {
   const navCal  = document.getElementById("nav-calendar");
   if (navHome) navHome.classList.toggle("on", !calendarMode);
   if (navCal)  navCal.classList.toggle("on",  calendarMode);
+}
+
+// ── Filter panel (drawer on mobile, sidebar on desktop) ───────────────────
+function isDesktop() {
+  return window.matchMedia("(min-width: 1024px)").matches;
+}
+
+function openFilterPanel() {
+  if (isDesktop()) return;
+  const panel   = document.getElementById("filter-panel");
+  const overlay = document.getElementById("filter-overlay");
+  if (!panel) return;
+  panel.removeAttribute("hidden");
+  panel.removeAttribute("aria-hidden");
+  document.body.classList.add("filter-open");
+  requestAnimationFrame(() => {
+    panel.classList.add("open");
+    if (overlay) overlay.classList.add("open");
+  });
+  document.getElementById("filter-btn")?.setAttribute("aria-expanded", "true");
+}
+
+function closeFilterPanel() {
+  if (isDesktop()) return;
+  const panel   = document.getElementById("filter-panel");
+  const overlay = document.getElementById("filter-overlay");
+  if (!panel) return;
+  panel.classList.remove("open");
+  if (overlay) overlay.classList.remove("open");
+  document.body.classList.remove("filter-open");
+  document.getElementById("filter-btn")?.setAttribute("aria-expanded", "false");
+  setTimeout(() => {
+    panel.setAttribute("hidden", "");
+    panel.setAttribute("aria-hidden", "true");
+  }, 300);
+}
+
+// ── Filter badge count ────────────────────────────────────────────────────
+function updateFilterBadge() {
+  const total = skillFilters.size + (monthFilter ? 1 : 0) + (stateFilter ? 1 : 0);
+  const badge = document.getElementById("filter-badge");
+  const btn   = document.getElementById("filter-btn");
+  if (badge) { badge.hidden = total === 0; badge.textContent = total; }
+  if (btn)   btn.classList.toggle("filter-btn-active", total > 0);
 }
 
 // ── renderAll ─────────────────────────────────────────────────────────────
@@ -641,6 +690,9 @@ function renderAll() {
   if (statsEl) {
     statsEl.textContent = `${todayStr} · ${allTournaments.length} verified event${allTournaments.length !== 1 ? "s" : ""}`;
   }
+
+  // Filter badge
+  updateFilterBadge();
 
   // Wire share buttons (re-wired after every innerHTML update)
   document.querySelectorAll(".btn-share[data-id]").forEach(btn => {
@@ -858,16 +910,16 @@ async function init() {
       });
     }
 
-    // Sort chip interaction
-    document.getElementById("sort-select").addEventListener("change", e => {
+    // Sort interaction (select lives inside filter panel)
+    document.getElementById("sort-select")?.addEventListener("change", e => {
       sortMode = e.target.value;
       const labels = {
-        deadline: "Sort: Reg deadline",
-        date:     "Sort: Tournament date",
-        prize:    "Sort: Prize pool (high→low)"
+        deadline: "Reg deadline",
+        date:     "Tournament date",
+        prize:    "Prize pool (high→low)"
       };
-      document.getElementById("sort-label").textContent = labels[sortMode] || "Sort";
-      document.querySelector(".sort-chip").classList.toggle("sort-active", sortMode !== "date");
+      const lbl = document.getElementById("sort-label");
+      if (lbl) lbl.textContent = labels[sortMode] || "Tournament date";
       renderAll();
     });
 
@@ -888,6 +940,12 @@ async function init() {
       });
     });
 
+    // Filter panel open / close
+    document.getElementById("filter-btn")?.addEventListener("click", openFilterPanel);
+    document.getElementById("filter-close")?.addEventListener("click", closeFilterPanel);
+    document.getElementById("filter-overlay")?.addEventListener("click", closeFilterPanel);
+    document.getElementById("filter-apply-btn")?.addEventListener("click", closeFilterPanel);
+
     // Header nav — Home / Calendar
     document.getElementById("nav-home")?.addEventListener("click", e => {
       e.preventDefault();
@@ -898,6 +956,7 @@ async function init() {
     });
     document.getElementById("nav-calendar")?.addEventListener("click", e => {
       e.preventDefault();
+      closeFilterPanel(); // close drawer if open on mobile
       if (!calendarMode) {
         calendarMode = true;
         monthFilter  = null; // calendar always shows full window
