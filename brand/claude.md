@@ -225,9 +225,9 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 
 ---
 
-## CURRENT STATUS (May 26, 2026)
+## CURRENT STATUS (May 27, 2026)
 
-**Posts published:** 8
+**Posts published:** 9
 - Post 1: About Us / brand intro
 - Post 2: Week 1 debut digest (14 tournaments, RM246K)
 - Post 3: The Problem (why Admin PB exists)
@@ -235,22 +235,24 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 - Post 5: PPA Tour Asia KL Open
 - Post 6: ✅ Tournament Drop — ICONIC Cup + June panoramic (Fri May 22)
 - Post 7: ✅ Worth the Bag? · Team ROI Edition (Iconic Cup / Putrajaya / Dink MiLP)
-- Post 8: ✅ Empire Nextgen ← latest published
+- Post 8: ✅ Empire Nextgen
+- Post 9: ✅ June 2026 Tournament Calendar (Wed May 27) — 22 tournaments, RM692K+, website launch CTA ← latest published
 
 **Followers:** 112 (followed by @officialminorleaguepb_mas — strong signal)
 **Streak:** 3/3 Friday drops ✅
 **Active channels:** Instagram · Facebook · Threads
-**Website:** mytournamentpb.com — LIVE on Cloudflare Pages · GitHub: nainaii1/mytournament-pb
+**Website:** mytournamentpb.com — LIVE · publicly announced in Post 9
 **Key meeting:** ThePickleBase · Thu May 28 · potential data/content partnership
 
 **Content calendar (updated):**
 | Post | Date | Franchise | Content |
 |---|---|---|---|
-| Post 9 | Tue May 27 | Website Launch | mytournamentpb.com is live |
-| Post 10 | Fri Jun 6 | Tournament Drop | Alliance Bank Malaysia Open · RM129.5K |
-| Post 11 | Fri Jun 13 | Tournament Drop | Oriental Daily News Open · RM120K+ |
-| Post 12 | Fri Jun 20 | Tournament Drop | AmBank Malaysia Open · RM66K |
+| Post 9 | Wed May 27 | June Calendar / Website Launch | ✅ Published — 22 tournaments, RM692K+ |
 | PB Wrapped | Sun Jun 1 | PB Wrapped | May recap + June pipeline tease |
+| Post 10 | Fri Jun 6 | Tournament Drop | Alliance Bank Malaysia Open · RM129.5K · THE PICK |
+| Post 11 | Fri Jun 13 | Tournament Drop | Oriental Daily News Open · RM120K+ · THE PICK |
+| Post 12 | Fri Jun 20 | Tournament Drop | AmBank Malaysia Championship · RM66K |
+| Post 13 | Fri Jun 27 | Tournament Drop | Picklefy 1st Anniversary · RM54.8K |
 
 ---
 
@@ -310,17 +312,35 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 
 ---
 
-## JUNE 2026 PIPELINE (for context)
+## JUNE 2026 PIPELINE (full — 22 open as of May 27)
 
-| ID | Tournament | Dates | Prize | Platform | Priority |
-|---|---|---|---|---|---|
-| MTPB-0029 | Alliance Bank Malaysia Open | Jun 5–7 | RM129.5K | Baseline | 1 — THE PICK |
-| MTPB-0030 | Oriental Daily News Open | Jun 12–14 | RM120K+ | Baseline | 1 — THE PICK |
-| MTPB-0032 | ISEIGUR CUP | Jun 6–7 | RM44.8K | Sportssync | 2 — Feature |
-| MTPB-0035 | DAIKIN x 91 | Jun 13–14 | RM51.2K | Sportssync | 2 — Feature |
-| MTPB-0036 | LAC Championship | Jun 13 | RM37.8K | Sportssync | 2 — Feature |
-| MTPB-0040 | AmBank Malaysia Open | Jun 19–21 | RM66K | Sportssync | 1 — THE PICK |
-| MTPB-0043 | Picklefy Anniversary | Jun 27–28 | RM54.8K | Sportssync | 2 — Feature |
+| ID | Tournament | Dates | State | Prize | Closes | Platform | Priority |
+|---|---|---|---|---|---|---|---|
+| MTPB-0066 | 1 Utama Pickleball 2026 | May 30–Jun 7 | KV | RM39K | 29 May ⚠️ | Instagram | 3 |
+| MTPB-0029 | Alliance Bank Malaysia Open | Jun 5–7 | KV | RM129.5K | 1 Jun | Baseline | 1 — THE PICK |
+| MTPB-0032 | ISEIGUR CUP | Jun 6–7 | KV | RM44.9K | 28 May ⚠️ | Sportssync | 2 |
+| MTPB-0033 | Syok Pickle Golden Master (70+) | Jun 6 | KV | RM3.3K | 3 Jun | Sportssync | 3 |
+| MTPB-0046 | He Rallies! Combined DUPR 6.2 | Jun 7 | Penang | RM1.75K | 4 Jun | SWP | 3 |
+| MTPB-0030 | Oriental Daily News Open | Jun 12–14 | KV | RM120K | 10 Jun | Baseline | 1 — THE PICK |
+| MTPB-0035 | DAIKIN x 91 Club | Jun 13–14 | KV | RM51.3K | 1 Jun | Sportssync | 2 |
+| MTPB-0036 | LAC Pickleball Championship | Jun 13 | KV | RM37.9K | 2 Jun | Sportssync | 2 |
+| MTPB-0037 | EMPTA Pickleball Tournament | Jun 13 | KV | RM10.8K | — | Sportssync | 3 |
+| MTPB-0048 | 91 National Johor Tour | Jun 13 | Johor | RM20.5K | Once Full | Baseline | STRONG PICK |
+| MTPB-0038 | Lions Cup Charity | Jun 14 | Johor | RM13.6K | 11 Jun | Sportssync | 3 |
+| MTPB-0039 | Pickle Vibe Clash of Elites | Jun 14 | KV | RM13.5K | 13 Jun | Sportssync | 3 |
+| MTPB-0040 | AmBank Malaysia Championship | Jun 19–21 | KV | RM66K | 1 Jun | Sportssync | 1 — THE PICK |
+| MTPB-0049 | Pickle Collective Team Cup | Jun 19–21 | Sabah | RM23.5K | 10 Jun | Baseline | WORTH KNOWING |
+| MTPB-0054 | Court of Hearts Charity | Jun 20 | Penang | Charity | 31 May | Sportssync | 3 |
+| MTPB-0055 | Paddle Power Cup | Jun 20 | Johor | RM3.8K | 15 Jun | Sportssync | 3 |
+| MTPB-0065 | Pickle Power Superstar Cup | Jun 20 | Penang | RM3K | 20 Jun | SWP | 3 |
+| MTPB-0041 | JBFA Pickleball Tournament | Jun 21 | Johor | RM8.7K | 14 Jun | Sportssync | 3 |
+| MTPB-0042 | DinkFest by HNC | Jun 27 | Johor | RM18.3K | 20 Jun | Sportssync | 3 |
+| MTPB-0043 | Picklefy 1st Anniversary | Jun 27–28 | KV | RM54.8K | 20 Jun | Sportssync | 2 |
+| MTPB-0050 | MBSA Shah Alam Open | Jun 27–28 | KV | RM20K | 15 Jun | Baseline | WORTH KNOWING |
+| MTPB-0056 | END POLIO NOW Charity | Jun 27 | Johor | RM8.4K | 13 Jun | Sportssync | 3 |
+
+**June total: 22 open · RM692,403 in prizes**
+*(MTPB-0034 6.6.6 excluded — reg deadline expired 25 May)*
 
 ---
 
@@ -343,4 +363,4 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 ---
 
 *MyTournament.PB · Every tournament. One place.*
-*claude.md v1.2 · May 26, 2026*
+*claude.md v1.3 · May 27, 2026*

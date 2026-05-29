@@ -5,6 +5,72 @@ Format: newest entry at the top.
 
 ---
 
+## May 28, 2026 (Thu) — Day 28
+
+**What happened:**
+- **ThePickleBase meeting** — met Ian (founder) and Grace (marketing) in person. Originally framed as a MyTournament.PB × ThePickleBase data collab. Turned into something bigger.
+- **Ian's background:** ex-Zalora product (OG team). Builds the whole ThePickleBase platform himself using Claude Code + code review tools. Solo. Systems/ecosystem thinker.
+- **What ThePickleBase actually is:** Not a media site — a full pickleball ecosystem in build. News, coach directory + bookings + payments, courts directory, tournament directory (next 2 months), DUPR API integration, video editing, watermarking, future ecommerce, future app.
+- **Tech stack confirmed:** Next.js + Vercel, headless CMS, separate `courts.thepicklebase.com` subdomain for courts directory.
+- **The pivot:** Ian didn't ask about my tournament data. He saw the builder energy and invited me to potentially contribute to the **tournament directory module**. Mentioned setting up Git branching so we can work alongside each other. He'll guide me through the build.
+- **Conversation ended open** — Ian gave his contact, asked me to think about it and reach out.
+- **My read:** He needs builders, not data. I'm not begging for a role — I'm testing whether I can become useful in a real product ecosystem.
+
+**Decisions made:**
+- Text Ian tonight (8–10pm window) — short, enthusiastic, "I'm in", ask for branching setup + first task
+- 1–2 week exploration sprint, focused on tournament directory product work (player journey, organiser flow, data fields, MVP scope, QA)
+- Position myself as **"product operator for tournament discovery and player utility"** — NOT a part-time developer
+- Keep MyTournament.PB running in parallel during the trial (don't break the IG/website cadence)
+- Money conversation deferred to end of week 2
+
+**Meeting notes saved:** `docs/picklebase-meeting-notes.md` — full mindset doc + sprint plan + pay framework + boundaries
+
+**Risks acknowledged:**
+- Going 16hr/day will break the Friday drop streak (Post 10 Alliance Bank Jun 6 at risk)
+- MyTournament.PB growth pauses at 112
+- Must keep the trial sprint bounded — passion is free for 1–2 weeks, ownership needs pay
+
+**Next actions:**
+- [ ] **Tonight (May 28, 8–10pm):** Text Ian — "I'm in. Two weeks of full commitment. When can you set me up on branching?"
+- [ ] Wait for Ian's reply, schedule scoping call this weekend
+- [ ] Keep posting Post 10 (Alliance Bank, Jun 6) — don't drop the streak
+- [ ] Sunday Jun 7 self-checkpoint — hours spent, what I shipped, is it clicking
+- [ ] End of week 2 (~Jun 11): money conversation with Ian if work is real and recurring
+
+---
+
+## May 27, 2026 (Wed) — Day 27
+
+**What happened:**
+- **Post 9 published** ✅ — June 2026 Tournament Calendar · 6 slides · Instagram, Threads, Facebook
+  - 22 open tournaments · RM692,403 in prizes · sorted by tournament date
+  - THE PICK: Alliance Bank Malaysia Open (Jun 5–7, RM129.5K, Tomaz Pickleball Club)
+  - Website launch CTA on Slide 6 — first public announcement of mytournamentpb.com in a post
+  - Urgency on cover: ISEIGUR CUP closes 28 May (tomorrow), 1 Utama closes 29 May
+- **Sheet corrections made** during session:
+  - States filled in for all tournaments (LAC = KV, Lions Cup = JHR, AmBank = KV, Court of Hearts = PNG, Picklefy = KV, DinkFest = JHR)
+  - Court of Hearts platform confirmed: Sportssync (not SWP)
+  - 1 Utama added to sheet (MTPB-0066) — 2-weekend format, LG Oval, RM39K, closes 29 May, registered via Instagram
+- **New June tournaments discovered** vs previous session: Syok Pickle Golden Master, He Rallies Penang, EMPTA, Pickle Vibe Clash, Pickle Collective Sabah, Paddle Power Cup, Pickle Power Superstar
+- **Stories posted** today with tags to Tomaz Pickleball Club, ISEIGUR organizer, Alliance Bank, 1 Utama, Baseline, Sportssync
+- **4 IG Stories** (urgency, post announcement, THE PICK/Tomaz feature, website reveal)
+
+**Key numbers (updated):**
+- Posts: **9 published**
+- Followers: 112
+- June tracker: 22 open tournaments · RM692,403
+- Website: live, now publicly mentioned in Post 9
+
+**Next actions:**
+- [ ] **ThePickleBase meeting — Thu May 28, 10am** · PJ or Kuchai · read `docs/picklebase-meeting-prep.md`
+- [ ] ISEIGUR CUP — check if reg filled/closed after May 28 deadline (update sheet)
+- [ ] 1 Utama — check if reg filled/closed after May 29 deadline (update sheet)
+- [ ] PB Wrapped — Sun Jun 1 · May recap + June pipeline tease
+- [ ] Post 10: Alliance Bank Malaysia Open — Fri Jun 6
+- [ ] Thursday data sweep (May 28) — check new June listings
+
+---
+
 ## May 26, 2026 (Mon) — Day 26
 
 **What happened:**
