@@ -1,6 +1,6 @@
 # MyTournament.PB — claude.md
 **Master context for Claude Code · Cowork · new sessions**
-*Last updated: May 15, 2026*
+*Last updated: May 26, 2026*
 
 Paste this at the start of any new Claude session or Claude Code project to restore full context instantly. No re-explaining needed.
 
@@ -33,7 +33,7 @@ I'm building **MyTournament.PB** — a faceless Malaysian pickleball tournament 
 - Threads: @mytournament.pb
 - Email: mytournamentpb@gmail.com
 - Linktree: linktr.ee/mytournamentpb
-- Domain: mytournamentpb.my (not yet live)
+- Domain: mytournamentpb.com ← LIVE
 
 ---
 
@@ -163,7 +163,7 @@ Admin PB is the invisible character behind every post. Not a mascot, not a face 
 
 ---
 
-## CONTENT FRANCHISES — 8 TYPES
+## CONTENT FRANCHISES — 9 TYPES
 
 | Franchise | Day | Format | Description |
 |---|---|---|---|
@@ -171,6 +171,7 @@ Admin PB is the invisible character behind every post. Not a mascot, not a face 
 | **Closing Soon** | Tue/Thu when urgent | Single image or short carousel | 24–72hr before deadline |
 | **Can Join Ah?** | Tuesday | Carousel | Beginner-friendly explainer |
 | **Worth It or Not?** | Tuesday | Carousel | Prize vs entry fee editorial |
+| **Worth the Bag?** | Tuesday | Carousel 8 slides | Team event ROI — entry fee vs prize breakdown by team/player |
 | **Partner Needed Board** | Wednesday | Story | Community partner matching |
 | **Scene Check** | Ad hoc | Reel/carousel | Post-event recap |
 | **Admin Notes** | Monday | Story | Behind-scenes transparency |
@@ -189,7 +190,7 @@ When I ask you to build a post, deliver ALL of these:
 5. **Facebook post** — longer, more detail, emoji-friendly
 6. **Hashtag set:** #pickleballmalaysia #pickleballmy #malaysiapickleball + event-specific tags
 
-**Linktree:** Keep simple — Latest Post · Sportssync · Baseline · Sports We Play · DM on IG. Update on website launch, not before.
+**Linktree:** Update to add website link now that mytournamentpb.com is live. Order: Latest Post · mytournamentpb.com · Sportssync · Baseline · Sports We Play · DM on IG.
 
 ---
 
@@ -224,58 +225,78 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 
 ---
 
-## CURRENT STATUS (May 15, 2026)
+## CURRENT STATUS (May 27, 2026)
 
-**Posts published:** 5
+**Posts published:** 9
 - Post 1: About Us / brand intro
 - Post 2: Week 1 debut digest (14 tournaments, RM246K)
 - Post 3: The Problem (why Admin PB exists)
 - Post 4: Mid-May Calendar digest (13 tournaments)
-- Post 5: PPA Tour Asia KL Open · live this week ← latest
+- Post 5: PPA Tour Asia KL Open
+- Post 6: ✅ Tournament Drop — ICONIC Cup + June panoramic (Fri May 22)
+- Post 7: ✅ Worth the Bag? · Team ROI Edition (Iconic Cup / Putrajaya / Dink MiLP)
+- Post 8: ✅ Empire Nextgen
+- Post 9: ✅ June 2026 Tournament Calendar (Wed May 27) — 22 tournaments, RM692K+, website launch CTA ← latest published
 
-**Followers:** 12 (followed by @officialminorleaguepb_mas — strong signal)
-**Streak:** 1/3 Friday drops complete
+**Followers:** 112 (followed by @officialminorleaguepb_mas — strong signal)
+**Streak:** 3/3 Friday drops ✅
 **Active channels:** Instagram · Facebook · Threads
+**Website:** mytournamentpb.com — LIVE · publicly announced in Post 9
+**Key meeting:** ThePickleBase · Thu May 28 · potential data/content partnership
 
-**Content calendar:**
-| Post | Date | Franchise | THE PICK |
+**Content calendar (updated):**
+| Post | Date | Franchise | Content |
 |---|---|---|---|
-| Post 6 | Fri May 22 | Tournament Drop | ICONIC Cup 2026 · Penang · RM39.6K |
-| Post 7 | Fri May 29 | PB Wrapped | May recap + June pipeline tease |
-| Post 8 | Fri Jun 6 | Tournament Drop | Alliance Bank Malaysia Open · RM129.5K |
-| Post 9 | Fri Jun 13 | Tournament Drop | Oriental Daily News Open · RM120K+ |
-| Post 10 | Fri Jun 20 | Tournament Drop | AmBank Malaysia Open · RM66K |
-
-**3-streak target:** May 29 (Post 7 = streak 3/3 → website build unlocked)
+| Post 9 | Wed May 27 | June Calendar / Website Launch | ✅ Published — 22 tournaments, RM692K+ |
+| PB Wrapped | Sun Jun 1 | PB Wrapped | May recap + June pipeline tease |
+| Post 10 | Fri Jun 6 | Tournament Drop | Alliance Bank Malaysia Open · RM129.5K · THE PICK |
+| Post 11 | Fri Jun 13 | Tournament Drop | Oriental Daily News Open · RM120K+ · THE PICK |
+| Post 12 | Fri Jun 20 | Tournament Drop | AmBank Malaysia Championship · RM66K |
+| Post 13 | Fri Jun 27 | Tournament Drop | Picklefy 1st Anniversary · RM54.8K |
 
 ---
 
-## WEBSITE BUILD PLAN
+## WEBSITE — LIVE
 
-**Gate:** 3 consecutive Friday posts → unlocks Phase 0 build (target: weekend of May 31–Jun 1)
-
+**Status:** ✅ Phase 0 COMPLETE · Live at mytournamentpb.com
 **Stack:** Vanilla HTML + CSS + JavaScript. No frameworks. No npm. No build tools.
 **Data:** Google Sheet → gviz JSON endpoint. Live on page refresh.
-**Hosting:** Cloudflare Pages (free tier) at mytournamentpb.my
-**Files:** `index.html` · `style.css` · `app.js` · `assets/logo.svg`
+**Hosting:** Cloudflare Pages (free tier) · auto-deploy from GitHub `main` branch
+**Repo:** github.com/nainaii1/mytournament-pb
+**Files:** `index.html` · `style.css` · `app.js` · `assets/logo.svg` · `favicon.svg`
 
-**Phase 0 scope (build first, nothing else):**
-- Tournament list sorted by start date
-- State filter dropdown
-- Week filter chips (This Week / Next Week / All)
-- Closing Soon amber strip (auto-shows when deadline ≤7 days)
-- Tournament card (name · dates · venue · prize · entry fee · platform pill · register link)
-- THE PICK / FEATURED badge logic
-- Dimmed cards for closed/expired reg
-- Mobile-first (390px)
-- Footer with IG/FB/TikTok/email links
+**Phase 0 — COMPLETE (shipped May 2026):**
+- ✅ Tournament list sorted by start date
+- ✅ State filter chips (auto-built from live sheet)
+- ✅ Month + week filter chips
+- ✅ Closing Soon amber strip (deadline ≤7 days)
+- ✅ Tournament card (name · dates · venue · prize · entry fee · platform pill · register link)
+- ✅ THE PICK / FEATURED badge logic
+- ✅ Dimmed cards for closed/expired reg
+- ✅ Mobile-first (390px)
+- ✅ Calendar view
+- ✅ Footer with IG/FB/TikTok/email links
+- ✅ SVG favicon (Court Mark)
+- ✅ Search bar with live filtering + empty state
+- ✅ Filter drawer (mobile bottom sheet) + sticky sidebar (desktop 240px)
+- ✅ Filter panel hides in Calendar and About views
+- ✅ About tab (who we are · how it works · find us)
 
-**Phase 0 does NOT include:** search · map · user accounts · organiser self-submit · category filter · CMS
-**Phase 1:** Supabase + category/skill filter
+**Phase 1 (next):** Category/skill level filter + DUPR parsing
 **Phase 2:** Leaflet.js map pins
 **Phase 3:** Organiser self-submit form
 
 **Sheet ID:** `1fBi6Mxz0pY8IFCP9hhLWB_R_i9J7obMEA5YoA6PkpDg`
+
+---
+
+## THEPICKLEBASE PARTNERSHIP
+
+**Meeting:** Thu May 28, 10am · PJ or Kuchai (their choice)
+**Who:** ThePickleBase (@thepicklebase) — SEA pickleball lifestyle platform (coaching, courts, gear, news). Founder owns BASE Pickleball and Padel court in KL.
+**Context:** They DM'd saying they love what we're building and want to connect. They followed us.
+**Approach:** Potential data/content partner, not competitor.
+**Know before going:** your numbers (followers, posts, sheet size), your pitch (aggregation layer they don't have), your ask (data sharing, cross-promo, or co-content).
 
 ---
 
@@ -291,17 +312,35 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 
 ---
 
-## JUNE 2026 PIPELINE (for context)
+## JUNE 2026 PIPELINE (full — 22 open as of May 27)
 
-| ID | Tournament | Dates | Prize | Platform | Priority |
-|---|---|---|---|---|---|
-| MTPB-0029 | Alliance Bank Malaysia Open | Jun 5–7 | RM129.5K | Baseline | 1 — THE PICK |
-| MTPB-0030 | Oriental Daily News Open | Jun 12–14 | RM120K+ | Baseline | 1 — THE PICK |
-| MTPB-0032 | ISEIGUR CUP | Jun 6–7 | RM44.8K | Sportssync | 2 — Feature |
-| MTPB-0035 | DAIKIN x 91 | Jun 13–14 | RM51.2K | Sportssync | 2 — Feature |
-| MTPB-0036 | LAC Championship | Jun 13 | RM37.8K | Sportssync | 2 — Feature |
-| MTPB-0040 | AmBank Malaysia Open | Jun 19–21 | RM66K | Sportssync | 1 — THE PICK |
-| MTPB-0043 | Picklefy Anniversary | Jun 27–28 | RM54.8K | Sportssync | 2 — Feature |
+| ID | Tournament | Dates | State | Prize | Closes | Platform | Priority |
+|---|---|---|---|---|---|---|---|
+| MTPB-0066 | 1 Utama Pickleball 2026 | May 30–Jun 7 | KV | RM39K | 29 May ⚠️ | Instagram | 3 |
+| MTPB-0029 | Alliance Bank Malaysia Open | Jun 5–7 | KV | RM129.5K | 1 Jun | Baseline | 1 — THE PICK |
+| MTPB-0032 | ISEIGUR CUP | Jun 6–7 | KV | RM44.9K | 28 May ⚠️ | Sportssync | 2 |
+| MTPB-0033 | Syok Pickle Golden Master (70+) | Jun 6 | KV | RM3.3K | 3 Jun | Sportssync | 3 |
+| MTPB-0046 | He Rallies! Combined DUPR 6.2 | Jun 7 | Penang | RM1.75K | 4 Jun | SWP | 3 |
+| MTPB-0030 | Oriental Daily News Open | Jun 12–14 | KV | RM120K | 10 Jun | Baseline | 1 — THE PICK |
+| MTPB-0035 | DAIKIN x 91 Club | Jun 13–14 | KV | RM51.3K | 1 Jun | Sportssync | 2 |
+| MTPB-0036 | LAC Pickleball Championship | Jun 13 | KV | RM37.9K | 2 Jun | Sportssync | 2 |
+| MTPB-0037 | EMPTA Pickleball Tournament | Jun 13 | KV | RM10.8K | — | Sportssync | 3 |
+| MTPB-0048 | 91 National Johor Tour | Jun 13 | Johor | RM20.5K | Once Full | Baseline | STRONG PICK |
+| MTPB-0038 | Lions Cup Charity | Jun 14 | Johor | RM13.6K | 11 Jun | Sportssync | 3 |
+| MTPB-0039 | Pickle Vibe Clash of Elites | Jun 14 | KV | RM13.5K | 13 Jun | Sportssync | 3 |
+| MTPB-0040 | AmBank Malaysia Championship | Jun 19–21 | KV | RM66K | 1 Jun | Sportssync | 1 — THE PICK |
+| MTPB-0049 | Pickle Collective Team Cup | Jun 19–21 | Sabah | RM23.5K | 10 Jun | Baseline | WORTH KNOWING |
+| MTPB-0054 | Court of Hearts Charity | Jun 20 | Penang | Charity | 31 May | Sportssync | 3 |
+| MTPB-0055 | Paddle Power Cup | Jun 20 | Johor | RM3.8K | 15 Jun | Sportssync | 3 |
+| MTPB-0065 | Pickle Power Superstar Cup | Jun 20 | Penang | RM3K | 20 Jun | SWP | 3 |
+| MTPB-0041 | JBFA Pickleball Tournament | Jun 21 | Johor | RM8.7K | 14 Jun | Sportssync | 3 |
+| MTPB-0042 | DinkFest by HNC | Jun 27 | Johor | RM18.3K | 20 Jun | Sportssync | 3 |
+| MTPB-0043 | Picklefy 1st Anniversary | Jun 27–28 | KV | RM54.8K | 20 Jun | Sportssync | 2 |
+| MTPB-0050 | MBSA Shah Alam Open | Jun 27–28 | KV | RM20K | 15 Jun | Baseline | WORTH KNOWING |
+| MTPB-0056 | END POLIO NOW Charity | Jun 27 | Johor | RM8.4K | 13 Jun | Sportssync | 3 |
+
+**June total: 22 open · RM692,403 in prizes**
+*(MTPB-0034 6.6.6 excluded — reg deadline expired 25 May)*
 
 ---
 
@@ -316,11 +355,12 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 7. **Amber is accent only** — never body text, never backgrounds except Closing Soon slides.
 8. **Logo is Court Mark only** — no text-based logo, no variations.
 9. **Dates in tracker:** YYYY-MM-DD format. Reg Deadline = "Closed" or "Once full" when applicable.
-10. **Never promise specific posting dates** in slide copy — streak not yet proven beyond 1/3.
+10. **Never promise specific posting dates** in slide copy.
 11. **Never say "Malaysia's #1"** in any public-facing copy.
 12. **Skip basic explanations** — founder has full context from prior sessions.
+13. **Website is live** — always link to mytournamentpb.com in CTAs and captions. Bio link = Linktree (which includes site).
 
 ---
 
 *MyTournament.PB · Every tournament. One place.*
-*claude.md v1.0 · May 15, 2026*
+*claude.md v1.3 · May 27, 2026*
