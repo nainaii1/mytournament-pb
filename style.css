@@ -6,9 +6,12 @@
   --off-white:   #F5F5F0;
   --mid-green:   #6BAF8C;
   --skill-novice:   #8FB876;
+  --skill-inter:    #1B8FA8;
   --skill-advanced: #D67200;
   --off-white-rgb:  245, 245, 240;
   --rally-amber-rgb: 240, 165, 0;
+  --skill-inter-rgb: 27, 143, 168;
+  --platform-sportssync: #2F6FA8;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -193,11 +196,11 @@ a { text-decoration: none; }
   background: rgba(13, 31, 26, 0.18); display: inline-block; flex-shrink: 0;
 }
 .chip-skill[data-skill="novice"]       .skill-dot { background: var(--skill-novice); }
-.chip-skill[data-skill="intermediate"] .skill-dot { background: var(--rally-amber); }
+.chip-skill[data-skill="intermediate"] .skill-dot { background: var(--skill-inter); }
 .chip-skill[data-skill="advanced"]     .skill-dot { background: var(--skill-advanced); }
 .chip-skill[data-skill="open"]         .skill-dot { background: var(--deep-court); }
 .chip-skill.on[data-skill="novice"]       { background: #f0f8eb; border-color: var(--skill-novice); color: #3d6b1f; }
-.chip-skill.on[data-skill="intermediate"] { background: rgba(240,165,0,0.10); border-color: var(--rally-amber); color: #8a5e00; }
+.chip-skill.on[data-skill="intermediate"] { background: rgba(var(--skill-inter-rgb),0.10); border-color: var(--skill-inter); color: #0c5e70; }
 .chip-skill.on[data-skill="advanced"]     { background: #fff3e8; border-color: var(--skill-advanced); color: #8a4200; }
 .chip-skill.on[data-skill="open"]         { background: var(--mint-wash); border-color: var(--court-green); color: var(--court-green); }
 .chip-label { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2; }
@@ -326,7 +329,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   flex-shrink: 0;
   margin-right: 6px;
 }
-.platform-dot[data-platform="sportssync"]     { background: #2B5873; }
+.platform-dot[data-platform="sportssync"]     { background: var(--platform-sportssync); }
 .platform-dot[data-platform="baseline"]       { background: var(--court-green); }
 .platform-dot[data-platform="sports-we-play"] { background: var(--rally-amber); }
 .platform-dot[data-platform="ppa-tour-asia"]  { background: var(--rally-amber); }
@@ -395,7 +398,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
   background: var(--skill-novice);
 }
-.skill.intermediate::before { background: var(--rally-amber); }
+.skill.intermediate::before { background: var(--skill-inter); }
 .skill.advanced::before { background: var(--skill-advanced); }
 .skill.open::before { background: var(--deep-court); }
 .skill-combined { font-size: 10px; color: var(--mid-green); margin-top: 2px; }
@@ -577,8 +580,8 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   padding: 4px 0 6px;
   border-right: 1px solid rgba(13,31,26,0.04);
 }
-.cal-day-col.cal-weekend    { background: rgba(240,165,0,0.07); }
-.cal-day-col.cal-today      { background: rgba(26,107,74,0.12); }
+.cal-day-col.cal-weekend    { background: rgba(13,31,26,0.045); }
+.cal-day-col.cal-today      { box-shadow: inset 2px 0 0 0 var(--rally-amber); }
 .cal-day-col.cal-week-start { border-left: 1px solid rgba(13,31,26,0.12); }
 
 .cal-week-label {
@@ -590,7 +593,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 600;
   color: var(--deep-court); line-height: 1.3;
 }
-.cal-day-col.cal-today .cal-day-num { color: var(--court-green); }
+.cal-day-col.cal-today .cal-day-num { color: #b07a00; }
 .cal-day-name { font-size: 9px; color: rgba(13,31,26,0.4); line-height: 1; }
 
 /* Tournament rows */
@@ -608,28 +611,59 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
    was shrinking the element to viewport width, cutting off July weekends) */
 .cal-timeline { position: relative; flex-shrink: 0; min-height: 44px; }
 
-/* Gantt bar — no label text */
+/* Gantt bar — no label text. Fill = platform, treatment = reg status */
 .cal-bar {
   position: absolute; top: 8px; height: 28px; border-radius: 6px;
   background: var(--court-green); min-width: 6px;
   transition: opacity 120ms;
 }
-.cal-bar[data-platform="sportssync"]     { background: #2B5873; }
+.cal-bar[data-platform="sportssync"]     { background: var(--platform-sportssync); }
 .cal-bar[data-platform="baseline"]       { background: var(--court-green); }
 .cal-bar[data-platform="sports-we-play"] { background: var(--rally-amber); }
 .cal-bar[data-platform="ppa-tour-asia"]  { background: var(--rally-amber); }
 
-.cal-closed .cal-bar { opacity: 0.28; }
+/* Status: closing soon — amber ring drawn outside the platform fill */
+.cal-bar.cal-bar-soon {
+  box-shadow: 0 0 0 2px var(--off-white), 0 0 0 4px var(--rally-amber);
+}
 
-/* Legend */
+/* Status: closed reg — clean solid muted-gray fill so it reads "done / can't enter" */
+.cal-bar.cal-bar-closed {
+  background: #B8C0BC !important;
+  border: none;
+  opacity: 1;
+}
+
+/* THE PICK rows — amber edge + slightly taller, bolder bar */
+.cal-pick { box-shadow: inset 3px 0 0 0 var(--rally-amber); }
+.cal-pick .cal-bar:not(.cal-bar-closed) {
+  top: 6px; height: 32px;
+  box-shadow: 0 0 0 1px rgba(240,165,0,0.55), 0 1px 3px rgba(13,31,26,0.18);
+}
+.cal-pick .cal-bar.cal-bar-soon {
+  box-shadow: 0 0 0 2px var(--off-white), 0 0 0 4px var(--rally-amber);
+}
+
+/* Legend — two labelled groups: Platform + Status */
 .cal-legend {
   position: sticky; left: 0;
-  display: flex; flex-wrap: wrap; gap: 8px 20px;
+  display: flex; flex-wrap: wrap; gap: 10px 28px;
   padding: 14px 16px; font-size: 11px; color: rgba(13,31,26,0.55);
   border-top: 1px solid rgba(13,31,26,0.07);
 }
+.cal-legend-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.cal-legend-label {
+  font-family: 'DM Sans', sans-serif; font-size: 9.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--mid-green);
+  margin-right: 2px;
+}
 .cal-legend-item { display: flex; align-items: center; gap: 6px; }
 .cal-legend-dot  { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+/* Status swatches mirror the bar treatments */
+.cal-legend-dot.is-soon   { background: var(--court-green); box-shadow: 0 0 0 2px var(--off-white), 0 0 0 3.5px var(--rally-amber); }
+.cal-legend-dot.is-closed { background: #B8C0BC; }
+.cal-legend-dot.is-today  { background: var(--rally-amber); border-radius: 2px; width: 4px; height: 12px; }
+.cal-legend-dot.is-pick   { background: var(--court-green); box-shadow: inset 3px 0 0 0 var(--rally-amber); }
 .cal-empty { padding: 48px 16px; text-align: center; color: rgba(13,31,26,0.35); font-size: 14px; }
 
 /* ===== REDUCED MOTION ===== */
@@ -753,11 +787,11 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 .fp-skill-cap  { font-size: 11px; font-weight: 500; color: rgba(13,31,26,0.4); }
 /* Reuse existing skill-dot colour variables */
 .fp-skill-item[data-skill="novice"]       .skill-dot { background: var(--skill-novice); }
-.fp-skill-item[data-skill="intermediate"] .skill-dot { background: var(--rally-amber); }
+.fp-skill-item[data-skill="intermediate"] .skill-dot { background: var(--skill-inter); }
 .fp-skill-item[data-skill="advanced"]     .skill-dot { background: var(--skill-advanced); }
 .fp-skill-item[data-skill="open"]         .skill-dot { background: var(--deep-court); }
 .fp-skill-item.on[data-skill="novice"]       { background: #f0f8eb; border-color: var(--skill-novice); }
-.fp-skill-item.on[data-skill="intermediate"] { background: rgba(240,165,0,0.10); border-color: var(--rally-amber); }
+.fp-skill-item.on[data-skill="intermediate"] { background: rgba(var(--skill-inter-rgb),0.10); border-color: var(--skill-inter); }
 .fp-skill-item.on[data-skill="advanced"]     { background: #fff3e8; border-color: var(--skill-advanced); }
 .fp-skill-item.on[data-skill="open"]         { background: var(--mint-wash); border-color: var(--court-green); }
 .fp-skill-item.on .fp-skill-cap              { color: inherit; opacity: 0.7; }

@@ -231,6 +231,16 @@ function renderSkillChips(raw) {
   return `<div class="skill-stack">${chips}</div>`;
 }
 
+// Prefix a money value with "RM" when it's numeric and not already prefixed.
+// Leaves "—", "Free", "Charity", etc. untouched.
+function withRM(val) {
+  const s = (val == null ? "" : String(val)).trim();
+  if (!s || s === "—") return "—";
+  if (/rm/i.test(s)) return s;   // already has RM
+  if (!/\d/.test(s)) return s;   // non-numeric label
+  return "RM" + s;
+}
+
 function renderCard(t, todayStr) {
   const { month, day } = formatDateBlock(t["Start Date"], t["End Date"]);
   const badge    = regBadgeInfo(t, todayStr);
@@ -272,8 +282,8 @@ function renderCard(t, todayStr) {
     <span class="reg-badge ${badge.cls}">${badge.text}</span>
     <div class="meta-row">
       <div class="pairs">
-        <div class="pair"><div class="k">Entry</div><div class="v">${escapeHtml(t["Entry Fee (RM)"] || "—")}</div></div>
-        <div class="pair"><div class="k">Prize</div><div class="v">${escapeHtml(t["Prize Pool (RM)"] || "—")}</div></div>
+        <div class="pair"><div class="k">Entry</div><div class="v">${escapeHtml(withRM(t["Entry Fee (RM)"]))}</div></div>
+        <div class="pair"><div class="k">Prize</div><div class="v">${escapeHtml(withRM(t["Prize Pool (RM)"]))}</div></div>
       </div>
       ${renderSkillChips(t["Skill Level"] || "")}
     </div>
@@ -820,7 +830,7 @@ function renderCalendar(tournaments, todayStr) {
   // caused July+ weekends to go blank with the original 140-stop gradient.
   // Fix: emit stops ONLY at colour transitions (weekday↔weekend boundaries)
   // → ~42 stops instead of 140, safe on every browser's CSS parser. ────
-  const WKND_COL = "rgba(107,175,140,0.12)";
+  const WKND_COL = "rgba(13,31,26,0.045)";
   const wkndStops = [];
   let prevWknd = null;
   for (let i = 0; i < CAL_DAYS; i++) {
@@ -865,15 +875,18 @@ function renderCalendar(tournaments, todayStr) {
     const isPick  = (t["Pick Priority"] || "").startsWith("1");
 
     const rowCls = ["cal-row", t.isClosed ? "cal-closed" : "", isPick ? "cal-pick" : ""].filter(Boolean).join(" ");
+    const barStatus = t.isClosed ? "cal-bar-closed" : (t.isClosingSoon ? "cal-bar-soon" : "");
+    const barCls    = ["cal-bar", barStatus].filter(Boolean).join(" ");
+    const statusTxt = t.isClosed ? "Reg closed" : (t.isClosingSoon ? "Closing soon" : "Reg open");
     rowsHTML += `
 <div class="${rowCls}">
   <div class="cal-label-col">
     <div class="cal-t-name">${escapeHtml(t["Tournament Name"] || "")}</div>
   </div>
   <div class="cal-timeline" style="width:${CAL_DAYS * CAL_DAY_W}px;background:${weekendGrad}">
-    <div class="cal-bar" data-platform="${escapeAttr(platKey)}"
+    <div class="${barCls}" data-platform="${escapeAttr(platKey)}"
          style="left:${barLeft}px;width:${barWidth}px"
-         title="${escapeAttr(t["Tournament Name"] || "")} · ${escapeAttr(sStr)} – ${escapeAttr(eStr)}"></div>
+         title="${escapeAttr(t["Tournament Name"] || "")} · ${escapeAttr(sStr)} – ${escapeAttr(eStr)} · ${statusTxt}"></div>
   </div>
 </div>`;
   }
@@ -887,9 +900,19 @@ function renderCalendar(tournaments, todayStr) {
     <div class="cal-head-days">${dayCells}</div>
   </div>
   <div class="cal-legend">
-    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#2B5873"></span>Sportssync</span>
-    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--court-green)"></span>Baseline</span>
-    <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--rally-amber)"></span>Sports We Play</span>
+    <span class="cal-legend-group">
+      <span class="cal-legend-label">Platform</span>
+      <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--platform-sportssync)"></span>Sportssync</span>
+      <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--court-green)"></span>Baseline</span>
+      <span class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--rally-amber)"></span>Sports We Play</span>
+    </span>
+    <span class="cal-legend-group">
+      <span class="cal-legend-label">Status</span>
+      <span class="cal-legend-item"><span class="cal-legend-dot is-soon"></span>Closing soon</span>
+      <span class="cal-legend-item"><span class="cal-legend-dot is-closed"></span>Reg closed</span>
+      <span class="cal-legend-item"><span class="cal-legend-dot is-pick"></span>THE PICK</span>
+      <span class="cal-legend-item"><span class="cal-legend-dot is-today"></span>Today</span>
+    </span>
   </div>
   <div class="cal-rows">${rowsHTML}</div>
 </div>`;
