@@ -36,6 +36,7 @@
       <nav class="header-nav" aria-label="View">
         <a class="header-nav-link on" id="nav-home" href="#" role="button">Home</a>
         <a class="header-nav-link" id="nav-calendar" href="#" role="button">Calendar</a>
+        <a class="header-nav-link" id="nav-partners" href="#" role="button">Partners</a>
         <a class="header-nav-link" id="nav-about" href="#" role="button">About</a>
       </nav>
     </div>
@@ -186,6 +187,55 @@
       </div>
       <div id="section-closed" hidden></div>
       <div id="calendar-view" hidden></div>
+
+      <!-- PARTNER MATCHING BOARD -->
+      <div id="section-partners" hidden>
+        <div class="partners-intro">
+          <h2 class="partners-h">Find a partner.</h2>
+          <p class="partners-sub">Need a doubles partner for a tournament — or just someone to rally with regularly? Post a listing, browse who's looking, connect on Reclub.</p>
+          <a id="partners-post-btn" class="partners-post-btn" href="#" target="_blank" rel="noopener">Post a listing →</a>
+          <p class="partners-safety">⚠️ We just host the board. Connect responsibly — check players on Reclub before you commit.</p>
+        </div>
+
+        <div class="partners-filters" aria-label="Filter partner listings">
+          <div class="pf-yourdupr-row">
+            <label class="pf-yourdupr" for="your-dupr">Your DUPR</label>
+            <input id="your-dupr" class="pf-yourdupr-input" type="number" step="0.01" min="2" max="8"
+                   inputmode="decimal" placeholder="e.g. 2.94" aria-label="Your DUPR rating">
+            <span class="pf-yourdupr-hint">to highlight good matches</span>
+          </div>
+
+          <div class="pf-group">
+            <span class="pf-label">DUPR</span>
+            <div class="pf-chips" id="partner-dupr-bands" role="group" aria-label="Filter by DUPR band">
+              <button class="pf-chip" data-band="lt3">&lt;3.0</button>
+              <button class="pf-chip" data-band="3-3.5">3.0–3.5</button>
+              <button class="pf-chip" data-band="3.5-4">3.5–4.0</button>
+              <button class="pf-chip" data-band="4plus">4.0+</button>
+            </div>
+          </div>
+
+          <div class="pf-group">
+            <span class="pf-label">Event</span>
+            <div class="pf-chips" id="partner-events" role="group" aria-label="Filter by event type">
+              <button class="pf-chip" data-ev="mens">Men's Doubles</button>
+              <button class="pf-chip" data-ev="womens">Women's Doubles</button>
+              <button class="pf-chip" data-ev="mixed">Mixed Doubles</button>
+            </div>
+          </div>
+
+          <div class="pf-group">
+            <span class="pf-label">Type</span>
+            <div class="pf-chips" id="partner-type" role="group" aria-label="Filter by listing type">
+              <button class="pf-chip on" data-ptype="all">All</button>
+              <button class="pf-chip" data-ptype="tournament">Tournament</button>
+              <button class="pf-chip" data-ptype="general">General</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="partners-list"></div>
+      </div>
 
       <div id="section-about" class="about-view" hidden>
 
