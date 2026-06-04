@@ -5,6 +5,61 @@ Format: newest entry at the top.
 
 ---
 
+## Jun 4, 2026 (Thu) — Day 35
+
+**What happened:**
+- **Partner Matching Board shipped** ✅ — `Partners` tab live on mytournamentpb.com
+  - DUPR-first cards · "Your DUPR" compatibility highlight · filters (DUPR band · event type · search) · auto-expiry
+  - Contact via Reclub username only — private contact never reaches the web
+  - Pending founder action: create Google Form + replace `PARTNERS_FORM_URL` placeholder in `app.js`
+  - Setup guide: `docs/partner-board-setup.md`
+- **Calendar legibility overhaul** shipped alongside:
+  - Neutral weekend shading, brighter Sportssync navy `#2F6FA8`, closing-soon amber ring + reg-closed grey on calendar bars, THE PICK row accent, two-group legend
+  - Landing polish: `RM` prefix on entry/prize, intermediate skill dot recolored teal so amber stays urgency-only
+- **ThePickleBase decision made:** minimum maintenance only. Not texting Ian. If they want to collaborate, they initiate. Focus back on own brand + real income (crypto). Site dev resumed independently.
+- **PR #5 opened:** `feat/partner-matching-board` — partner board + calendar legibility + docs update
+
+**Pending from May 30 (still to do):**
+- [ ] Create Google Form for Partner Board + replace `PARTNERS_FORM_URL` in `app.js`
+- [ ] Add 3 new tournaments to sheet: MTPB-0067 Starz KL, MTPB-0068 Selangor Grand Slam, MTPB-0069 BRAGG
+- [ ] Fix duplicate MTPB-0064 — rename Pickle Nova → MTPB-0070
+- [ ] Fix MTPB-0030 skill level typo: "Intermdiate" → "Intermediate"
+- [ ] Verify BRAGG tournament date (Aug 8 vs Sep 6 conflict in source)
+
+**Next content:**
+- [ ] Post 11: Oriental Daily News Open — Fri Jun 13 · RM120K+ · THE PICK · reg closes Jun 10
+
+---
+
+## May 30, 2026 (Sat) — Day 30
+
+**What happened:**
+- **Post 10 published** ✅ — Alliance Bank Malaysia Open · Reel format · Instagram
+  - IG: https://www.instagram.com/p/DY9NloLzjrp/
+  - Format: **Reel** (first reel for the brand — new format unlocked)
+  - Subject: MTPB-0029 — Alliance Bank Malaysia Open · Jun 5–7 · RM129.5K · THE PICK
+  - Timing: posted May 30, 2 days before reg closes Jun 1. Smart window — drives registrations.
+- **Weekly scan completed** (Sportssync via browser + Baseline browser + SWP blocked/login wall)
+  - 3 new tournaments found: MTPB-0067 Starz KL (Jul 4), MTPB-0068 Selangor Grand Slam (Jul 18), MTPB-0069 BRAGG Challenge (Aug 8)
+  - BRAGG date conflict flagged: header Aug 8 vs schedule Sep 6 — verify before publishing
+  - Leapmotor title sponsor confirmed for MTPB-0052 APP Penang Open
+  - 1 Utama dates confirmed: May 30–Jun 7 correct
+- **Editorial data clean** — Pick Priority + Editorial Angle assigned to all 22 June tournaments
+  - Standardised scale: THE PICK / STRONG PICK / WORTH KNOWING / LOW PRIORITY
+  - 3× THE PICK: Alliance Bank, Oriental Daily News, AmBank
+  - Viral post ideas surfaced: "Your prize is a holiday" (Oriental), June prize pool map, 3 charities carousel, 70+ Golden Master reel
+
+**Next actions:**
+- [ ] Add 3 new tournaments (MTPB-0067/0068/0069) to Google Sheet
+- [ ] Fix duplicate MTPB-0064 — rename Pickle Nova → MTPB-0070
+- [ ] Fix MTPB-0030 skill level typo: "Intermdiate" → "Intermediate"
+- [ ] Verify BRAGG date (Aug 8 vs Sep 6)
+- [ ] Alliance Bank reg closes **Jun 1** — post Closing Soon Story today or Sun May 31
+- [ ] PB Wrapped — Sun Jun 1
+- [ ] Post 11: Oriental Daily News Open — Fri Jun 13 (reg closes Jun 10)
+
+---
+
 ## May 28, 2026 (Thu) — Day 28
 
 **What happened:**
