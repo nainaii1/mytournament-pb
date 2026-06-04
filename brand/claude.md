@@ -1,6 +1,6 @@
 # MyTournament.PB — claude.md
 **Master context for Claude Code · Cowork · new sessions**
-*Last updated: May 26, 2026*
+*Last updated: June 4, 2026*
 
 Paste this at the start of any new Claude session or Claude Code project to restore full context instantly. No re-explaining needed.
 
@@ -225,9 +225,9 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 
 ---
 
-## CURRENT STATUS (May 27, 2026)
+## CURRENT STATUS (May 30, 2026)
 
-**Posts published:** 9
+**Posts published:** 10
 - Post 1: About Us / brand intro
 - Post 2: Week 1 debut digest (14 tournaments, RM246K)
 - Post 3: The Problem (why Admin PB exists)
@@ -236,23 +236,25 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 - Post 6: ✅ Tournament Drop — ICONIC Cup + June panoramic (Fri May 22)
 - Post 7: ✅ Worth the Bag? · Team ROI Edition (Iconic Cup / Putrajaya / Dink MiLP)
 - Post 8: ✅ Empire Nextgen
-- Post 9: ✅ June 2026 Tournament Calendar (Wed May 27) — 22 tournaments, RM692K+, website launch CTA ← latest published
+- Post 9: ✅ June 2026 Tournament Calendar (Wed May 27) — 22 tournaments, RM692K+, website launch CTA
+- Post 10: ✅ Alliance Bank Malaysia Open — Reel (Sat May 30) · RM129.5K · reg closes Jun 1 ← latest published
+  - https://www.instagram.com/p/DY9NloLzjrp/
 
-**Followers:** 112 (followed by @officialminorleaguepb_mas — strong signal)
-**Streak:** 3/3 Friday drops ✅
+**Followers:** 112
+**Streak:** 3/3 Friday drops ✅ · First Reel published ✅
 **Active channels:** Instagram · Facebook · Threads
-**Website:** mytournamentpb.com — LIVE · publicly announced in Post 9
-**Key meeting:** ThePickleBase · Thu May 28 · potential data/content partnership
+**Website:** mytournamentpb.com — LIVE
+**ThePickleBase:** Met Ian (founder, ex-Zalora) May 28. **Decision (Jun 4): minimum maintenance only** — founder is *not* actively pursuing the collab and won't build for them for free; if they want the aggregation layer, they initiate. Focus stays on own brand + site + real income. Site dev resumed independently. See `docs/picklebase-meeting-notes.md`
 
 **Content calendar (updated):**
-| Post | Date | Franchise | Content |
-|---|---|---|---|
-| Post 9 | Wed May 27 | June Calendar / Website Launch | ✅ Published — 22 tournaments, RM692K+ |
-| PB Wrapped | Sun Jun 1 | PB Wrapped | May recap + June pipeline tease |
-| Post 10 | Fri Jun 6 | Tournament Drop | Alliance Bank Malaysia Open · RM129.5K · THE PICK |
-| Post 11 | Fri Jun 13 | Tournament Drop | Oriental Daily News Open · RM120K+ · THE PICK |
-| Post 12 | Fri Jun 20 | Tournament Drop | AmBank Malaysia Championship · RM66K |
-| Post 13 | Fri Jun 27 | Tournament Drop | Picklefy 1st Anniversary · RM54.8K |
+| Post | Date | Franchise | Format | Content |
+|---|---|---|---|---|
+| Post 9 | Wed May 27 | June Calendar / Website Launch | Carousel | ✅ Published |
+| Post 10 | Sat May 30 | Tournament Drop | **Reel** | ✅ Published — Alliance Bank Malaysia Open |
+| PB Wrapped | Sun Jun 1 | PB Wrapped | Carousel | May recap + June pipeline tease |
+| Post 11 | Fri Jun 13 | Tournament Drop | Carousel | Oriental Daily News Open · RM120K+ · THE PICK |
+| Post 12 | Fri Jun 20 | Tournament Drop | Carousel | AmBank Malaysia Championship · RM66K |
+| Post 13 | Fri Jun 27 | Tournament Drop | Carousel | Picklefy 1st Anniversary · RM54.8K |
 
 ---
 
@@ -282,15 +284,24 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 - ✅ Filter panel hides in Calendar and About views
 - ✅ About tab (who we are · how it works · find us)
 
-**Phase 1 (next):** Category/skill level filter + DUPR parsing
+**Shipped since Phase 0 (June 2026):**
+- ✅ Calendar legibility overhaul — neutral weekend shading (was green-on-green), brighter Sportssync navy `#2F6FA8`, registration-status cues on bars (closing-soon amber ring · reg-closed solid grey), THE PICK row accent, two-group legend (Platform + Status)
+- ✅ Landing polish — `RM` prefix on entry/prize, intermediate skill dot recolored teal `#1B8FA8` so amber stays urgency-only
+- ✅ **Partner Matching Board** (`Partners` tab) — players post "looking for a doubles partner" listings (tournament-specific or general). DUPR-first cards · "Your DUPR" compatibility highlight · filters (DUPR band · event · type · search) · auto-expiry · contact via **Reclub username only** (no phone/IG public). Submissions: Google Form → private responses sheet → approved rows bridged (QUERY/IMPORTRANGE) to a public `Partners` tab the site reads. Private contact never reaches the web. Setup guide: `docs/partner-board-setup.md`.
+  - ⚠️ **Pending founder:** create the Google Form, then replace `PARTNERS_FORM_URL` placeholder in `app.js`. Board shows an empty state until the `Partners` sheet tab exists.
+
+**Phase 1 (next):** Tournament skill/category filter + DUPR parsing (sheet `Skill Level` column is freeform text)
 **Phase 2:** Leaflet.js map pins
 **Phase 3:** Organiser self-submit form
 
 **Sheet ID:** `1fBi6Mxz0pY8IFCP9hhLWB_R_i9J7obMEA5YoA6PkpDg`
+**New files this session:** `docs/partner-board-setup.md` · `Partners` sheet tab (to be created)
 
 ---
 
 ## THEPICKLEBASE PARTNERSHIP
+
+> **STATUS (Jun 4, 2026): Minimum maintenance only.** Founder has signalled willingness to help; the ball is in ThePickleBase's court to initiate. Not building for them for free. Not a blocker for own website dev (which has resumed). Notes below kept for reference.
 
 **Meeting:** Thu May 28, 10am · PJ or Kuchai (their choice)
 **Who:** ThePickleBase (@thepicklebase) — SEA pickleball lifestyle platform (coaching, courts, gear, news). Founder owns BASE Pickleball and Padel court in KL.
@@ -363,4 +374,4 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 ---
 
 *MyTournament.PB · Every tournament. One place.*
-*claude.md v1.3 · May 27, 2026*
+*claude.md v1.5 · June 4, 2026 — added Partner Matching Board + calendar legibility pass; ThePickleBase set to minimum-maintenance*
