@@ -196,12 +196,14 @@ When I ask you to build a post, deliver ALL of these:
 
 ## DATA SOURCES & SWEEP SCHEDULE
 
-| Platform | URL | Notes |
-|---|---|---|
-| Sportssync | sportssync.asia/events | Primary — most listings |
-| Baseline | my.baseline.live | 91 Club, Alliance Bank, Skechers |
-| Sports We Play (SWP) | swp.solemas.com | ICONIC Cup, Legends Rally |
-| Reclub | — | Leads only, always verify independently |
+| Platform | Canonical URL | Scrape method | Notes |
+|---|---|---|---|
+| Sportssync | `sportssync.asia/tournament/index` (list) · `/tournament/{id}` (detail) | Exa search → fetch individual `/tournament/{id}` page | Primary — richest data. **`.net` domain is DEAD — never use.** |
+| Baseline | `my.baseline.live/tournaments` (list) · `/tournaments/{uuid}` (detail) | List is a lazy-load SPA (don't scrape directly) → Exa search to find UUID page → fetch | 91 Club, Alliance Bank, Skechers, Oriental Daily, VS Group |
+| Sports We Play (SWP) | `swp.solemas.com` | ⛔ Flutter app, no readable DOM — tools can't scrape. **Needs manual check** via site/mobile app | ICONIC Cup, Legends Rally, He Rallies, BADGEAR |
+| Reclub | — | Leads only, always verify independently | |
+
+> Full scraping playbook: `.claude/skills/scan-tournaments/SKILL.md` + `tournament-scraper` subagent. Keep these URLs in sync across all three.
 
 **Sweep schedule:** Monday + Thursday
 **Master tracker:** Google Sheet (live, public read)
@@ -215,13 +217,15 @@ Fetch via gviz: `https://docs.google.com/spreadsheets/d/1fBi6Mxz0pY8IFCP9hhLWB_R
 
 ## TRACKER SCHEMA
 
-Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponsor · Start Date · End Date · Reg Deadline · State · Venue · Entry Fee (RM) · Prize Pool (RM) · Cash Prize (RM) · Merch (RM) · Prize Pool Note · Skill Level · Event Type · Pick Priority · Editorial Angle · Format Note · Player Note · Source Platform · Registration URL · Date Added · Last Checked · Notes
+Columns (in order, 27): Verified · ID · Tournament Name · Organizer · Title Sponsor · Start Date · End Date · Reg Deadline · State · Venue · Entry Fee (RM) per team · Prize Pool (RM) · Cash Prize (RM) · Merch Value (RM) · Prize Pool Note · Skill Level · Event Type · Age Group · Pick Priority · Editorial Angle · Format Note · Player Note · Source Platform · Registration URL · Date Added · Last Checked · Notes
 
-**Note:** City column was removed by founder. Platform label on slides replaces city.
+**Note:** City column was removed by founder. Platform label on slides replaces city. First column is `Verified` (not "Status"). `Age Group` sits between Event Type and Pick Priority.
 
-**Status values:** Published · Verified · NEW · Draft
+**Verified values:** blank (new/unverified) · Verified · Draft
 **Pick Priority:** `1 — THE PICK` · `2 — Feature` · `3 — List` · `— Mention only`
-**Date format:** YYYY-MM-DD throughout
+**Date format:** `DD-Mon-YYYY` (e.g. `1-Jul-2026`) throughout — NOT ISO. Match the live sheet.
+**State convention:** `Klang Valley` = KL + Selangor; otherwise the state name.
+**Adding rows:** output a CSV to `posts/new-tournaments-{date}.csv` → founder imports via File → Import → Append → untick "convert to dates". Do NOT hand back tab blocks to paste.
 
 ---
 
@@ -372,7 +376,7 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 6. **Court Green for all carousel covers.** Deep Court only for urgency/Closing Soon.
 7. **Amber is accent only** — never body text, never backgrounds except Closing Soon slides.
 8. **Logo is Court Mark only** — no text-based logo, no variations.
-9. **Dates in tracker:** YYYY-MM-DD format. Reg Deadline = "Closed" or "Once full" when applicable.
+9. **Dates in tracker:** `DD-Mon-YYYY` format (e.g. `1-Jul-2026`). Reg Deadline = "Closed" or "Once full" when applicable.
 10. **Never promise specific posting dates** in slide copy.
 11. **Never say "Malaysia's #1"** in any public-facing copy.
 12. **Skip basic explanations** — founder has full context from prior sessions.
