@@ -225,9 +225,9 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 
 ---
 
-## CURRENT STATUS (May 30, 2026)
+## CURRENT STATUS (June 10, 2026)
 
-**Posts published:** 10
+**Posts published:** 10 (no new posts since May 30 — paused Jun 1–10)
 - Post 1: About Us / brand intro
 - Post 2: Week 1 debut digest (14 tournaments, RM246K)
 - Post 3: The Problem (why Admin PB exists)
@@ -240,21 +240,28 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 - Post 10: ✅ Alliance Bank Malaysia Open — Reel (Sat May 30) · RM129.5K · reg closes Jun 1 ← latest published
   - https://www.instagram.com/p/DY9NloLzjrp/
 
-**Followers:** 112
-**Streak:** 3/3 Friday drops ✅ · First Reel published ✅
+**Followers:** ~112 (last checked May 27 · due for recount)
+**Streak:** 3/3 Friday drops ✅ · First Reel published ✅ · Gap since May 30 (resumed Jun 10)
 **Active channels:** Instagram · Facebook · Threads
 **Website:** mytournamentpb.com — LIVE
-**ThePickleBase:** Met Ian (founder, ex-Zalora) May 28. **Decision (Jun 4): minimum maintenance only** — founder is *not* actively pursuing the collab and won't build for them for free; if they want the aggregation layer, they initiate. Focus stays on own brand + site + real income. Site dev resumed independently. See `docs/picklebase-meeting-notes.md`
+**ThePickleBase:** Minimum maintenance only. Their move to initiate. See `docs/picklebase-meeting-notes.md`
+**Partner Board:** Code shipped (PR #5 open on `feat/partner-matching-board`). **Pending founder:** create Google Form + public Partners tab in sheet + replace `PARTNERS_FORM_URL` in `app.js` + merge PR #5. Setup guide: `docs/partner-board-setup.md`.
 
-**Content calendar (updated):**
+**Content calendar (updated Jun 10):**
 | Post | Date | Franchise | Format | Content |
 |---|---|---|---|---|
-| Post 9 | Wed May 27 | June Calendar / Website Launch | Carousel | ✅ Published |
-| Post 10 | Sat May 30 | Tournament Drop | **Reel** | ✅ Published — Alliance Bank Malaysia Open |
-| PB Wrapped | Sun Jun 1 | PB Wrapped | Carousel | May recap + June pipeline tease |
-| Post 11 | Fri Jun 13 | Tournament Drop | Carousel | Oriental Daily News Open · RM120K+ · THE PICK |
+| Post 10 | Sat May 30 | Tournament Drop | Reel | ✅ Published — Alliance Bank Malaysia Open |
+| Scene Check | — | Scene Check | — | ❌ SCRAPPED — Jun 6–7 weekend brief expired |
+| **Post 11** | **Fri Jun 13** | **Tournament Drop** | **Carousel** | **Oriental Daily News Open · RM120K+ · THE PICK ← NEXT (3 days away)** |
 | Post 12 | Fri Jun 20 | Tournament Drop | Carousel | AmBank Malaysia Championship · RM66K |
 | Post 13 | Fri Jun 27 | Tournament Drop | Carousel | Picklefy 1st Anniversary · RM54.8K |
+
+⚠️ **URGENT (Jun 10):** Oriental Daily News Open reg deadline = TODAY. Post 11 carousel must be built and posted by Fri Jun 13. Tournament scan (Sportssync + Baseline + SWP) not done since ~May 30 — do at next session start before any content work.
+
+**Pending tasks carried forward:**
+- [ ] Tournament scan — Sportssync, Baseline, SWP (overdue)
+- [ ] Build Post 11 — Oriental Daily News Open · THE PICK · carousel · post by Fri Jun 13
+- [ ] Partner Board go-live — create Google Form → Partners tab in sheet → update `PARTNERS_FORM_URL` in `app.js` → merge PR #5
 
 ---
 
@@ -374,4 +381,4 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 ---
 
 *MyTournament.PB · Every tournament. One place.*
-*claude.md v1.5 · June 4, 2026 — added Partner Matching Board + calendar legibility pass; ThePickleBase set to minimum-maintenance*
+*claude.md v1.6 · June 10, 2026 — status updated; Scene Check (Jun 6–7) scrapped; Post 11 (Oriental Daily News, Jun 13) marked urgent; Partner Board pending tasks carried forward*
