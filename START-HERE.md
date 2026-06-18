@@ -23,17 +23,19 @@ Your map to this project. Open this first in any new session.
 
 | Folder | What lives here |
 |--------|-----------------|
-| **(root)** | The live website — `index.html`, `app.js`, `style.css`, `favicon.svg`. ⚠️ Don't move these; the site references them by path. |
-| `assets/` | Site images — logo, OG image. |
+| **(root)** | The live website — `index.html`, `app.js`, `style.css`, `favicon.svg`. ⚠️ **This IS mytournamentpb.com.** Don't move or delete these; Cloudflare serves them by path. |
+| `assets/` | Site images — logo, OG image. 🔒 The live site needs these. |
 | `brand/` | Brand spec, master context (claude.md), brand assets. |
 | `docs/` | Specs, plans, roadmap, meeting notes. |
-| `docs/specs/` | PRD + UI design spec. |
+| `docs/specs/` | PRD v1 (frozen) + UI design spec. |
 | `docs/plans/` | Implementation plans. |
-| `data/` | Master tournament spreadsheets (working data; site reads from the published Google Sheet). |
 | `posts/` | Social post assets — one folder per drop (`post4/`, `post6/`, `closing-may-520/`). |
 | `posts/exports/` | Data exports used to build posts (CSV/XLSX). |
-| `archive/` | Old versions — early brand spec, retired card/page mockups. Kept for reference. |
 | `.claude/` | Claude Code agents, skills, settings (local, gitignored). |
+
+> **Folders are intentionally minimal: `brand` · `docs` · `posts` · `assets`.** Old versions live in
+> GitHub history (the retired `archive/` folder was removed Jun 19). Working spreadsheets moved out of
+> the repo to `../MyTournament.PB_local-backup/` — the live **Google Sheet** is the real data source.
 
 ---
 
