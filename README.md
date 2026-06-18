@@ -2,7 +2,7 @@
 
 Malaysia's independent pickleball tournament calendar. Every verified tournament, one place.
 
-**Live site:** [mytournamentpb.my](https://mytournamentpb.my) · **Instagram:** [@mytournament.pb](https://instagram.com/mytournament.pb)
+**Live site:** [mytournamentpb.com](https://mytournamentpb.com) · **Instagram:** [@mytournament.pb](https://instagram.com/mytournament.pb)
 
 ---
 
@@ -32,9 +32,7 @@ Open `index.html` directly in a browser — no server needed. The Google Sheet i
 
 ## Deployment
 
-Hosted on GitHub Pages. Every push to `main` deploys automatically.
-
-Production domain (Cloudflare Pages + custom domain) coming soon at `mytournamentpb.my`.
+Hosted on Cloudflare Pages (free tier). Every push to `main` deploys automatically to the live site at [mytournamentpb.com](https://mytournamentpb.com).
 
 ## Data
 

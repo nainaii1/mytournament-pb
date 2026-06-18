@@ -27,7 +27,7 @@
 | **Threads** | @mytournament.pb |
 | **Email** | mytournamentpb@gmail.com |
 | **Linktree** | linktr.ee/mytournamentpb |
-| **Domain** | mytournamentpb.my (not yet live) |
+| **Domain** | mytournamentpb.com (LIVE) |
 | **Founded** | May 2026 · Kuala Lumpur |
 
 ### What changed from v2.0
@@ -415,7 +415,7 @@ DM on IG →
 
 **Stack:** Vanilla HTML + CSS + JavaScript. No frameworks. No npm.
 **Data:** Google Sheet → gviz CSV/JSON. Updates on page refresh.
-**Hosting:** Cloudflare Pages (free) at mytournamentpb.my
+**Hosting:** Cloudflare Pages (free) at mytournamentpb.com
 
 **Phase 0 — 6 features, nothing else:**
 1. Tournament list (sorted by start date)
@@ -499,6 +499,6 @@ DM on IG →
 ---
 
 *Every tournament. One place.*
-*@mytournament.pb · mytournamentpb.my*
+*@mytournament.pb · mytournamentpb.com*
 
 **Brand Spec v3.0 · May 15, 2026 · Admin PB era**

@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-16
 **Status:** Locked (pending user spec review)
-**Stack:** Vanilla HTML/CSS/JS. No frameworks, no npm, no build tools. Hosted on Cloudflare Pages at `mytournamentpb.my`. Data lives in a published Google Sheet, pulled via gviz CSV.
+**Stack:** Vanilla HTML/CSS/JS. No frameworks, no npm, no build tools. Hosted on Cloudflare Pages at `mytournamentpb.com`. Data lives in a published Google Sheet, pulled via gviz CSV.
 
 ---
 
@@ -246,7 +246,7 @@ The mockups in `mockups/` directory (`cards-v3.html`, `page-v4.html`) are refere
 
 ## Verification (how we'll know it's done)
 
-1. Open `mytournamentpb.my` on a phone-shaped viewport. See header, urgency strip showing real `closing this week` count, filter bar.
+1. Open `mytournamentpb.com` on a phone-shaped viewport. See header, urgency strip showing real `closing this week` count, filter bar.
 2. Scroll: see 3 sections with real tournaments from the sheet. ~3–4 cards visible per phone scroll height.
 3. Tap a chip: filter/sort applies, URL stays clean (no jarring jumps).
 4. Tap `Share` on a card: native share sheet appears (mobile) or "Link copied" toast (desktop).
