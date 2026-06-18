@@ -1,6 +1,6 @@
 # MyTournament.PB — claude.md
 **Master context for Claude Code · Cowork · new sessions**
-*Last updated: May 26, 2026*
+*Last updated: June 4, 2026*
 
 Paste this at the start of any new Claude session or Claude Code project to restore full context instantly. No re-explaining needed.
 
@@ -196,12 +196,14 @@ When I ask you to build a post, deliver ALL of these:
 
 ## DATA SOURCES & SWEEP SCHEDULE
 
-| Platform | URL | Notes |
-|---|---|---|
-| Sportssync | sportssync.asia/events | Primary — most listings |
-| Baseline | my.baseline.live | 91 Club, Alliance Bank, Skechers |
-| Sports We Play (SWP) | swp.solemas.com | ICONIC Cup, Legends Rally |
-| Reclub | — | Leads only, always verify independently |
+| Platform | Canonical URL | Scrape method | Notes |
+|---|---|---|---|
+| Sportssync | `sportssync.asia/tournament/index` (list) · `/tournament/{id}` (detail) | Exa search → fetch individual `/tournament/{id}` page | Primary — richest data. **`.net` domain is DEAD — never use.** |
+| Baseline | `my.baseline.live/tournaments` (list) · `/tournaments/{uuid}` (detail) | List is a lazy-load SPA (don't scrape directly) → Exa search to find UUID page → fetch | 91 Club, Alliance Bank, Skechers, Oriental Daily, VS Group |
+| Sports We Play (SWP) | `swp.solemas.com` | ⛔ Flutter app, no readable DOM — tools can't scrape. **Needs manual check** via site/mobile app | ICONIC Cup, Legends Rally, He Rallies, BADGEAR |
+| Reclub | — | Leads only, always verify independently | |
+
+> Full scraping playbook: `.claude/skills/scan-tournaments/SKILL.md` + `tournament-scraper` subagent. Keep these URLs in sync across all three.
 
 **Sweep schedule:** Monday + Thursday
 **Master tracker:** Google Sheet (live, public read)
@@ -215,19 +217,21 @@ Fetch via gviz: `https://docs.google.com/spreadsheets/d/1fBi6Mxz0pY8IFCP9hhLWB_R
 
 ## TRACKER SCHEMA
 
-Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponsor · Start Date · End Date · Reg Deadline · State · Venue · Entry Fee (RM) · Prize Pool (RM) · Cash Prize (RM) · Merch (RM) · Prize Pool Note · Skill Level · Event Type · Pick Priority · Editorial Angle · Format Note · Player Note · Source Platform · Registration URL · Date Added · Last Checked · Notes
+Columns (in order, 27): Verified · ID · Tournament Name · Organizer · Title Sponsor · Start Date · End Date · Reg Deadline · State · Venue · Entry Fee (RM) per team · Prize Pool (RM) · Cash Prize (RM) · Merch Value (RM) · Prize Pool Note · Skill Level · Event Type · Age Group · Pick Priority · Editorial Angle · Format Note · Player Note · Source Platform · Registration URL · Date Added · Last Checked · Notes
 
-**Note:** City column was removed by founder. Platform label on slides replaces city.
+**Note:** City column was removed by founder. Platform label on slides replaces city. First column is `Verified` (not "Status"). `Age Group` sits between Event Type and Pick Priority.
 
-**Status values:** Published · Verified · NEW · Draft
+**Verified values:** blank (new/unverified) · Verified · Draft
 **Pick Priority:** `1 — THE PICK` · `2 — Feature` · `3 — List` · `— Mention only`
-**Date format:** YYYY-MM-DD throughout
+**Date format:** `DD-Mon-YYYY` (e.g. `1-Jul-2026`) throughout — NOT ISO. Match the live sheet.
+**State convention:** `Klang Valley` = KL + Selangor; otherwise the state name.
+**Adding rows:** output a CSV to `posts/new-tournaments-{date}.csv` → founder imports via File → Import → Append → untick "convert to dates". Do NOT hand back tab blocks to paste.
 
 ---
 
-## CURRENT STATUS (May 27, 2026)
+## CURRENT STATUS (June 10, 2026)
 
-**Posts published:** 9
+**Posts published:** 10 (no new posts since May 30 — paused Jun 1–10)
 - Post 1: About Us / brand intro
 - Post 2: Week 1 debut digest (14 tournaments, RM246K)
 - Post 3: The Problem (why Admin PB exists)
@@ -236,23 +240,32 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 - Post 6: ✅ Tournament Drop — ICONIC Cup + June panoramic (Fri May 22)
 - Post 7: ✅ Worth the Bag? · Team ROI Edition (Iconic Cup / Putrajaya / Dink MiLP)
 - Post 8: ✅ Empire Nextgen
-- Post 9: ✅ June 2026 Tournament Calendar (Wed May 27) — 22 tournaments, RM692K+, website launch CTA ← latest published
+- Post 9: ✅ June 2026 Tournament Calendar (Wed May 27) — 22 tournaments, RM692K+, website launch CTA
+- Post 10: ✅ Alliance Bank Malaysia Open — Reel (Sat May 30) · RM129.5K · reg closes Jun 1 ← latest published
+  - https://www.instagram.com/p/DY9NloLzjrp/
 
-**Followers:** 112 (followed by @officialminorleaguepb_mas — strong signal)
-**Streak:** 3/3 Friday drops ✅
+**Followers:** ~112 (last checked May 27 · due for recount)
+**Streak:** 3/3 Friday drops ✅ · First Reel published ✅ · Gap since May 30 (resumed Jun 10)
 **Active channels:** Instagram · Facebook · Threads
-**Website:** mytournamentpb.com — LIVE · publicly announced in Post 9
-**Key meeting:** ThePickleBase · Thu May 28 · potential data/content partnership
+**Website:** mytournamentpb.com — LIVE
+**ThePickleBase:** Minimum maintenance only. Their move to initiate. See `docs/picklebase-meeting-notes.md`
+**Partner Board:** Code shipped (PR #5 open on `feat/partner-matching-board`). **Pending founder:** create Google Form + public Partners tab in sheet + replace `PARTNERS_FORM_URL` in `app.js` + merge PR #5. Setup guide: `docs/partner-board-setup.md`.
 
-**Content calendar (updated):**
-| Post | Date | Franchise | Content |
-|---|---|---|---|
-| Post 9 | Wed May 27 | June Calendar / Website Launch | ✅ Published — 22 tournaments, RM692K+ |
-| PB Wrapped | Sun Jun 1 | PB Wrapped | May recap + June pipeline tease |
-| Post 10 | Fri Jun 6 | Tournament Drop | Alliance Bank Malaysia Open · RM129.5K · THE PICK |
-| Post 11 | Fri Jun 13 | Tournament Drop | Oriental Daily News Open · RM120K+ · THE PICK |
-| Post 12 | Fri Jun 20 | Tournament Drop | AmBank Malaysia Championship · RM66K |
-| Post 13 | Fri Jun 27 | Tournament Drop | Picklefy 1st Anniversary · RM54.8K |
+**Content calendar (updated Jun 10):**
+| Post | Date | Franchise | Format | Content |
+|---|---|---|---|---|
+| Post 10 | Sat May 30 | Tournament Drop | Reel | ✅ Published — Alliance Bank Malaysia Open |
+| Scene Check | — | Scene Check | — | ❌ SCRAPPED — Jun 6–7 weekend brief expired |
+| **Post 11** | **Fri Jun 13** | **Tournament Drop** | **Carousel** | **Oriental Daily News Open · RM120K+ · THE PICK ← NEXT (3 days away)** |
+| Post 12 | Fri Jun 20 | Tournament Drop | Carousel | AmBank Malaysia Championship · RM66K |
+| Post 13 | Fri Jun 27 | Tournament Drop | Carousel | Picklefy 1st Anniversary · RM54.8K |
+
+⚠️ **URGENT (Jun 10):** Oriental Daily News Open reg deadline = TODAY. Post 11 carousel must be built and posted by Fri Jun 13. Tournament scan (Sportssync + Baseline + SWP) not done since ~May 30 — do at next session start before any content work.
+
+**Pending tasks carried forward:**
+- [ ] Tournament scan — Sportssync, Baseline, SWP (overdue)
+- [ ] Build Post 11 — Oriental Daily News Open · THE PICK · carousel · post by Fri Jun 13
+- [ ] Partner Board go-live — create Google Form → Partners tab in sheet → update `PARTNERS_FORM_URL` in `app.js` → merge PR #5
 
 ---
 
@@ -282,15 +295,24 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 - ✅ Filter panel hides in Calendar and About views
 - ✅ About tab (who we are · how it works · find us)
 
-**Phase 1 (next):** Category/skill level filter + DUPR parsing
+**Shipped since Phase 0 (June 2026):**
+- ✅ Calendar legibility overhaul — neutral weekend shading (was green-on-green), brighter Sportssync navy `#2F6FA8`, registration-status cues on bars (closing-soon amber ring · reg-closed solid grey), THE PICK row accent, two-group legend (Platform + Status)
+- ✅ Landing polish — `RM` prefix on entry/prize, intermediate skill dot recolored teal `#1B8FA8` so amber stays urgency-only
+- ✅ **Partner Matching Board** (`Partners` tab) — players post "looking for a doubles partner" listings (tournament-specific or general). DUPR-first cards · "Your DUPR" compatibility highlight · filters (DUPR band · event · type · search) · auto-expiry · contact via **Reclub username only** (no phone/IG public). Submissions: Google Form → private responses sheet → approved rows bridged (QUERY/IMPORTRANGE) to a public `Partners` tab the site reads. Private contact never reaches the web. Setup guide: `docs/partner-board-setup.md`.
+  - ⚠️ **Pending founder:** create the Google Form, then replace `PARTNERS_FORM_URL` placeholder in `app.js`. Board shows an empty state until the `Partners` sheet tab exists.
+
+**Phase 1 (next):** Tournament skill/category filter + DUPR parsing (sheet `Skill Level` column is freeform text)
 **Phase 2:** Leaflet.js map pins
 **Phase 3:** Organiser self-submit form
 
 **Sheet ID:** `1fBi6Mxz0pY8IFCP9hhLWB_R_i9J7obMEA5YoA6PkpDg`
+**New files this session:** `docs/partner-board-setup.md` · `Partners` sheet tab (to be created)
 
 ---
 
 ## THEPICKLEBASE PARTNERSHIP
+
+> **STATUS (Jun 4, 2026): Minimum maintenance only.** Founder has signalled willingness to help; the ball is in ThePickleBase's court to initiate. Not building for them for free. Not a blocker for own website dev (which has resumed). Notes below kept for reference.
 
 **Meeting:** Thu May 28, 10am · PJ or Kuchai (their choice)
 **Who:** ThePickleBase (@thepicklebase) — SEA pickleball lifestyle platform (coaching, courts, gear, news). Founder owns BASE Pickleball and Padel court in KL.
@@ -354,7 +376,7 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 6. **Court Green for all carousel covers.** Deep Court only for urgency/Closing Soon.
 7. **Amber is accent only** — never body text, never backgrounds except Closing Soon slides.
 8. **Logo is Court Mark only** — no text-based logo, no variations.
-9. **Dates in tracker:** YYYY-MM-DD format. Reg Deadline = "Closed" or "Once full" when applicable.
+9. **Dates in tracker:** `DD-Mon-YYYY` format (e.g. `1-Jul-2026`). Reg Deadline = "Closed" or "Once full" when applicable.
 10. **Never promise specific posting dates** in slide copy.
 11. **Never say "Malaysia's #1"** in any public-facing copy.
 12. **Skip basic explanations** — founder has full context from prior sessions.
@@ -363,4 +385,4 @@ Columns (in order): Status · ID · Tournament Name · Organizer · Title Sponso
 ---
 
 *MyTournament.PB · Every tournament. One place.*
-*claude.md v1.3 · May 27, 2026*
+*claude.md v1.6 · June 10, 2026 — status updated; Scene Check (Jun 6–7) scrapped; Post 11 (Oriental Daily News, Jun 13) marked urgent; Partner Board pending tasks carried forward*
