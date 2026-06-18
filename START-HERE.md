@@ -10,6 +10,7 @@ Your map to this project. Open this first in any new session.
 | File | What it is |
 |------|-----------|
 | [brand/claude.md](brand/claude.md) | **Master context.** Paste at the start of any new Claude/Cowork session to restore full context. Start here. |
+| [WORKFLOWS.md](WORKFLOWS.md) | **How-to playbook.** Step-by-step for every recurring job (scan, sheet, content, carousel, website, marketing, product) — new session vs continue + exactly what to type. |
 | [brand/BrandSpec_v3.md](brand/BrandSpec_v3.md) | **Brand spec v3** — voice, colours, content franchises, persona (Admin PB). The source of truth for how the brand looks and sounds. |
 | [docs/roadmap.md](docs/roadmap.md) | **Roadmap** — current direction, what's next, resolved/open questions. Most up-to-date strategic doc. |
 | [diary.md](diary.md) | **Captain's Log** — running daily record of decisions and progress, newest on top. |
