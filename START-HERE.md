@@ -11,9 +11,9 @@ Your map to this project. Open this first in any new session.
 |------|-----------|
 | [brand/claude.md](brand/claude.md) | **Master context.** Paste at the start of any new Claude/Cowork session to restore full context. Start here. |
 | [WORKFLOWS.md](WORKFLOWS.md) | **How-to playbook.** Step-by-step for every recurring job (scan, sheet, content, carousel, website, marketing, product) — new session vs continue + exactly what to type. |
-| [brand/BrandSpec_v3.md](brand/BrandSpec_v3.md) | **Brand spec v3** — voice, colours, content franchises, persona (Admin PB). The source of truth for how the brand looks and sounds. |
+| [brand/brand-guidelines.md](brand/brand-guidelines.md) | **Brand spec v3** — voice, colours, content franchises, persona (Admin PB). The source of truth for how the brand looks and sounds. |
 | [docs/roadmap.md](docs/roadmap.md) | **Roadmap** — current direction, what's next, resolved/open questions. Most up-to-date strategic doc. |
-| [diary.md](diary.md) | **Captain's Log** — running daily record of decisions and progress, newest on top. |
+| [decision-log.md](decision-log.md) | **Decision log** — running record of what was decided and shipped, newest on top. |
 | [docs/specs/2026-05-16-mytournament-pb-ui-design.md](docs/specs/2026-05-16-mytournament-pb-ui-design.md) | **UI design spec** — the website's design system and layout decisions. |
 | [docs/specs/2026-05-20-prd-v1.md](docs/specs/2026-05-20-prd-v1.md) | **PRD v1** — ⚠️ historical artifact, frozen. Useful for origin context only, not maintained. |
 | [README.md](README.md) | Public-facing project summary. |
@@ -24,13 +24,13 @@ Your map to this project. Open this first in any new session.
 
 | Folder | What lives here |
 |--------|-----------------|
-| **(root)** | The live website — `index.html`, `app.js`, `style.css`, `favicon.svg`. ⚠️ **This IS mytournamentpb.com.** Don't move or delete these; Cloudflare serves them by path. |
-| `assets/` | Site images — logo, OG image. 🔒 The live site needs these. |
-| `brand/` | Brand spec, master context (claude.md), brand assets. |
-| `docs/` | Specs, plans, roadmap, meeting notes. |
+| **(root)** | The live website — `index.html`, `app.js`, `style.css`. ⚠️ **This IS mytournamentpb.com.** Don't move or delete these; Cloudflare serves them by path. |
+| `assets/` | **All site images** the live site loads — `logo.svg` (web logo), `favicon.svg` (browser tab), `og-image.svg`. 🔒 Don't move these; `index.html` links them by path. |
+| `brand/` | Two docs + the brand asset master. `brand-guidelines.md` = brand spec (voice, colours, visual system). `claude.md` = master session context (status, calendar, rules) — auto-loaded by Claude, don't rename. |
+| `brand/assets/` | **Logo master** — `court_mark_500.svg`, the source Court Mark for profile pics, avatars, and post templates. (The site's smaller `assets/logo.svg` is exported from this — not a duplicate.) |
+| `docs/` | Roadmap, specs, meeting notes, setup guides. |
 | `docs/specs/` | PRD v1 (frozen) + UI design spec. |
-| `docs/plans/` | Implementation plans. |
-| `posts/` | Social post assets — one folder per drop (`post4/`, `post6/`, `closing-may-520/`). |
+| `posts/` | Social post assets — one folder per drop, named `YYYY-MM-DD_post-NN_slug` (e.g. `2026-05-22_post-06_iconic-cup/`). |
 | `posts/exports/` | Data exports used to build posts (CSV/XLSX). |
 | `.claude/` | Claude Code agents, skills, settings (local, gitignored). |
 
@@ -51,6 +51,6 @@ Your map to this project. Open this first in any new session.
 ## 🧭 Common workflows
 
 - **Starting a new Claude session?** → paste [brand/claude.md](brand/claude.md).
-- **Writing a post / caption?** → check [brand/BrandSpec_v3.md](brand/BrandSpec_v3.md) for voice + franchises, drop assets in a new `posts/` folder.
-- **Planning what's next?** → [docs/roadmap.md](docs/roadmap.md), then log the decision in [diary.md](diary.md).
+- **Writing a post / caption?** → check [brand/brand-guidelines.md](brand/brand-guidelines.md) for voice + franchises, drop assets in a new `posts/` folder.
+- **Planning what's next?** → [docs/roadmap.md](docs/roadmap.md), then log the decision in [decision-log.md](decision-log.md).
 - **Editing the website?** → work in root `index.html` / `app.js` / `style.css` only.

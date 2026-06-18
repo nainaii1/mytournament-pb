@@ -1,6 +1,6 @@
 # MyTournament.PB — claude.md
 **Master context for Claude Code · Cowork · new sessions**
-*Last updated: June 4, 2026*
+*Last updated: June 19, 2026*
 
 Paste this at the start of any new Claude session or Claude Code project to restore full context instantly. No re-explaining needed.
 
@@ -219,9 +219,9 @@ Fetch via gviz: `https://docs.google.com/spreadsheets/d/1fBi6Mxz0pY8IFCP9hhLWB_R
 
 Columns (in order, 27): Verified · ID · Tournament Name · Organizer · Title Sponsor · Start Date · End Date · Reg Deadline · State · Venue · Entry Fee (RM) per team · Prize Pool (RM) · Cash Prize (RM) · Merch Value (RM) · Prize Pool Note · Skill Level · Event Type · Age Group · Pick Priority · Editorial Angle · Format Note · Player Note · Source Platform · Registration URL · Date Added · Last Checked · Notes
 
-**Note:** City column was removed by founder. Platform label on slides replaces city. First column is `Verified` (not "Status"). `Age Group` sits between Event Type and Pick Priority.
+**Note:** City column was removed by founder. Platform label on slides replaces city. `Age Group` sits between Event Type and Pick Priority.
 
-**Verified values:** blank (new/unverified) · Verified · Draft
+**First column (verification status):** in the live sheet the header cell is merged with the sheet title, so it *ends in* "Status" — `app.js` normalizes it to `Status` and renders only rows whose value is `Verified` (legacy `Published` also accepted). Cell values: blank (new/unverified) · Verified · Draft. Verified at session start: Jun 19, 2026 against the live gviz endpoint.
 **Pick Priority:** `1 — THE PICK` · `2 — Feature` · `3 — List` · `— Mention only`
 **Date format:** `DD-Mon-YYYY` (e.g. `1-Jul-2026`) throughout — NOT ISO. Match the live sheet.
 **State convention:** `Klang Valley` = KL + Selangor; otherwise the state name.
@@ -229,9 +229,9 @@ Columns (in order, 27): Verified · ID · Tournament Name · Organizer · Title 
 
 ---
 
-## CURRENT STATUS (June 10, 2026)
+## CURRENT STATUS (June 19, 2026)
 
-**Posts published:** 10 (no new posts since May 30 — paused Jun 1–10)
+**Posts published:** 10 (no new posts since May 30 — publishing gap continued through June. The full June carousel pipeline — Oriental Daily News, AmBank, Picklefy — was NOT posted and is now abandoned. Next post live = Post 11, the July drop.)
 - Post 1: About Us / brand intro
 - Post 2: Week 1 debut digest (14 tournaments, RM246K)
 - Post 3: The Problem (why Admin PB exists)
@@ -244,28 +244,32 @@ Columns (in order, 27): Verified · ID · Tournament Name · Organizer · Title 
 - Post 10: ✅ Alliance Bank Malaysia Open — Reel (Sat May 30) · RM129.5K · reg closes Jun 1 ← latest published
   - https://www.instagram.com/p/DY9NloLzjrp/
 
-**Followers:** ~112 (last checked May 27 · due for recount)
-**Streak:** 3/3 Friday drops ✅ · First Reel published ✅ · Gap since May 30 (resumed Jun 10)
+**Followers:** 173 on Instagram (Jun 19 · up from ~112 on May 27)
+**Reach (last 30d, Jun 19):** ~12K views · 151 interactions · 3,050 accounts reached · Stories 7.6K · Posts 4.3K · 712 profile visits · 105 bio-link taps
+**Streak:** 3/3 Friday drops ✅ · First Reel published ✅ · **Publishing gap since May 30** (June drops lapsed; resuming with Post 11 July drop)
 **Active channels:** Instagram · Facebook · Threads
 **Website:** mytournamentpb.com — LIVE
-**ThePickleBase:** Minimum maintenance only. Their move to initiate. See `docs/picklebase-meeting-notes.md`
+**ThePickleBase:** Met May 28 — **no follow-up since; they never re-initiated.** Door's closed for now (open only if *they* DM first). Founder is proceeding fully independent on MyTournament.PB. See `docs/picklebase-meeting-notes.md`
+**Working cadence:** ~2–5 hrs/week on this project, **as spare Claude usage allows** (not a fixed weekly commitment).
 **Partner Board:** Code shipped (PR #5 open on `feat/partner-matching-board`). **Pending founder:** create Google Form + public Partners tab in sheet + replace `PARTNERS_FORM_URL` in `app.js` + merge PR #5. Setup guide: `docs/partner-board-setup.md`.
 
-**Content calendar (updated Jun 10):**
+**Content calendar (updated Jun 19):**
 | Post | Date | Franchise | Format | Content |
 |---|---|---|---|---|
-| Post 10 | Sat May 30 | Tournament Drop | Reel | ✅ Published — Alliance Bank Malaysia Open |
-| Scene Check | — | Scene Check | — | ❌ SCRAPPED — Jun 6–7 weekend brief expired |
-| **Post 11** | **Fri Jun 13** | **Tournament Drop** | **Carousel** | **Oriental Daily News Open · RM120K+ · THE PICK ← NEXT (3 days away)** |
-| Post 12 | Fri Jun 20 | Tournament Drop | Carousel | AmBank Malaysia Championship · RM66K |
-| Post 13 | Fri Jun 27 | Tournament Drop | Carousel | Picklefy 1st Anniversary · RM54.8K |
+| Post 10 | Sat May 30 | Tournament Drop | Reel | ✅ Published — Alliance Bank Malaysia Open (latest live) |
+| ~~June pipeline~~ | Jun 13–27 | Tournament Drop | Carousel | ❌ NOT POSTED — Oriental Daily / AmBank / Picklefy June drops lapsed during the gap. Abandoned. |
+| **Post 11** | **next drop** | **Tournament Drop** | **Carousel** | **"July's Already Loading" · Leapmotor APP Asia Penang Open · RM137.9K · THE PICK. Brief built Jun 19 → `posts/2026-07_post-11_app-asia-penang/brief.md`. Ready for Claude Design. (Per rule #10, no fixed posting date in slide copy.)** |
+| Companion | mid-week | Closing Soon | Single/3-slide | "Last Call This Week" — Picklefy/DinkFest (Jun 20) + Great Eastern Mall/Starz (Jun 24) + HCK (Jun 27). Same brief file. |
 
-⚠️ **URGENT (Jun 10):** Oriental Daily News Open reg deadline = TODAY. Post 11 carousel must be built and posted by Fri Jun 13. Tournament scan (Sportssync + Baseline + SWP) not done since ~May 30 — do at next session start before any content work.
+**Pending tasks (Jun 19):**
+- [ ] **Tournament scan — OVERDUE.** Not run since ~May 30. Sportssync blocked the founder again (Jun 19) — use the `tournament-scraper` subagent (Exa-based), not manual browsing. See `project-sportssync-blocking` memory.
+- [ ] Send Post 11 brief (`posts/2026-07_post-11_app-asia-penang/brief.md`) to Claude Design → build 7-slide carousel + companion Closing Soon.
+- [ ] Partner Board go-live — create Google Form → Partners tab in sheet → update `PARTNERS_FORM_URL` in `app.js` → merge PR #5.
+- [ ] **Direction (Jun 19):** founder wants to **build automation agents** for the recurring manual workflows (scan, sheet hygiene, editorial) rather than doing them by hand. See `docs/roadmap.md` → Automation.
 
-**Pending tasks carried forward:**
-- [ ] Tournament scan — Sportssync, Baseline, SWP (overdue)
-- [ ] Build Post 11 — Oriental Daily News Open · THE PICK · carousel · post by Fri Jun 13
-- [ ] Partner Board go-live — create Google Form → Partners tab in sheet → update `PARTNERS_FORM_URL` in `app.js` → merge PR #5
+**Done since Jun 4:**
+- ✅ Sheet — new tournaments added (MTPB-0067 Starz KL, MTPB-0068 Selangor Grand Slam, MTPB-0069 BRAGG).
+- ✅ Sheet — fixes done (duplicate MTPB-0064 → MTPB-0070, "Intermdiate" typo fixed, BRAGG date verified).
 
 ---
 
@@ -276,7 +280,7 @@ Columns (in order, 27): Verified · ID · Tournament Name · Organizer · Title 
 **Data:** Google Sheet → gviz JSON endpoint. Live on page refresh.
 **Hosting:** Cloudflare Pages (free tier) · auto-deploy from GitHub `main` branch
 **Repo:** github.com/nainaii1/mytournament-pb
-**Files:** `index.html` · `style.css` · `app.js` · `assets/logo.svg` · `favicon.svg`
+**Files:** `index.html` · `style.css` · `app.js` · `assets/logo.svg` · `assets/favicon.svg`
 
 **Phase 0 — COMPLETE (shipped May 2026):**
 - ✅ Tournament list sorted by start date
@@ -312,7 +316,7 @@ Columns (in order, 27): Verified · ID · Tournament Name · Organizer · Title 
 
 ## THEPICKLEBASE PARTNERSHIP
 
-> **STATUS (Jun 4, 2026): Minimum maintenance only.** Founder has signalled willingness to help; the ball is in ThePickleBase's court to initiate. Not building for them for free. Not a blocker for own website dev (which has resumed). Notes below kept for reference.
+> **STATUS (Jun 19, 2026): Met, no follow-up — effectively closed.** The May 28 meeting happened but ThePickleBase never re-initiated afterward. Founder is not chasing it; the door reopens only if *they* DM first. MyTournament.PB continues fully independent (no backend, Sheets-only). Notes below kept for reference.
 
 **Meeting:** Thu May 28, 10am · PJ or Kuchai (their choice)
 **Who:** ThePickleBase (@thepicklebase) — SEA pickleball lifestyle platform (coaching, courts, gear, news). Founder owns BASE Pickleball and Padel court in KL.
@@ -334,7 +338,10 @@ Columns (in order, 27): Verified · ID · Tournament Name · Organizer · Title 
 
 ---
 
-## JUNE 2026 PIPELINE (full — 22 open as of May 27)
+## JUNE 2026 PIPELINE — ⚠️ HISTORICAL (snapshot as of May 27; most events now past)
+
+> Kept for reference only. June drops were never posted (publishing gap). For the live pipeline, run a fresh scan and read the Google Sheet. Next planned post is the **July** drop (Post 11) — see Current Status above.
+
 
 | ID | Tournament | Dates | State | Prize | Closes | Platform | Priority |
 |---|---|---|---|---|---|---|---|
@@ -385,4 +392,4 @@ Columns (in order, 27): Verified · ID · Tournament Name · Organizer · Title 
 ---
 
 *MyTournament.PB · Every tournament. One place.*
-*claude.md v1.6 · June 10, 2026 — status updated; Scene Check (Jun 6–7) scrapped; Post 11 (Oriental Daily News, Jun 13) marked urgent; Partner Board pending tasks carried forward*
+*claude.md v1.8 · June 19, 2026 — status synced: June drops abandoned (gap continued), Post 11 reassigned to the July drop (APP Asia THE PICK), followers 112→173 + reach stats added, June pipeline marked historical, sheet tasks marked done, automation-agents direction noted; ThePickleBase closed (met May 28, no follow-up) — proceeding independent at ~2–5 hrs/wk as Claude usage allows*
