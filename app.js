@@ -2,6 +2,14 @@ const SHEET_ID = "1fBi6Mxz0pY8IFCP9hhLWB_R_i9J7obMEA5YoA6PkpDg";
 const SHEET_NAME = "Tournaments";
 const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
+// Partner matching board — reads a separate public "Partners" tab (same spreadsheet).
+// Private contact is NEVER imported into this tab (see plan: two-file QUERY/IMPORTRANGE bridge).
+const PARTNERS_SHEET_NAME = "Partners";
+const PARTNERS_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(PARTNERS_SHEET_NAME)}`;
+// TODO(founder): replace with the real Google Form share link once created.
+const PARTNERS_FORM_URL = "https://forms.gle/REPLACE_WITH_YOUR_FORM";
+const PARTNER_GENERAL_TTL_DAYS = 30; // general listings auto-hide after this many days
+
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 // Normalises "23-May-2026" or "2-May-2026" → "2026-05-23". Passes through
@@ -439,6 +447,14 @@ let searchQuery   = "";        // empty = show all; lowercase string when active
 const sectionCollapsed = { closing: false, coming: false, closed: false };
 let calendarMode = false;
 let aboutMode    = false;
+let partnersMode = false;
+
+// Partner board state
+let allPartners       = [];
+let partnerEventFilter = null;   // "mens" | "womens" | "mixed" | null
+let partnerTypeFilter  = "all";  // "all" | "tournament" | "general"
+let partnerDuprBand    = null;   // "lt3" | "3-3.5" | "3.5-4" | "4plus" | null
+let yourDupr           = null;   // number when set
 
 function matchesSkillFilter(t) {
   if (skillFilters.size === 0) return true;
@@ -573,9 +589,11 @@ function syncNavState() {
   const navHome  = document.getElementById("nav-home");
   const navCal   = document.getElementById("nav-calendar");
   const navAbout = document.getElementById("nav-about");
-  if (navHome)  navHome.classList.toggle("on",  !calendarMode && !aboutMode);
+  const navPart  = document.getElementById("nav-partners");
+  if (navHome)  navHome.classList.toggle("on",  !calendarMode && !aboutMode && !partnersMode);
   if (navCal)   navCal.classList.toggle("on",   calendarMode);
   if (navAbout) navAbout.classList.toggle("on",  aboutMode);
+  if (navPart)  navPart.classList.toggle("on",  partnersMode);
 }
 
 // ── Filter panel (drawer on mobile, sidebar on desktop) ───────────────────
@@ -629,6 +647,21 @@ function renderAll() {
   syncNavState();
   document.body.classList.toggle("calendar-mode", calendarMode);
   document.body.classList.toggle("about-mode",    aboutMode);
+  document.body.classList.toggle("partners-mode", partnersMode);
+
+  // ── Partners mode ─────────────────────────────────────────────────────────
+  if (partnersMode) {
+    document.getElementById("urgency-strip").hidden   = true;
+    document.getElementById("section-closing").hidden = true;
+    document.getElementById("section-coming").hidden  = true;
+    document.getElementById("section-closed").hidden  = true;
+    document.getElementById("calendar-view").hidden   = true;
+    document.getElementById("section-about").hidden   = true;
+    document.getElementById("section-partners").hidden = false;
+    renderPartners();
+    return;
+  }
+  document.getElementById("section-partners").hidden = true;
 
   // ── About mode ──────────────────────────────────────────────────────────
   if (aboutMode) {
@@ -918,6 +951,233 @@ function renderCalendar(tournaments, todayStr) {
 </div>`;
 }
 
+// ── Partner matching board ─────────────────────────────────────────────────
+async function fetchPartners() {
+  try {
+    const res = await fetch(PARTNERS_CSV_URL);
+    if (!res.ok) return [];
+    const text = await res.text();
+    const rows = parseCSV(text);
+    if (rows.length < 2) return [];
+    const headers  = rows[0].map(h => h.trim());
+    const dateCols = new Set(["Tournament Date", "Posted Date"]);
+    return rows.slice(1).map(r => {
+      const obj = {};
+      headers.forEach((key, i) => {
+        const val = (r[i] ?? "").trim();
+        obj[key] = dateCols.has(key) ? normalizeDate(val) : val;
+      });
+      return obj;
+    }).filter(p => (p["Display Name"] || p["Reclub Username"]));
+  } catch (e) {
+    // Tab may not exist yet — board just shows an empty state.
+    console.warn("partners fetch skipped:", e);
+    return [];
+  }
+}
+
+// Extract the first numeric DUPR value from a string ("2.94", "3.0+", "<3.5").
+function parseDuprValue(str) {
+  const m = (str || "").match(/\d+(\.\d+)?/);
+  return m ? parseFloat(m[0]) : null;
+}
+
+// Parse a desired-partner range into {lo, hi}. Handles "3.0–3.5", "<3.0", "3.5+", "Any".
+function parseDuprRange(str) {
+  const s = (str || "").trim().toLowerCase();
+  if (!s || s === "any" || s === "open") return { lo: 0, hi: 99 };
+  const nums = s.match(/\d+(\.\d+)?/g);
+  if (s.startsWith("<") || s.includes("below") || s.includes("under")) {
+    return { lo: 0, hi: nums ? parseFloat(nums[0]) : 99 };
+  }
+  if (s.includes("+") || s.includes("above") || s.includes("over")) {
+    return { lo: nums ? parseFloat(nums[0]) : 0, hi: 99 };
+  }
+  if (nums && nums.length >= 2) return { lo: parseFloat(nums[0]), hi: parseFloat(nums[1]) };
+  if (nums && nums.length === 1) { const v = parseFloat(nums[0]); return { lo: v - 0.25, hi: v + 0.25 }; }
+  return { lo: 0, hi: 99 };
+}
+
+function duprBandKey(v) {
+  if (v === null) return null;
+  if (v < 3.0) return "lt3";
+  if (v < 3.5) return "3-3.5";
+  if (v < 4.0) return "3.5-4";
+  return "4plus";
+}
+
+// Tokens for event-type matching from a free "Looking For" string.
+function partnerEventTokens(lookingFor) {
+  const s = (lookingFor || "").toLowerCase();
+  const out = [];
+  if (s.includes("mix")) out.push("mixed");
+  if (s.includes("women") || s.includes("ladies")) out.push("womens");
+  if (s.includes("men") && !s.includes("women")) out.push("mens");
+  return out;
+}
+
+function isGoodPartnerMatch(p) {
+  if (yourDupr === null) return false;
+  const { lo, hi } = parseDuprRange(p["Desired DUPR"]);
+  return yourDupr >= lo && yourDupr <= hi;
+}
+
+function normalizeName(s) {
+  return (s || "").toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+}
+
+function findPartnerTournament(name) {
+  const n = normalizeName(name);
+  if (!n) return null;
+  return allTournaments.find(t => {
+    const tn = normalizeName(t["Tournament Name"]);
+    return tn && (tn === n || tn.includes(n) || n.includes(tn));
+  }) || null;
+}
+
+function matchesPartnerSearch(p) {
+  if (!searchQuery) return true;
+  const q = searchQuery.toLowerCase();
+  return [
+    p["Display Name"], p["Reclub Username"], p["State"],
+    p["Tournament"], p["Looking For"], p["Note"]
+  ].some(v => (v || "").toLowerCase().includes(q));
+}
+
+// Drop stale listings: tournament posts past their date, general posts past TTL.
+function isPartnerActive(p, todayStr) {
+  const type = (p["Post Type"] || "").toLowerCase();
+  if (type.includes("tournament")) {
+    const td = p["Tournament Date"];
+    if (DATE_RE.test(td)) return td >= todayStr;
+    return true; // no parseable date — keep, let moderation handle
+  }
+  const posted = p["Posted Date"];
+  if (DATE_RE.test(posted)) {
+    const age = daysUntil(posted, todayStr); // negative = in the past
+    return age === null || -age <= PARTNER_GENERAL_TTL_DAYS;
+  }
+  return true;
+}
+
+function renderPartnerCard(p, todayStr) {
+  const name    = escapeHtml(p["Display Name"] || "A player");
+  const reclub  = (p["Reclub Username"] || "").replace(/^@/, "");
+  const dupr    = parseDuprValue(p["DUPR"]);
+  const duprTxt = dupr !== null ? dupr.toFixed(2) : "—";
+  const source  = (p["DUPR Source"] || "").toLowerCase();
+  const srcTag  = source.includes("official") ? "official" : (source ? "self-est." : "");
+  const gender  = (p["Gender"] || "").trim().charAt(0).toUpperCase();
+  const isTourn = (p["Post Type"] || "").toLowerCase().includes("tournament");
+
+  // Event pills
+  const events = partnerEventTokens(p["Looking For"]);
+  const evLabel = { mens: "Men's Doubles", womens: "Women's Doubles", mixed: "Mixed Doubles" };
+  const evHTML  = (events.length ? events : null)
+    ? events.map(e => `<span class="event-pill">${evLabel[e]}</span>`).join("")
+    : `<span class="event-pill">${escapeHtml(p["Looking For"] || "Any event")}</span>`;
+
+  // Target line
+  let targetHTML = "";
+  if (isTourn) {
+    const matched = findPartnerTournament(p["Tournament"]);
+    const tName   = escapeHtml(p["Tournament"] || (matched && matched["Tournament Name"]) || "A tournament");
+    const tDateStr = (matched && matched["Start Date"]) || p["Tournament Date"] || "";
+    const dateLbl = DATE_RE.test(tDateStr) ? ` · ${escapeHtml(formatShortDate(tDateStr))}` : "";
+    targetHTML = `<div class="partner-target"><span class="ptype-pill tournament">TOURNAMENT</span> ${tName}${dateLbl}</div>`;
+  } else {
+    targetHTML = `<div class="partner-target"><span class="ptype-pill general">GENERAL</span> Looking for a regular partner</div>`;
+  }
+
+  const desired = (p["Desired DUPR"] || "").trim();
+  const wantsHTML = desired ? `<div class="partner-wants">Wants partner <b>${escapeHtml(desired)}</b></div>` : "";
+  const state   = escapeHtml(p["State"] || "");
+  const note    = (p["Note"] || "").trim();
+  const noteHTML = note ? `<div class="partner-note">${escapeHtml(note)}</div>` : "";
+  const reclubHTML = reclub
+    ? `<div class="reclub-row"><span class="reclub-label">Find on Reclub</span><b class="reclub-user">@${escapeHtml(reclub)}</b></div>`
+    : "";
+  const good = isGoodPartnerMatch(p);
+  const matchHTML = good ? `<div class="partner-match">✓ Good match for you</div>` : "";
+
+  return `
+<div class="card partner-card${good ? " is-match" : ""}">
+  <div class="dupr-block">
+    <div class="dupr-label">DUPR</div>
+    <div class="dupr-val">${duprTxt}</div>
+    ${srcTag ? `<div class="dupr-src">${srcTag}</div>` : ""}
+  </div>
+  <div class="card-body">
+    <div class="partner-head">
+      <span class="card-name">${name}</span>
+      ${gender ? `<span class="gender-tag">${gender}</span>` : ""}
+      ${state ? `<span class="partner-state">${state}</span>` : ""}
+    </div>
+    ${targetHTML}
+    <div class="looking-for"><span class="lf-label">Looking for</span><div class="events">${evHTML}</div></div>
+    ${wantsHTML}
+    ${noteHTML}
+    ${reclubHTML}
+    ${matchHTML}
+  </div>
+</div>`.trim();
+}
+
+function renderPartners() {
+  const todayStr = todayUTCString();
+  const listEl = document.getElementById("partners-list");
+  if (!listEl) return;
+
+  let list = allPartners.filter(p => isPartnerActive(p, todayStr));
+
+  // Type filter
+  if (partnerTypeFilter !== "all") {
+    list = list.filter(p => {
+      const isT = (p["Post Type"] || "").toLowerCase().includes("tournament");
+      return partnerTypeFilter === "tournament" ? isT : !isT;
+    });
+  }
+  // Event filter
+  if (partnerEventFilter) {
+    list = list.filter(p => partnerEventTokens(p["Looking For"]).includes(partnerEventFilter));
+  }
+  // DUPR band filter (on the poster's own rating)
+  if (partnerDuprBand) {
+    list = list.filter(p => duprBandKey(parseDuprValue(p["DUPR"])) === partnerDuprBand);
+  }
+  // Search
+  list = list.filter(matchesPartnerSearch);
+
+  // Sort: good matches first (when Your DUPR set), then tournament posts by soonest date,
+  // then general posts by newest.
+  list.sort((a, b) => {
+    if (yourDupr !== null) {
+      const am = isGoodPartnerMatch(a) ? 0 : 1;
+      const bm = isGoodPartnerMatch(b) ? 0 : 1;
+      if (am !== bm) return am - bm;
+    }
+    const aT = (a["Post Type"] || "").toLowerCase().includes("tournament");
+    const bT = (b["Post Type"] || "").toLowerCase().includes("tournament");
+    if (aT !== bT) return aT ? -1 : 1;
+    if (aT && bT) return (a["Tournament Date"] || "") < (b["Tournament Date"] || "") ? -1 : 1;
+    return (a["Posted Date"] || "") > (b["Posted Date"] || "") ? -1 : 1;
+  });
+
+  if (!list.length) {
+    const emptyMsg = allPartners.length
+      ? "No listings match your filters. Try clearing them."
+      : "No partner listings yet. Be the first — post a listing above.";
+    listEl.innerHTML = `<div class="empty-state"><div class="empty-icon">🤝</div>
+      <div class="empty-title">Nothing here yet</div>
+      <div class="empty-sub">${emptyMsg}</div></div>`;
+    return;
+  }
+
+  const matchCount = yourDupr !== null ? list.filter(isGoodPartnerMatch).length : 0;
+  const head = `<div class="section-head"><span class="section-title">${list.length} player${list.length === 1 ? "" : "s"} looking${matchCount ? ` · <span class="accent">${matchCount} match${matchCount === 1 ? "" : "es"} for you</span>` : ""}</span></div>`;
+  listEl.innerHTML = head + `<div class="cards-wrap">${list.map(p => renderPartnerCard(p, todayStr)).join("")}</div>`;
+}
+
 // ── init ──────────────────────────────────────────────────────────────────
 async function init() {
   try {
@@ -925,6 +1185,15 @@ async function init() {
     buildMonthChips(allTournaments);
     buildStateChips(allTournaments);
     renderAll();
+
+    // Partner board data (non-blocking — board renders when its tab is opened)
+    fetchPartners().then(p => {
+      allPartners = p;
+      if (partnersMode) renderPartners();
+    });
+    // Wire the "Post a listing" button to the Google Form
+    const postBtn = document.getElementById("partners-post-btn");
+    if (postBtn) postBtn.href = PARTNERS_FORM_URL;
 
     // Search input
     const searchInput = document.getElementById("search-input");
@@ -990,7 +1259,18 @@ async function init() {
     // Header nav — Home / Calendar
     document.getElementById("nav-home")?.addEventListener("click", e => {
       e.preventDefault();
-      if (calendarMode || aboutMode) {
+      if (calendarMode || aboutMode || partnersMode) {
+        calendarMode = false;
+        aboutMode    = false;
+        partnersMode = false;
+        renderAll();
+      }
+    });
+    document.getElementById("nav-partners")?.addEventListener("click", e => {
+      e.preventDefault();
+      closeFilterPanel();
+      if (!partnersMode) {
+        partnersMode = true;
         calendarMode = false;
         aboutMode    = false;
         renderAll();
@@ -1002,6 +1282,7 @@ async function init() {
       if (!calendarMode) {
         calendarMode = true;
         aboutMode    = false;
+        partnersMode = false;
         monthFilter  = null; // calendar always shows full window
         stateFilter  = null;
         // Reset month chips to ALL
@@ -1020,8 +1301,46 @@ async function init() {
       if (!aboutMode) {
         aboutMode    = true;
         calendarMode = false;
+        partnersMode = false;
         renderAll();
       }
+    });
+
+    // Partner board filter controls
+    const yourDuprInput = document.getElementById("your-dupr");
+    if (yourDuprInput) {
+      yourDuprInput.addEventListener("input", () => {
+        const v = parseFloat(yourDuprInput.value);
+        yourDupr = Number.isFinite(v) ? v : null;
+        if (partnersMode) renderPartners();
+      });
+    }
+    function wirePartnerChipGroup(containerId, dataAttr, onPick) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.querySelectorAll(".pf-chip").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const val = btn.dataset[dataAttr];
+          onPick(val, btn, container);
+          if (partnersMode) renderPartners();
+        });
+      });
+    }
+    // DUPR band + event: toggle on/off (single-select, click again to clear)
+    wirePartnerChipGroup("partner-dupr-bands", "band", (val, btn, container) => {
+      const active = partnerDuprBand === val;
+      partnerDuprBand = active ? null : val;
+      container.querySelectorAll(".pf-chip").forEach(b => b.classList.toggle("on", !active && b === btn));
+    });
+    wirePartnerChipGroup("partner-events", "ev", (val, btn, container) => {
+      const active = partnerEventFilter === val;
+      partnerEventFilter = active ? null : val;
+      container.querySelectorAll(".pf-chip").forEach(b => b.classList.toggle("on", !active && b === btn));
+    });
+    // Type: always one selected (All default)
+    wirePartnerChipGroup("partner-type", "ptype", (val, btn, container) => {
+      partnerTypeFilter = val;
+      container.querySelectorAll(".pf-chip").forEach(b => b.classList.toggle("on", b === btn));
     });
 
     // Deep-link: ?id=MTPB-0005 scrolls to that card

@@ -1,25 +1,34 @@
 # MyTournament.PB — Roadmap
 
-*Last updated: May 28, 2026*
+*Last updated: June 4, 2026*
 
-> ⛔ **WEBSITE DEV FROZEN (as of May 28).** Phase 1–3 are on hold pending the ThePickleBase decision (see Open Strategic Question below). Do not start building website features until the posture is decided. The content engine (Friday drops) continues regardless.
+> ✅ **WEBSITE DEV RESUMED (Jun 4).** Founder chose to keep building independently; ThePickleBase is set to **minimum-maintenance only** (see resolved question below) and is no longer a blocker. Lean, no-backend approach continues — Google Sheets stays the data layer. Content engine (Friday drops) continues regardless.
 
 ---
 
-## ⚠️ OPEN STRATEGIC QUESTION — blocks all website dev
+## ✅ RESOLVED STRATEGIC QUESTION (was: blocks all website dev)
 
-**Ian (ThePickleBase) is building a tournament directory** — DUPR API + Sportssync + Baseline partnerships. That is functionally the same product as this website, but with a real backend and 18K distribution. After the May 28 meeting he invited Mike to potentially help build it.
+**Ian (ThePickleBase) is building a tournament directory** — DUPR API + Sportssync + Baseline partnerships, real backend, ~18K distribution. After the May 28 meeting he invited Mike to potentially help build it.
 
-Until Ian confirms and the posture is chosen, **every website phase below is paused**, because the work may be throwaway:
+**Resolution (Jun 4):** Founder picks the **Independent** posture in practice — keep this site as the lean player destination, **without a backend** (Google Sheets only). ThePickleBase = minimum maintenance; founder has signalled willingness to help but won't build for free — they initiate if they want the data/aggregation layer. Founder's priority is own brand + real income.
 
 | Posture | Meaning | Effect on this roadmap |
 |---|---|---|
-| **Feeder / prototype** | This site = proof-of-concept; data + editorial feeds Ian's directory | Freeze Phase 1–3 permanently. Site stays a lean catalog. |
-| **Independent** | Compete; this site stays the player destination | Build Phase 1–3 here; need Supabase backend + bandwidth |
-| **Hybrid** | Site = social/brand front; directory work lives in Ian's stack | Keep content engine, pause website dev |
+| **Feeder / prototype** | This site = proof-of-concept; data + editorial feeds Ian's directory | Not chosen |
+| **Independent** ✅ | Compete; this site stays the player destination | **Chosen** — build features here, but stay no-backend / Sheets-only for now |
+| **Hybrid** | Site = social/brand front; directory work lives in Ian's stack | Not chosen |
 
-**Decision owner:** Mike + Ian · **Unblocks when:** Ian confirms the working arrangement (target: early June)
-**Default stance until then:** Hold. Don't build a backend. Learn Ian's stack first.
+**Note:** "Independent" originally implied a Supabase backend. Founder's revised constraint = **no backend** — ship everything on the existing Sheets + vanilla stack (the Partner Board proves this is viable via a Google Form → Sheets bridge).
+
+---
+
+## ✅ SHIPPED — June 2026 (post-launch)
+
+| Feature | Notes |
+|---|---|
+| Calendar legibility overhaul | Neutral weekend shading, brighter Sportssync navy `#2F6FA8`, reg-status cues (closing-soon ring · reg-closed solid grey), THE PICK row accent, two-group legend |
+| Landing polish | `RM` prefix on entry/prize; intermediate skill dot recolored teal (amber stays urgency-only) |
+| **Partner Matching Board** (`Partners` tab) | Players post "looking for a partner" listings (tournament/general). DUPR-first cards · "Your DUPR" match highlight · filters · auto-expiry · Reclub-username contact. Google Form → private sheet → approved rows bridged to public `Partners` tab. No backend. Setup: `docs/partner-board-setup.md`. Pending: founder creates the Form + sets `PARTNERS_FORM_URL`. |
 
 ---
 
@@ -50,7 +59,7 @@ Live at **mytournamentpb.com** · Cloudflare Pages · GitHub auto-deploy
 
 ---
 
-### Phase 1 — Skill/Category Filtering ⛔ FROZEN (pending ThePickleBase decision)
+### Phase 1 — Skill/Category Filtering 🟡 NEXT UP (unblocked Jun 4)
 
 **Goal:** Players can filter by DUPR level or category (Novice / Intermediate / Advanced / Open)
 
@@ -91,7 +100,7 @@ Live at **mytournamentpb.com** · Cloudflare Pages · GitHub auto-deploy
 | Auto-fill sheet on approval | Or separate Supabase table + merged fetch |
 | Email notification to organiser | On approval |
 
-**Dependency:** Requires Supabase account (free tier). Form = vanilla HTML POST.
+**Dependency:** ~~Requires Supabase~~ → **reuse the Partner Board pattern** (Google Form → private responses sheet → approved rows bridged to a public tab the site reads). No backend needed. See `docs/partner-board-setup.md` for the proven approach.
 
 ---
 
@@ -102,7 +111,7 @@ Live at **mytournamentpb.com** · Cloudflare Pages · GitHub auto-deploy
 | Tournament watchlist / save | Local storage only (no accounts) |
 | Email / WhatsApp reminder for deadlines | Supabase Edge Functions or simple mailto |
 | Push notifications (PWA) | Service worker — significant complexity |
-| Partner matching board | Players looking for partners DM Admin PB |
+| ~~Partner matching board~~ | ✅ **SHIPPED Jun 2026** as a self-serve `Partners` tab (not DM-based) — see Shipped section above |
 
 ---
 
