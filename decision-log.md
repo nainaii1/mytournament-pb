@@ -8,7 +8,7 @@ Format: newest entry at the top.
 ## Jun 19, 2026 (Fri) — Day 50
 
 **What happened:**
-- **Doc-sync session** — reviewed every md/file/folder and brought the status docs back in line with reality (master context, roadmap, this diary).
+- **Doc-sync session** — reviewed every md/file/folder and brought the status docs back in line with reality (master context, roadmap, this log).
 - **Publishing gap confirmed:** nothing went live between Post 10 (May 30) and today. The whole June carousel pipeline (Oriental Daily News Jun 13, AmBank, Picklefy) **lapsed and was never posted** — now abandoned. Post 10 is still the latest published.
 - **Post 11 reassigned to a July drop:** brief built → `posts/2026-07_post-11_app-asia-penang/brief.md`. "July's Already Loading" · 7-slide carousel · **THE PICK = Leapmotor APP Asia Penang Open** (Jul 22–26, RM137.9K, reg closes 15 Jul) + a "Last Call This Week" Closing Soon companion. Ready for Claude Design.
 - **Sportssync blocked the founder again** (logged to `project-sportssync-blocking` memory) — scan still overdue since ~May 30; use the `tournament-scraper` subagent, not manual browsing.
