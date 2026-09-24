@@ -1,6 +1,6 @@
 # MyTournament.PB — Roadmap
 
-*Last updated: June 19, 2026*
+*Last updated: June 19, 2026 (strategy/content) · Automation Roadmap section updated 24-Aug-2026*
 
 > ✅ **BUILDING INDEPENDENTLY (resumed Jun 4, confirmed Jun 19).** ThePickleBase met May 28 but **never followed up** — that path is effectively closed (reopens only if they DM first), and it was never a blocker anyway. MyTournament.PB continues lean and no-backend (Google Sheets is the data layer). Working cadence is **~2–5 hrs/week, as spare Claude usage allows** — not a fixed commitment. Content engine (Friday drops) continues regardless.
 
@@ -142,17 +142,19 @@ Removed from this file to prevent drift (it was getting out of sync every time a
 
 ## Automation Roadmap (NEW — Jun 19)
 
-**Direction:** Founder wants to **build automation agents** for the recurring manual jobs rather than running each by hand every week. The repetitive pain points — tournament scan, sheet hygiene, editorial drafting, deadline checks — already have `.claude/` skills + subagents (`tournament-scraper`, `sheet-sweeper`, `admin-pb-social`, plus `scan-tournaments` / `check-deadlines` / `draft-editorial` skills). The goal is to lean on these (and harden them) so a session can run the weekly loop with minimal manual steps.
+**Direction:** Founder wants to **build automation agents** for the recurring manual jobs rather than running each by hand every week. The repetitive pain points — tournament scan, sheet hygiene, editorial drafting, deadline checks — already have `.claude/` skills + subagents (`tournament-scraper`, `sheet-sweeper`, `admin-pb-social`, plus the `tournament-ops` skill). The goal is to lean on these (and harden them) so a session can run the weekly loop with minimal manual steps.
 
 | Candidate to automate | Existing tool | Status |
 |---|---|---|
-| Weekly tournament scan (3 platforms → missing-events list) | `tournament-scraper` subagent · `scan-tournaments` skill | Built — use instead of manual browsing (Sportssync blocks the founder) |
-| Sheet audit / cleanup (expired deadlines, typos, dup IDs, format) | `sheet-sweeper` subagent | Built |
-| Editorial drafting (Pick Priority, angles, player notes) | `draft-editorial` skill | Built |
-| Deadline / Closing Soon flagging | `check-deadlines` skill | Built |
+| Weekly tournament scan (2 platforms → missing-events list) | `tournament-scraper` subagent · `tournament-ops` skill (Scan) | Built — rebuilt 24-Aug-2026 with a source-verification rule and shared data contract. Platforms narrowed to Sportssync + Baseline — SWP discontinued (founder decision, 24-Aug). |
+| Sheet audit / cleanup (expired deadlines, typos, dup IDs, format) | `sheet-sweeper` subagent · `tournament-ops` skill (Unknowns audit) | Built. The Unknowns audit mode is new (24-Aug) — dogfooded same-day, found and fixed the Event Type/Skill Level rendering bug across 37 rows plus the EGH Gantt bug, wrong Sportssync URLs, and a stale entry fee. |
+| Editorial drafting (Pick Priority, angles, player notes) | `tournament-ops` skill (Editorial) | Built |
+| Deadline / Closing Soon flagging | `tournament-ops` skill (Deadlines) | Built |
 | Content drafting (carousel briefs, captions, rollout package) | `admin-pb-social` subagent | Built |
 
-**Next:** dogfood these on the overdue scan + Post 11, note what breaks, then tighten. Keep everything no-backend (skills/subagents only) consistent with the lean stack.
+**Dogfooded 24-Aug-2026:** ran Scan + Unknowns audit + Deadlines back to back. Found real bugs (see `brand/claude.md` → Data Ops Status), so the tooling is proving its worth. One open issue surfaced, not yet a tooling fix: Google Sheets Data Validation on `Age Group`/`Reg Deadline` is silently blanking non-numeric/non-date values on import — needs a founder-side check in Sheets, not a skill change.
+
+**Next:** dogfood the Editorial mode and a full weekly Scan+Deadlines loop on Post 11. Keep everything no-backend (skills/subagents only) consistent with the lean stack.
 
 ---
 

@@ -2,7 +2,7 @@
 
 Your step-by-step playbook. For each recurring job: when to use it, whether to start a new
 session, exactly what to type, which agent runs, and what you get back.
-*Last updated: 19 June 2026*
+*Last updated: 24 August 2026 — skill references updated to `tournament-ops`*
 
 ---
 
@@ -21,7 +21,7 @@ session, exactly what to type, which agent runs, and what you get back.
    Claude never writes to your Google Sheet directly.
 5. **Website work is always branch -> PR -> merge.** Never edit `main` directly. The partner-board
    PR stays open until the Google Form exists (see workflow 5).
-6. **To run a skill, type its slash command** (e.g. `/scan-tournaments`). To use an agent, just
+6. **To run a skill, type its slash command** (e.g. `/tournament-ops`). To use an agent, just
    describe the job in plain English — Claude picks the right agent. You can also name it.
 
 ---
@@ -34,12 +34,12 @@ session, exactly what to type, which agent runs, and what you get back.
 | | |
 |---|---|
 | **Session** | New session |
-| **Type this** | `/scan-tournaments`  *(or: "scan for new tournaments")* |
-| **Runs** | `tournament-scraper` agent + `scan-tournaments` skill |
+| **Type this** | `/tournament-ops`  *(or: "scan for new tournaments")* |
+| **Runs** | `tournament-scraper` agent + `tournament-ops` skill (Scan mode) |
 | **You get** | A list of NEW tournaments not in your sheet + an importable CSV (`posts/exports/new-tournaments-<date>.csv`) + a manual-check list for anything it couldn't auto-verify |
 | **Next step** | Go to workflow 2 to clean + import them |
 
-**Bonus:** `/check-deadlines` -> "which tournaments are closing soon" — a prioritised urgency list.
+**Bonus:** `/tournament-ops` -> "which tournaments are closing soon" (Deadlines mode) — a prioritised urgency list. Or "find unknowns" (Unknowns audit) to catch TBCs and data-contract violations.
 
 ---
 
@@ -179,11 +179,11 @@ what's the simplest version? End with a clear recommendation.
 
 | I want to... | Start | Type |
 |---|---|---|
-| Find new tournaments | New session | `/scan-tournaments` |
+| Find new tournaments | New session | `/tournament-ops` -> "scan" |
 | Clean my sheet / get import file | New session | `"sweep my sheet"` |
-| Check urgent deadlines | New session | `/check-deadlines` |
+| Check urgent deadlines | New session | `/tournament-ops` -> "check deadlines" |
 | Brainstorm / draft a post | New session | `"brainstorm content from my sheet"` |
-| Write editorial for sheet rows | New session | `/draft-editorial` |
+| Write editorial for sheet rows | New session | `/tournament-ops` -> "draft editorial" |
 | Build carousel slides | New (Claude Design) | paste brief -> `"build these slides"` |
 | Add/fix website | New session | `"add [X], plan first, branch + PR"` |
 | Marketing ideas | New session | `"be my marketing sparring partner..."` |

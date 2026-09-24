@@ -22,3 +22,15 @@ node_modules/
 
 # Logs
 *.log
+
+# Playwright debug snapshots (scratch, not project files)
+.playwright-mcp/
+
+# Personal ID documents -- never let these near a public repo
+*.jp2
+KAD PENGENALAN*
+
+# Private working files -- this repo is public AND served live on mytournamentpb.com
+docs/rebuild-plan.md
+admin-pb-hq-workflow.html
+*.plugin.bak

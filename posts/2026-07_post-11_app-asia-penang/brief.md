@@ -65,11 +65,12 @@
 - **Slide no:** `06`
 - **Label:** CLOSING SOON
 - **Headline:** Daftar before these close ⏰
-- **List:**
+- **List (date-accurate, ≤7-day window as of Jun 19):**
   - Picklefy 1st Anniversary — closes **Jun 20 (tomorrow!)**
+  - DinkFest by HNC (JB) — closes **Jun 20**
   - Great Eastern Mall — closes Jun 24
   - Starz KL Open — closes Jun 24
-  - HCK Playfest — closes Jun 27
+- **Note:** HCK Playfest removed — its deadline (Jun 27) is 8 days out today, so the site classes it "open," not closing-soon. It flips on Jun 20.
 
 ### Slide 07 — CTA (Deep Court bg)
 - **Slide no:** `07`
@@ -150,38 +151,39 @@ Every tournament. One place. Save this and share it with your kaki 🙏
 ---
 
 # COMPANION POST — "Last Call This Week" · Closing Soon
-**Format:** Single image OR 3 quick slides · Deep Court bg · post Tue/Thu mid-week
+**Format:** ONE slide (single image), 1080×1350 · **Rally Amber `#F0A500` bg** · post today (Jun 19)
+**Accuracy:** date-computed ≤7-day reg window as of Jun 19, mirrors the site's Closing Soon logic. HCK Playfest is NOT here — it's 8 days out today (enters the window Jun 20).
 
-### Slide A — HERO (Deep Court bg)
-- **Label:** CLOSING SOON
+### THE ONE SLIDE — CLOSING SOON (Rally Amber `#F0A500` bg)
+- **Text colour:** Deep Court `#0D1F1A` for all text/labels (amber is the background here, so contrast comes from dark text)
+- **Label:** CLOSING SOON (Deep Court, top-left)
 - **Headline:** Last Call This Week ⏰
-- **Subline:** 5 tournaments closing reg. don't say nobody told you.
+- **Subline:** register before reg closes 👇
+- **Rows** (deadline in Deep Court bold · platform pill on each):
 
-### Slide B — THE LIST (Deep Court bg)
+| Closes | Tournament | State | Pill |
+|---|---|---|---|
+| **Jun 20** | Picklefy 1st Anniversary | Shah Alam | Sportssync (blue) |
+| **Jun 20** | DinkFest by HNC | Johor | Sportssync (blue) |
+| **Jun 20** | Pickle Power Superstar Cup | Penang | SWP (orange) |
+| **Jun 25** | PP'A Men's Singles | Penang | SWP (orange) |
+| **Jun 26** | CPC × Franklin Mini Tour | KL | Sportssync (blue) |
+| **Jun 28** | Nibong Tebal Carnival | Penang | SWP (orange) |
 
-| Tournament | State | Prize | Closes | Pill |
-|---|---|---|---|---|
-| Picklefy 1st Anniversary | Shah Alam | RM54.8K | Jun 20 | Sportssync |
-| DinkFest by HNC | Johor | RM18.25K | Jun 20 | Sportssync |
-| Great Eastern Mall Picklefest | KL | all-merch | Jun 24 | Sportssync |
-| Starz KL Open | KL | RM12.1K | Jun 24 | Sportssync |
-| HCK Playfest | Subang | RM38.9K | Jun 27 | Sportssync |
+- **Footer:** register links → mytournamentpb.com · @mytournament.pb
 
-### Slide C — CTA (Court Green bg)
-- **Headline:** Daftar now, regret never.
-- **Body:** Register links + live deadlines → mytournamentpb.com
-- **Footer:** @mytournament.pb
+> **Timing note:** if this goes out Jun 21+, the three Jun 20 events drop off and HCK Playfest (Jun 27) joins. Rebuild against the live sheet on the day you post.
 
 ### IG CAPTION (companion)
 
-last call ⏰ five tournaments closing reg this week 👇
+last call ⏰ reg closing this week 👇
 
-🔴 closing TOMORROW (jun 20): Picklefy 1st Anniversary (RM54.8K) + DinkFest JB
-🟠 jun 24: Great Eastern Mall Picklefest + Starz KL Open
-🟡 jun 27: HCK Playfest (RM38.9K, parent & child)
+🔴 closing TOMORROW (jun 20): Picklefy 1st Anniversary (RM54.8K) · DinkFest JB · Pickle Power Superstar Cup
+🟠 jun 25–26: PP'A Men's Singles (Penang) · CPC × Franklin Mini Tour (KL)
+🟡 jun 28: Nibong Tebal Carnival (Penang)
 
 if you've been "thinking about it" — this is the sign. register links all on mytournamentpb.com (link in bio).
 
 don't say nobody told you 🫡
 
-#pickleballmalaysia #pickleballmy #malaysiapickleball #closingsoon #pickleballkl
+#pickleballmalaysia #pickleballmy #malaysiapickleball #closingsoon #pickleballpenang

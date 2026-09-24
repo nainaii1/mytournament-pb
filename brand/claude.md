@@ -1,395 +1,49 @@
-# MyTournament.PB — claude.md
-**Master context for Claude Code · Cowork · new sessions**
-*Last updated: June 19, 2026*
+# MyTournament.PB
 
-Paste this at the start of any new Claude session or Claude Code project to restore full context instantly. No re-explaining needed.
+A faceless Malaysian pickleball tournament calendar and media brand. The
+persona is **Admin PB**, the invisible group-chat admin who checks every
+platform so players don't have to. Mike runs it ~2–5 hrs/week.
 
----
-
-## WHO I AM
-
-I'm building **MyTournament.PB** — a faceless Malaysian pickleball tournament calendar and media brand. I aggregate every tournament from Sportssync, Baseline, and Sports We Play into weekly social media drops. The persona is **Admin PB** — the invisible group-chat admin who checks every platform so players don't have to.
-
-**I am not a coach, pro player, or developer.** I use AI for everything — content, design, code, strategy. Non-technical background. Budget RM200–500/month. Available 3–5 hours/week. Give me production-ready output only. Skip explanations unless I ask.
-
----
-
-## BRAND IDENTITY
-
-| | |
+## Where things are
+| Need | File |
 |---|---|
-| Brand name | MyTournament.PB |
-| Public tagline | *We stalk tournaments so you don't have to.* |
-| Supporting line | *Every tournament. One place.* |
-| Public positioning | The tournament plug for Malaysian pickleball |
-| Internal positioning | Malaysia's #1 pickleball tournament calendar (never say this publicly) |
-| Persona | Admin PB — invisible group-chat admin |
-| Founded | May 2026 · Kuala Lumpur |
-
-**Handles:**
-- Instagram: @mytournament.pb
-- Facebook: @mytournamentpb
-- TikTok: @mytournament.pb
-- Threads: @mytournament.pb
-- Email: mytournamentpb@gmail.com
-- Linktree: linktr.ee/mytournamentpb
-- Domain: mytournamentpb.com ← LIVE
-
----
-
-## BRAND TOKENS — USE EXACTLY
-
-```python
-# Colors
-COURT_GREEN  = "#1A6B4A"  # primary — all backgrounds, buttons, covers
-DEEP_COURT   = "#0D1F1A"  # dark bg — urgency posts only
-RALLY_AMBER  = "#F0A500"  # accent ONLY — logo ball, THE PICK tag, urgency labels, slide numbers
-MINT_WASH    = "#E8F5EF"  # light card surfaces
-OFF_WHITE    = "#F5F5F0"  # page/slide backgrounds (cream)
-MID_GREEN    = "#6BAF8C"  # secondary text, admin notes, muted elements
-
-# Amber rule: appears MAX once per slide except in logo ball. Never as body text.
-# Cover slides: Court Green bg. Urgency/Closing Soon: Deep Court bg.
-```
-
-```css
-/* Web */
---court-green:  #1A6B4A;
---deep-court:   #0D1F1A;
---rally-amber:  #F0A500;
---mint-wash:    #E8F5EF;
---off-white:    #F5F5F0;
---mid-green:    #6BAF8C;
---font-heading: 'Sora', sans-serif;
---font-body:    'DM Sans', sans-serif;
-```
-
-**Fonts:** Sora (all headings, English only) · DM Sans (body, captions, Malay text)
-**Google Fonts:** `family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700`
-
----
-
-## LOGO — COURT MARK
-
-Three stacked rounded rectangles, left-aligned, with an amber circle at the end of the bottom line.
-
-```
-████████████████████████████████  ← Line 1: LONGEST · white · opacity 1.0
-█████████████████████             ← Line 2: SHORTEST · white · opacity 0.72
-██████████████████████████  ●     ← Line 3: MEDIUM · white · opacity 0.50 · amber ball
-```
-
-**Canonical asset:** `brand/assets/court_mark_500.svg` — use for all profile pictures and avatar slots.
-
-**SVG spec (500×500 canvas, Court Green bg):**
-- Line 1: x1=80 → x2=390 · y=175 · stroke-width=36 · opacity 1.0 · white
-- Line 2: x1=80 → x2=290 · y=268 · stroke-width=36 · opacity 0.72 · white
-- Line 3: x1=80 → x2=330 · y=362 · stroke-width=36 · opacity 0.50 · white
-- Amber ball: cx=400, cy=362, r=52, fill=#F0A500
-- On dark backgrounds: lines are white. On light backgrounds: lines are Court Green.
-
-**Pillow proportions (for carousel slide generation):**
-- Line 1: width 310px, height 64px, radius 32px, opacity 1.0
-- Line 2: width 210px, height 64px, radius 32px, opacity 0.72
-- Line 3: width 250px, height 64px, radius 32px, opacity 0.50
-- Gap between lines: 60px
-- Amber ball: radius 52px, positioned at far-right end of Line 3, vertically centred, partially overlapping
-
-**Carousel slide chrome:**
-- Slide number: amber `01` top-left, Sora Bold 54px
-- Label: letter-spaced all-caps DM Sans 22px beside the number
-- Footer: `@mytournament.pb` centred at bottom, DM Sans 24px
-
----
-
-## CAROUSEL SLIDES — BUILD SPEC
-
-**Format:** 1080×1350px PNG portrait
-**Builder:** Python + Pillow
-**Fonts at:** `/home/claude/work/fonts/`
-- `Sora-Variable.ttf` (variable font — use `set_variation_by_axes([weight])`)
-- `DMSans-Variable.ttf` (variable — `set_variation_by_axes([opsz, weight])`)
-- `DMSans-Italic-Variable.ttf`
-
-**Padding:** 80px outer margin
-**Upload rule:** Always upload from phone. Web upload crops the canvas.
-
-**Slide colour system:**
-- Hero/cover slides: Court Green bg
-- Data/list slides: Off White bg
-- Urgency/Closing Soon slides: Rally Amber bg
-- Dark feature slides: Deep Court bg (use sparingly)
-
-**Platform source pills on tournament list slides:**
-Each tournament row must show a colour-coded platform pill:
-- Sportssync: blue bg `E8F0FE` · dark blue text `1A3A8A`
-- Sports We Play (SWP): orange bg `FEF3E8` · dark orange text `8A4A00`
-- Baseline: green bg `E8F5E9` · Court Green text `1A6B4A`
-- PPA Tour Asia: amber bg `FFF3CD` · dark amber text `8A6000`
-
----
-
-## ADMIN PB — VOICE & PERSONA
-
-Admin PB is the invisible character behind every post. Not a mascot, not a face — a tone.
-
-**Admin PB is:** helpful and fast · slightly chaotic · very Malaysian · trustworthy · a player too · never cringe
-
-**Voice rules:**
-- English-first always. Malay as natural flavour only.
-- Lowercase captions OK. Title-case slide headlines.
-- No forced slang, no emoji spam, no corporate tone.
-- One emoji max per line, used like punctuation.
-- Direct and useful first. Cheeky second. Gen Z. 
-
-**Caption structure (lock this in):**
-```
-[Hook — one line, lowercase OK]
-[Useful details]
-[Admin note]
-[CTA]
-```
-
-**Core lines (rotate):**
-- Every tournament. One place.
-- We stalk tournaments so you don't have to.
-- Admin checked. You scroll.
-- Don't say nobody told you.
-- Can join ah?
-- Jom daftar.
-- Save this. Thank admin later.
-
-**Never say publicly:** "Malaysia's #1" · "ESPN of pickleball" · "premier destination"
-
----
-
-## CONTENT FRANCHISES — 9 TYPES
-
-| Franchise | Day | Format | Description |
-|---|---|---|---|
-| **Tournament Drop** | Friday | Carousel 6–7 slides | Flagship weekly post |
-| **Closing Soon** | Tue/Thu when urgent | Single image or short carousel | 24–72hr before deadline |
-| **Can Join Ah?** | Tuesday | Carousel | Beginner-friendly explainer |
-| **Worth It or Not?** | Tuesday | Carousel | Prize vs entry fee editorial |
-| **Worth the Bag?** | Tuesday | Carousel 8 slides | Team event ROI — entry fee vs prize breakdown by team/player |
-| **Partner Needed Board** | Wednesday | Story | Community partner matching |
-| **Scene Check** | Ad hoc | Reel/carousel | Post-event recap |
-| **Admin Notes** | Monday | Story | Behind-scenes transparency |
-| **PB Wrapped** | Last day of month | Carousel | Monthly stats recap |
-
----
-
-## EVERY CAROUSEL DELIVERY INCLUDES
-
-When I ask you to build a post, deliver ALL of these:
-
-1. **Slide PNG files** (6–7 slides, 1080×1350)
-2. **IG caption** with hashtags (under 2200 chars, hook first)
-3. **3 IG Stories** plan — what to post, when, what sticker/text
-4. **Threads post** — shorter, conversational, not a copy-paste of IG
-5. **Facebook post** — longer, more detail, emoji-friendly
-6. **Hashtag set:** #pickleballmalaysia #pickleballmy #malaysiapickleball + event-specific tags
-
-**Linktree:** Update to add website link now that mytournamentpb.com is live. Order: Latest Post · mytournamentpb.com · Sportssync · Baseline · Sports We Play · DM on IG.
-
----
-
-## DATA SOURCES & SWEEP SCHEDULE
-
-| Platform | Canonical URL | Scrape method | Notes |
-|---|---|---|---|
-| Sportssync | `sportssync.asia/tournament/index` (list) · `/tournament/{id}` (detail) | Exa search → fetch individual `/tournament/{id}` page | Primary — richest data. **`.net` domain is DEAD — never use.** |
-| Baseline | `my.baseline.live/tournaments` (list) · `/tournaments/{uuid}` (detail) | List is a lazy-load SPA (don't scrape directly) → Exa search to find UUID page → fetch | 91 Club, Alliance Bank, Skechers, Oriental Daily, VS Group |
-| Sports We Play (SWP) | `swp.solemas.com` | ⛔ Flutter app, no readable DOM — tools can't scrape. **Needs manual check** via site/mobile app | ICONIC Cup, Legends Rally, He Rallies, BADGEAR |
-| Reclub | — | Leads only, always verify independently | |
-
-> Full scraping playbook: `.claude/skills/scan-tournaments/SKILL.md` + `tournament-scraper` subagent. Keep these URLs in sync across all three.
-
-**Sweep schedule:** Monday + Thursday
-**Master tracker:** Google Sheet (live, public read)
-`https://docs.google.com/spreadsheets/d/1fBi6Mxz0pY8IFCP9hhLWB_R_i9J7obMEA5YoA6PkpDg`
-
-**ALWAYS read this sheet at session start before any content or data work.**
-Fetch via gviz: `https://docs.google.com/spreadsheets/d/1fBi6Mxz0pY8IFCP9hhLWB_R_i9J7obMEA5YoA6PkpDg/gviz/tq?tqx=out:csv&sheet=Tournaments`
-
-
----
-
-## TRACKER SCHEMA
-
-Columns (in order, 27): Verified · ID · Tournament Name · Organizer · Title Sponsor · Start Date · End Date · Reg Deadline · State · Venue · Entry Fee (RM) per team · Prize Pool (RM) · Cash Prize (RM) · Merch Value (RM) · Prize Pool Note · Skill Level · Event Type · Age Group · Pick Priority · Editorial Angle · Format Note · Player Note · Source Platform · Registration URL · Date Added · Last Checked · Notes
-
-**Note:** City column was removed by founder. Platform label on slides replaces city. `Age Group` sits between Event Type and Pick Priority.
-
-**First column (verification status):** in the live sheet the header cell is merged with the sheet title, so it *ends in* "Status" — `app.js` normalizes it to `Status` and renders only rows whose value is `Verified` (legacy `Published` also accepted). Cell values: blank (new/unverified) · Verified · Draft. Verified at session start: Jun 19, 2026 against the live gviz endpoint.
-**Pick Priority:** `1 — THE PICK` · `2 — Feature` · `3 — List` · `— Mention only`
-**Date format:** `DD-Mon-YYYY` (e.g. `1-Jul-2026`) throughout — NOT ISO. Match the live sheet.
-**State convention:** `Klang Valley` = KL + Selangor; otherwise the state name.
-**Adding rows:** output a CSV to `posts/new-tournaments-{date}.csv` → founder imports via File → Import → Append → untick "convert to dates". Do NOT hand back tab blocks to paste.
-
----
-
-## CURRENT STATUS (June 19, 2026)
-
-**Posts published:** 10 (no new posts since May 30 — publishing gap continued through June. The full June carousel pipeline — Oriental Daily News, AmBank, Picklefy — was NOT posted and is now abandoned. Next post live = Post 11, the July drop.)
-- Post 1: About Us / brand intro
-- Post 2: Week 1 debut digest (14 tournaments, RM246K)
-- Post 3: The Problem (why Admin PB exists)
-- Post 4: Mid-May Calendar digest (13 tournaments)
-- Post 5: PPA Tour Asia KL Open
-- Post 6: ✅ Tournament Drop — ICONIC Cup + June panoramic (Fri May 22)
-- Post 7: ✅ Worth the Bag? · Team ROI Edition (Iconic Cup / Putrajaya / Dink MiLP)
-- Post 8: ✅ Empire Nextgen
-- Post 9: ✅ June 2026 Tournament Calendar (Wed May 27) — 22 tournaments, RM692K+, website launch CTA
-- Post 10: ✅ Alliance Bank Malaysia Open — Reel (Sat May 30) · RM129.5K · reg closes Jun 1 ← latest published
-  - https://www.instagram.com/p/DY9NloLzjrp/
-
-**Followers:** 173 on Instagram (Jun 19 · up from ~112 on May 27)
-**Reach (last 30d, Jun 19):** ~12K views · 151 interactions · 3,050 accounts reached · Stories 7.6K · Posts 4.3K · 712 profile visits · 105 bio-link taps
-**Streak:** 3/3 Friday drops ✅ · First Reel published ✅ · **Publishing gap since May 30** (June drops lapsed; resuming with Post 11 July drop)
-**Active channels:** Instagram · Facebook · Threads
-**Website:** mytournamentpb.com — LIVE
-**ThePickleBase:** Met May 28 — **no follow-up since; they never re-initiated.** Door's closed for now (open only if *they* DM first). Founder is proceeding fully independent on MyTournament.PB. See `docs/picklebase-meeting-notes.md`
-**Working cadence:** ~2–5 hrs/week on this project, **as spare Claude usage allows** (not a fixed weekly commitment).
-**Partner Board:** Code shipped (PR #5 open on `feat/partner-matching-board`). **Pending founder:** create Google Form + public Partners tab in sheet + replace `PARTNERS_FORM_URL` in `app.js` + merge PR #5. Setup guide: `docs/partner-board-setup.md`.
-
-**Content calendar (updated Jun 19):**
-| Post | Date | Franchise | Format | Content |
-|---|---|---|---|---|
-| Post 10 | Sat May 30 | Tournament Drop | Reel | ✅ Published — Alliance Bank Malaysia Open (latest live) |
-| ~~June pipeline~~ | Jun 13–27 | Tournament Drop | Carousel | ❌ NOT POSTED — Oriental Daily / AmBank / Picklefy June drops lapsed during the gap. Abandoned. |
-| **Post 11** | **next drop** | **Tournament Drop** | **Carousel** | **"July's Already Loading" · Leapmotor APP Asia Penang Open · RM137.9K · THE PICK. Brief built Jun 19 → `posts/2026-07_post-11_app-asia-penang/brief.md`. Ready for Claude Design. (Per rule #10, no fixed posting date in slide copy.)** |
-| Companion | mid-week | Closing Soon | Single/3-slide | "Last Call This Week" — Picklefy/DinkFest (Jun 20) + Great Eastern Mall/Starz (Jun 24) + HCK (Jun 27). Same brief file. |
-
-**Pending tasks (Jun 19):**
-- [ ] **Tournament scan — OVERDUE.** Not run since ~May 30. Sportssync blocked the founder again (Jun 19) — use the `tournament-scraper` subagent (Exa-based), not manual browsing. See `project-sportssync-blocking` memory.
-- [ ] Send Post 11 brief (`posts/2026-07_post-11_app-asia-penang/brief.md`) to Claude Design → build 7-slide carousel + companion Closing Soon.
-- [ ] Partner Board go-live — create Google Form → Partners tab in sheet → update `PARTNERS_FORM_URL` in `app.js` → merge PR #5.
-- [ ] **Direction (Jun 19):** founder wants to **build automation agents** for the recurring manual workflows (scan, sheet hygiene, editorial) rather than doing them by hand. See `docs/roadmap.md` → Automation.
-
-**Done since Jun 4:**
-- ✅ Sheet — new tournaments added (MTPB-0067 Starz KL, MTPB-0068 Selangor Grand Slam, MTPB-0069 BRAGG).
-- ✅ Sheet — fixes done (duplicate MTPB-0064 → MTPB-0070, "Intermdiate" typo fixed, BRAGG date verified).
-
----
-
-## WEBSITE — LIVE
-
-**Status:** ✅ Phase 0 COMPLETE · Live at mytournamentpb.com
-**Stack:** Vanilla HTML + CSS + JavaScript. No frameworks. No npm. No build tools.
-**Data:** Google Sheet → gviz JSON endpoint. Live on page refresh.
-**Hosting:** Cloudflare Pages (free tier) · auto-deploy from GitHub `main` branch
-**Repo:** github.com/nainaii1/mytournament-pb
-**Files:** `index.html` · `style.css` · `app.js` · `assets/logo.svg` · `assets/favicon.svg`
-
-**Phase 0 — COMPLETE (shipped May 2026):**
-- ✅ Tournament list sorted by start date
-- ✅ State filter chips (auto-built from live sheet)
-- ✅ Month + week filter chips
-- ✅ Closing Soon amber strip (deadline ≤7 days)
-- ✅ Tournament card (name · dates · venue · prize · entry fee · platform pill · register link)
-- ✅ THE PICK / FEATURED badge logic
-- ✅ Dimmed cards for closed/expired reg
-- ✅ Mobile-first (390px)
-- ✅ Calendar view
-- ✅ Footer with IG/FB/TikTok/email links
-- ✅ SVG favicon (Court Mark)
-- ✅ Search bar with live filtering + empty state
-- ✅ Filter drawer (mobile bottom sheet) + sticky sidebar (desktop 240px)
-- ✅ Filter panel hides in Calendar and About views
-- ✅ About tab (who we are · how it works · find us)
-
-**Shipped since Phase 0 (June 2026):**
-- ✅ Calendar legibility overhaul — neutral weekend shading (was green-on-green), brighter Sportssync navy `#2F6FA8`, registration-status cues on bars (closing-soon amber ring · reg-closed solid grey), THE PICK row accent, two-group legend (Platform + Status)
-- ✅ Landing polish — `RM` prefix on entry/prize, intermediate skill dot recolored teal `#1B8FA8` so amber stays urgency-only
-- ✅ **Partner Matching Board** (`Partners` tab) — players post "looking for a doubles partner" listings (tournament-specific or general). DUPR-first cards · "Your DUPR" compatibility highlight · filters (DUPR band · event · type · search) · auto-expiry · contact via **Reclub username only** (no phone/IG public). Submissions: Google Form → private responses sheet → approved rows bridged (QUERY/IMPORTRANGE) to a public `Partners` tab the site reads. Private contact never reaches the web. Setup guide: `docs/partner-board-setup.md`.
-  - ⚠️ **Pending founder:** create the Google Form, then replace `PARTNERS_FORM_URL` placeholder in `app.js`. Board shows an empty state until the `Partners` sheet tab exists.
-
-**Phase 1 (next):** Tournament skill/category filter + DUPR parsing (sheet `Skill Level` column is freeform text)
-**Phase 2:** Leaflet.js map pins
-**Phase 3:** Organiser self-submit form
-
-**Sheet ID:** `1fBi6Mxz0pY8IFCP9hhLWB_R_i9J7obMEA5YoA6PkpDg`
-**New files this session:** `docs/partner-board-setup.md` · `Partners` sheet tab (to be created)
-
----
-
-## THEPICKLEBASE PARTNERSHIP
-
-> **STATUS (Jun 19, 2026): Met, no follow-up — effectively closed.** The May 28 meeting happened but ThePickleBase never re-initiated afterward. Founder is not chasing it; the door reopens only if *they* DM first. MyTournament.PB continues fully independent (no backend, Sheets-only). Notes below kept for reference.
-
-**Meeting:** Thu May 28, 10am · PJ or Kuchai (their choice)
-**Who:** ThePickleBase (@thepicklebase) — SEA pickleball lifestyle platform (coaching, courts, gear, news). Founder owns BASE Pickleball and Padel court in KL.
-**Context:** They DM'd saying they love what we're building and want to connect. They followed us.
-**Approach:** Potential data/content partner, not competitor.
-**Know before going:** your numbers (followers, posts, sheet size), your pitch (aggregation layer they don't have), your ask (data sharing, cross-promo, or co-content).
-
----
-
-## CATEGORY TAXONOMY (player-facing)
-
-| Label | DUPR singles | DUPR combined |
-|---|---|---|
-| Novice | <3.0 | <6.0 |
-| Intermediate | <3.5 | <7.0 |
-| Advanced | <4.0 | <8.0 |
-| Advanced+ | <4.5 | — |
-| Open | no cap | no cap |
-
----
-
-## JUNE 2026 PIPELINE — ⚠️ HISTORICAL (snapshot as of May 27; most events now past)
-
-> Kept for reference only. June drops were never posted (publishing gap). For the live pipeline, run a fresh scan and read the Google Sheet. Next planned post is the **July** drop (Post 11) — see Current Status above.
-
-
-| ID | Tournament | Dates | State | Prize | Closes | Platform | Priority |
-|---|---|---|---|---|---|---|---|
-| MTPB-0066 | 1 Utama Pickleball 2026 | May 30–Jun 7 | KV | RM39K | 29 May ⚠️ | Instagram | 3 |
-| MTPB-0029 | Alliance Bank Malaysia Open | Jun 5–7 | KV | RM129.5K | 1 Jun | Baseline | 1 — THE PICK |
-| MTPB-0032 | ISEIGUR CUP | Jun 6–7 | KV | RM44.9K | 28 May ⚠️ | Sportssync | 2 |
-| MTPB-0033 | Syok Pickle Golden Master (70+) | Jun 6 | KV | RM3.3K | 3 Jun | Sportssync | 3 |
-| MTPB-0046 | He Rallies! Combined DUPR 6.2 | Jun 7 | Penang | RM1.75K | 4 Jun | SWP | 3 |
-| MTPB-0030 | Oriental Daily News Open | Jun 12–14 | KV | RM120K | 10 Jun | Baseline | 1 — THE PICK |
-| MTPB-0035 | DAIKIN x 91 Club | Jun 13–14 | KV | RM51.3K | 1 Jun | Sportssync | 2 |
-| MTPB-0036 | LAC Pickleball Championship | Jun 13 | KV | RM37.9K | 2 Jun | Sportssync | 2 |
-| MTPB-0037 | EMPTA Pickleball Tournament | Jun 13 | KV | RM10.8K | — | Sportssync | 3 |
-| MTPB-0048 | 91 National Johor Tour | Jun 13 | Johor | RM20.5K | Once Full | Baseline | STRONG PICK |
-| MTPB-0038 | Lions Cup Charity | Jun 14 | Johor | RM13.6K | 11 Jun | Sportssync | 3 |
-| MTPB-0039 | Pickle Vibe Clash of Elites | Jun 14 | KV | RM13.5K | 13 Jun | Sportssync | 3 |
-| MTPB-0040 | AmBank Malaysia Championship | Jun 19–21 | KV | RM66K | 1 Jun | Sportssync | 1 — THE PICK |
-| MTPB-0049 | Pickle Collective Team Cup | Jun 19–21 | Sabah | RM23.5K | 10 Jun | Baseline | WORTH KNOWING |
-| MTPB-0054 | Court of Hearts Charity | Jun 20 | Penang | Charity | 31 May | Sportssync | 3 |
-| MTPB-0055 | Paddle Power Cup | Jun 20 | Johor | RM3.8K | 15 Jun | Sportssync | 3 |
-| MTPB-0065 | Pickle Power Superstar Cup | Jun 20 | Penang | RM3K | 20 Jun | SWP | 3 |
-| MTPB-0041 | JBFA Pickleball Tournament | Jun 21 | Johor | RM8.7K | 14 Jun | Sportssync | 3 |
-| MTPB-0042 | DinkFest by HNC | Jun 27 | Johor | RM18.3K | 20 Jun | Sportssync | 3 |
-| MTPB-0043 | Picklefy 1st Anniversary | Jun 27–28 | KV | RM54.8K | 20 Jun | Sportssync | 2 |
-| MTPB-0050 | MBSA Shah Alam Open | Jun 27–28 | KV | RM20K | 15 Jun | Baseline | WORTH KNOWING |
-| MTPB-0056 | END POLIO NOW Charity | Jun 27 | Johor | RM8.4K | 13 Jun | Sportssync | 3 |
-
-**June total: 22 open · RM692,403 in prizes**
-*(MTPB-0034 6.6.6 excluded — reg deadline expired 25 May)*
-
----
-
-## RULES FOR CLAUDE
-
-1. **Always read the Google Sheet first** before any content or data work in a session.
-2. **Production-ready only.** No placeholders, no "you can add X later," no incomplete code.
-3. **Mobile-first always.** Every design decision defaults to 390px phone first.
-4. **Deliver the full rollout package** — slides + caption + stories + Threads + Facebook.
-5. **Platform pills on every tournament list slide** — colour-coded Sportssync/Baseline/SWP.
-6. **Court Green for all carousel covers.** Deep Court only for urgency/Closing Soon.
-7. **Amber is accent only** — never body text, never backgrounds except Closing Soon slides.
-8. **Logo is Court Mark only** — no text-based logo, no variations.
-9. **Dates in tracker:** `DD-Mon-YYYY` format (e.g. `1-Jul-2026`). Reg Deadline = "Closed" or "Once full" when applicable.
-10. **Never promise specific posting dates** in slide copy.
-11. **Never say "Malaysia's #1"** in any public-facing copy.
-12. **Skip basic explanations** — founder has full context from prior sessions.
-13. **Website is live** — always link to mytournamentpb.com in CTAs and captions. Bio link = Linktree (which includes site).
-
----
-
-*MyTournament.PB · Every tournament. One place.*
-*claude.md v1.8 · June 19, 2026 — status synced: June drops abandoned (gap continued), Post 11 reassigned to the July drop (APP Asia THE PICK), followers 112→173 + reach stats added, June pipeline marked historical, sheet tasks marked done, automation-agents direction noted; ThePickleBase closed (met May 28, no follow-up) — proceeding independent at ~2–5 hrs/wk as Claude usage allows*
+| Brand, colours, logo, carousel spec, voice, content types | `brand/brand-kit.md` — read before any design or social work |
+| Scanning, sheet fields, verification rules | `.claude/skills/tournament-ops/` (SKILL.md + REFERENCE.md) |
+| Data sources, full sheet schema, website history, past status | `docs/project-notes.md` |
+| Direction and what's next | `docs/roadmap.md` · `docs/rebuild-plan.md` |
+| Step-by-step recurring jobs | `WORKFLOWS.md` |
+
+## The Google Sheet is the source of truth
+- Read it before any content or data work:
+  `https://docs.google.com/spreadsheets/d/1fBi6Mxz0pY8IFCP9hhLWB_R_i9J7obMEA5YoA6PkpDg/gviz/tq?tqx=out:csv&sheet=Tournaments`
+- Never write to the sheet. New or changed rows go into a CSV at
+  `posts/new-tournaments-{date}.csv`; Mike imports it (File → Import →
+  Append, untick "convert to dates").
+- Dates are `DD-Mon-YYYY` (e.g. `1-Jul-2026`), not ISO.
+- Sportssync is on `.asia` (the `.net` domain is dead). Sports We Play
+  scanning was discontinued on 24 Aug 2026.
+
+## The website
+- mytournamentpb.com, served by Cloudflare Pages straight from the GitHub
+  `main` branch of `nainaii1/mytournament-pb`. Anything pushed to `main`
+  goes live, and every file in this repo is publicly reachable.
+- `index.html`, `style.css`, `app.js` and `assets/` are the live site;
+  don't move them. Plain HTML/CSS/JS reading the sheet's gviz feed.
+- Website changes go branch → PR → merge.
+
+## Public copy rules
+- Never say "Malaysia's #1", "ESPN of pickleball" or "premier destination".
+- Never promise a specific posting date in slide copy.
+- Link mytournamentpb.com in CTAs.
+
+## Status (checked 25 Sep 2026)
+- Last content post: Post 10 on 30 May. Post 11 brief exists
+  (`posts/2026-07_post-11_app-asia-penang/brief.md`) but was never built.
+  Follower and reach figures in the notes are from 19 Jun and unverified.
+- Last data work: 24 Aug (scan, sheet fixes, `tournament-ops` skill).
+- Open items waiting on Mike:
+  - Partner Board: create the Google Form + `Partners` tab, set
+    `PARTNERS_FORM_URL` in `app.js`, merge PR #5.
+  - Sheet: Data Validation on `Age Group` and `Reg Deadline` wipes values
+    like "35+" and "Closed" on import.
+  - Confirm `posts/new-tournaments-2026-08-24.csv` was imported.
