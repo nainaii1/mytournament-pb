@@ -979,3 +979,10 @@ body.about-mode .filter-trigger-row { display: none; }
   }
   .cards-wrap .card { margin-bottom: 0; }
 }
+
+/* AI-drafted notes (About tab) */
+.ai-notes { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+.ai-note { background: #fff; border: 1px solid rgba(13,31,26,0.12); border-radius: 12px; padding: 12px 14px; }
+.ai-note-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.ai-note-text { font-size: 14px; line-height: 1.5; }
+.ai-note-foot { font-size: 12px; opacity: 0.7; margin: 2px 0 0; }

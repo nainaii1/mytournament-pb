@@ -1,0 +1,8 @@
+[TEST FIXTURE - fictional event]
+SUNRISE PICKLE OPEN 2026 (Fictional Organizer Co.)
+Venue: Example Pickle Hall, Petaling Jaya, Selangor
+Dates: 14 - 15 Mar 2026
+Registration closes 1 Mar 2026
+Categories: Men's Doubles <3.5, Mixed Doubles <3.5
+Entry fee: RM180 per team
+Register: https://example.com/sunrise-pickle-open
