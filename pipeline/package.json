@@ -1,0 +1,13 @@
+{
+  "name": "mytournament-pb-pipeline",
+  "private": true,
+  "type": "module",
+  "description": "Claude-powered tournament ingestion: extract structured data from listing text, draft editorial notes from facts only.",
+  "scripts": {
+    "start": "node run.mjs",
+    "dry-run": "node run.mjs --dry-run",
+    "test": "node --test test/pipeline.test.mjs"
+  },
+  "engines": { "node": ">=22" },
+  "dependencies": { "@anthropic-ai/sdk": "^0.100.0" }
+}

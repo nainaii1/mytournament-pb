@@ -1040,4 +1040,34 @@ async function init() {
   }
 }
 
+// ── AI-drafted notes (data/ai-notes.json, merged by a human via pull request) ──
+async function loadAiNotes() {
+  const el = document.getElementById("ai-notes");
+  if (!el) return;
+  const say = text => { el.textContent = ""; const p = document.createElement("p"); p.className = "about-p"; p.textContent = text; el.appendChild(p); };
+  try {
+    const res = await fetch("data/ai-notes.json", { cache: "no-cache" });
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    const notes = Array.isArray(data.notes) ? data.notes : [];
+    if (!notes.length) { say("We're building this: the first reviewed notes will appear here."); return; }
+    el.textContent = "";
+    for (const n of notes.slice(-6).reverse()) {
+      const card = document.createElement("div");
+      card.className = "ai-note";
+      const h = document.createElement("div"); h.className = "ai-note-name"; h.textContent = n.name || "";
+      const p = document.createElement("div"); p.className = "ai-note-text"; p.textContent = n.note || "";
+      card.append(h, p);
+      el.appendChild(card);
+    }
+    const f = document.createElement("p");
+    f.className = "ai-note-foot";
+    f.textContent = `Drafted by Claude, reviewed by a person. Last updated ${data.updated || "—"}.`;
+    el.appendChild(f);
+  } catch (e) {
+    say("Notes are unavailable right now.");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", loadAiNotes);

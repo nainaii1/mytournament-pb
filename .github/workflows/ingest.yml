@@ -1,0 +1,41 @@
+name: Tournament ingestion (Claude)
+
+# Weekly (Mondays 09:00 MYT) or on demand. It never publishes directly:
+# it opens a pull request, and merging that PR is the human review.
+on:
+  schedule:
+    - cron: "0 1 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+        working-directory: pipeline
+      - run: node run.mjs
+        working-directory: pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      - name: Open a pull request if anything changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then echo "Nothing new."; exit 0; fi
+          BRANCH="ingest/$(date -u +%Y-%m-%d-%H%M)"
+          git config user.name "mytournament-pb-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add -A data posts pipeline/state pipeline/hold pipeline/inbox
+          git commit -m "chore: AI-drafted tournament notes (needs human review)"
+          git push origin "$BRANCH"
+          gh pr create --title "AI-drafted tournament notes - please review" \
+            --body "Drafted by Claude from the listing text in pipeline/inbox. Check each note against its source before merging. Held items (low confidence) are in pipeline/hold."
