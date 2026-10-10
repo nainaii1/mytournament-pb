@@ -76,6 +76,20 @@ a { text-decoration: none; }
 .header-nav-link:hover { color: var(--deep-court); }
 .header-nav-link.on { color: var(--court-green); font-weight: 600; background: rgba(26,107,74,0.08); }
 
+/* Phones: logo + nav + CTA need ~460px, so the page stretched wider than the
+   screen. Put the nav on its own row; filterbar sticks below the taller header. */
+@media (max-width: 480px) {
+  .header-row { flex-wrap: wrap; row-gap: 8px; }
+  .header-left { display: contents; }
+  .header-left .logo { order: 1; }
+  .header-cta { order: 2; }
+  .header-nav { order: 3; flex: 0 0 100%; overflow-x: auto; }
+}
+@media (max-width: 360px) { /* small phones: keep logo + button on one row */
+  .header-row { column-gap: 8px; }
+  .header-cta { padding: 6px 8px; font-size: 11px; }
+}
+
 /* ===== URGENCY STRIP ===== */
 .urgency {
   background: var(--deep-court); color: #fff;
@@ -99,6 +113,7 @@ a { text-decoration: none; }
   padding: 8px 0 0;
   position: sticky; top: 58px; z-index: 40;
 }
+@media (max-width: 480px) { .filterbar { top: 99px; } } /* below the two-row header */
 
 /* Search row */
 .search-row { padding: 0 16px 8px; }
@@ -375,6 +390,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
   gap: 10px; margin-bottom: 8px; flex-wrap: wrap;
 }
 .pairs { display: flex; gap: 14px; }
+.pair { min-width: 0; } /* let long fee text wrap instead of widening the page */
 .pair .k {
   font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.06em;
   color: var(--mid-green); font-weight: 600; margin-bottom: 0;
@@ -382,6 +398,7 @@ main { max-width: 480px; margin: 0 auto; padding: 18px 16px 24px; }
 .pair .v {
   font-family: 'Sora', sans-serif; font-size: 12.5px; font-weight: 600;
   color: var(--deep-court); font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
 }
 
 /* Skill chips */
