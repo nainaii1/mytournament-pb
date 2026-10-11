@@ -51,7 +51,13 @@ platform so players don't have to. Mike runs it ~2–5 hrs/week.
   (PickleSmash, postponed to 14–15 Nov) and MTPB-0140 (Regal Rally, 27–29
   Nov). Live site showed 33 upcoming events on 11 Oct.
 - Last website change: PR #10 (11 Oct), mobile header no longer overflows.
+- Claude for Startups: application submitted 11 Oct 2026 (details in
+  `APPLICATION_READINESS.md`). Console account + hello@mytournamentpb.com
+  (Cloudflare Email Routing -> Gmail) set up. No paid credits bought. The
+  Claude pipeline (`pipeline/`) is built and tested with mocks but has
+  never run against the live API. Waiting on Anthropic's reply.
 - Open items waiting on Mike:
+  - Anthropic reply to the startups application; then API key in `pipeline/.env` + first live run.
   - Held-back rows in `posts/new-tournaments-2026-10-09.csv`: MTPB-0145
     Sabah Open and 0146 Battle of the Sexes (Baseline says "Date to be
     announced"), 0154 Brunei and 0179 Singapore (overseas, non-RM prizes),
