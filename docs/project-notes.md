@@ -36,7 +36,8 @@ Columns (in order, 27): Verified · ID · Tournament Name · Organizer · Title 
 **⚠️ Known sheet issue (24-Aug-2026):** the `Age Group` and `Reg Deadline` columns appear to have Data Validation that silently blanks any value that isn't a plain number / plain date — `"35+"`, `"U18"`, and `"Closed"` have all been wiped on import, repeatedly, across three separate attempts. Check **Data → Data validation** on those two columns in Sheets before relying on non-numeric/non-date values sticking. Not yet resolved as of this writing.
 **Date format:** `DD-Mon-YYYY` (e.g. `1-Jul-2026`) throughout — NOT ISO. Match the live sheet.
 **State convention:** `Klang Valley` = KL + Selangor; otherwise the state name.
-**Adding rows:** output a CSV to `posts/new-tournaments-{date}.csv` → founder imports via File → Import → Append → untick "convert to dates". Do NOT hand back tab blocks to paste.
+**Adding rows:** output a CSV to `posts/new-tournaments-{date}.csv` → founder imports via File → Import → Upload → Append to current sheet, with "Convert text to numbers, dates and formulas" left **ticked**. Do NOT hand back tab blocks to paste.
+**Text-date trap (11-Oct-2026):** the date columns hold real dates. Importing with "convert" unticked stores dates as text (hidden leading `'`); the gviz feed blanks them and the site shows the event as TBD or not at all. Find & replace does not fix it. Fix: in empty cells below the data, `=ARRAYFORMULA(DATEVALUE(F<first>:H<last>))` → copy → paste values only over the text dates → paint format from a good date row → delete the helper cells. Always check the feed after an import.
 
 ---
 

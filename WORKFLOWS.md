@@ -54,7 +54,7 @@ into rows you can import.
 | **Type this** | `"sweep my sheet"`  *(or: "audit my tracker", "clean my data")* |
 | **Runs** | `sheet-sweeper` agent |
 | **You get** | A corrected `.xlsx`/`.csv` + a **changelog** of every edit it made |
-| **Next step** | In Google Sheets: **File -> Import -> Append**, and **untick "convert text to dates"** (keeps your `DD-Mon-YYYY` format). Then the website updates on next page load. |
+| **Next step** | In Google Sheets (in Chrome, not Numbers): click the **Tournaments** tab, then **File -> Import -> Upload**, pick the file, choose **Append to current sheet**, and leave **"Convert text to numbers, dates and formulas" ticked** (unticked = text dates the website can't read). Then ask Claude to check the site. |
 
 > WARNING: The agent never touches your live sheet — you stay in control by importing manually.
 
