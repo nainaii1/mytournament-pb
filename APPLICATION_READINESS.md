@@ -17,14 +17,16 @@ We build and maintain the product with Claude Code: the site, our weekly scan an
 | Live public site at mytournamentpb.com | Done |
 | Clear description of what it does (About tab) | Done |
 | How it makes money, stated honestly as planned | Done |
-| Real tournament data in the sheet | Done, but stale: last checked 24 Aug. Run a scan and import before applying |
+| Real tournament data in the sheet | Done: refreshed 9-11 Oct 2026 (33 upcoming events on 11 Oct) |
 | Claude API feature: code written, 10 tests passing with mocked responses | Done |
 | Claude API feature: run once against the real API | Not done (needs your key) |
-| Feature visible on the live site | Not done (needs PR merged + deploy; shows an honest "building" message until the first real notes exist) |
+| Feature visible on the live site | Partly: About-tab section is live and shows an honest "building" message until the first real notes exist |
 | API key kept out of code (.env gitignored, .env.example added, GitHub secret for the scheduled job) | Done in code; key itself not created yet |
 | Scheduled job (weekly GitHub Action, opens a PR) | Written, not yet run. Needs the repo secret + one repo setting |
-| Company email on your own domain | Not done |
-| Claude Console account | Not done |
+| Company email on your own domain (hello@mytournamentpb.com) | Done: tested, forwards to the founder's Gmail |
+| Claude Console account (organization created with the domain email) | Done |
+| Application submitted at platform.claude.com/offers/startups-application | Done, 11 Oct 2026 (see section 5) |
+| Paid API credits bought | No, deliberately. Awaiting program decision |
 | Dedicated About/Contact URLs, sitemap | Not done (About is a tab on the home page) |
 | Partner Board live | Not done (not needed for the application) |
 
@@ -76,3 +78,19 @@ Assumes mytournamentpb.com's DNS is on Cloudflare. If it isn't, tell me and I'll
 1. In Console, find the credits (your brief says $1,000) and claim them. Also claim the free Claude Team year (per your brief).
 2. Credits expire after 6 months, so note the date and keep the daily cap in `pipeline/.env` (`DAILY_CALL_CAP`) sensible.
 3. I have not verified the program's current terms; confirm them on the offer page.
+
+## 5. Submission record
+
+- **Submitted:** 11 Oct 2026, from hello@mytournamentpb.com, via platform.claude.com/offers/startups-application.
+- **Facts stated on the form:** company MyTournament.PB, website https://mytournamentpb.com, based in Malaysia, latest funding round "Not yet raised", not incorporated, no outside funding or revenue.
+- **"What are you building on Claude?" text sent:**
+  > MyTournament.PB is a free calendar of Malaysian pickleball tournaments, so players needn't check several platforms for dates, fees and deadlines. We're building a Claude API pipeline: Haiku 5.5 turns raw listing text into validated structured data, and Sonnet 5.5 drafts short player notes from verified facts only. Low-confidence results wait for human approval and nothing publishes unreviewed. Code and tests are done; first live run is next. Built solo with Claude Code.
+- **Not recorded here:** personal fields (name, job title, city), the founding month/year and the AI-spend percentage were entered by the founder directly. [FILL IN if you want them logged.]
+- **Outcome:** [FILL IN: approved / declined / no reply, with date.]
+
+## 6. Next steps
+
+1. Watch hello@mytournamentpb.com (and Gmail spam) for Anthropic's reply.
+2. If approved: claim the credits and the Claude Team offer in Console, and note the expiry date shown there (confirm the amounts and expiry on the offer page; they were not verified from an official source).
+3. Create the API key and put it in `pipeline/.env` only, then run `npm run dry-run`, then one real listing with `npm start`.
+4. After the first real run, replace "first live run is next" in any future application or update with what actually happened.
